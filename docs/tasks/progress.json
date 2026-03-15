@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-16T00:15:00Z",
-  "current_task": "30-frontend-auth",
+  "last_updated": "2026-03-15T23:29:52.640064+00:00",
+  "current_task": "31-admin-layout",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -401,17 +401,17 @@
     },
     "30-frontend-auth": {
       "title": "Frontend Auth \u2014 Zustand Store, Login Pages, Protected Routes",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "auth-store": "pending",
-        "api-interceptors": "pending",
-        "login-pages": "pending",
-        "protected-route": "pending",
-        "register-page": "pending"
+        "auth-store": "completed",
+        "api-interceptors": "completed",
+        "login-pages": "completed",
+        "protected-route": "completed",
+        "register-page": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T23:29:52Z",
+      "completed_at": "2026-03-16T01:00:00Z",
+      "notes": "All 3 apps have: auth-types.ts, auth-schemas.ts (Zod), Zustand auth-store.ts with localStorage persistence (app-specific keys), api.ts with 401 token refresh interceptor + request queue, login-page.tsx (admin: email/password, provider: tenantSlug/email/password, web: email/password + register link), protected-route.tsx with /auth/me verification on mount. Web app has register-page.tsx with password confirmation. All App.tsx updated with auth routing, all main.tsx initialized with initializeApiAuth. All 3 apps build with 0 errors."
     },
     "31-admin-layout": {
       "title": "Admin App \u2014 Layout, Sidebar, Header, Dashboard",

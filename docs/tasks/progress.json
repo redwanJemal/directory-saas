@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T15:43:25.080248+00:00",
-  "current_task": "14-caching-layer",
+  "last_updated": "2026-03-15T16:55:00.000000+00:00",
+  "current_task": "16-background-jobs",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -200,17 +200,17 @@
     },
     "15-file-storage": {
       "title": "File Storage \u2014 MinIO/S3, Tenant-Scoped",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "storage-service": "pending",
-        "upload-endpoint": "pending",
-        "presigned-urls": "pending",
-        "tenant-buckets": "pending",
-        "tests": "pending"
+        "storage-service": "completed",
+        "upload-endpoint": "completed",
+        "presigned-urls": "completed",
+        "tenant-buckets": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T15:48:47Z",
+      "completed_at": "2026-03-15T16:55:00Z",
+      "notes": "StorageService with S3Client (MinIO-compatible, forcePathStyle), tenant-scoped keys ({tenantId}/{folder}/{uuid}-{name}), presigned read/upload URLs (1h default), auto bucket creation on init. UploadsModule with controller (POST upload, POST presigned, GET presigned/:key, DELETE :key), service with file validation (10MB max, MIME type allowlist, extension-MIME matching), tenant isolation (key prefix check). 29 new tests (481 total), build clean."
     },
     "16-background-jobs": {
       "title": "Background Jobs \u2014 BullMQ + Redis",

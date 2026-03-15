@@ -10,10 +10,11 @@ import { TenantResolutionMiddleware } from './common/middleware/tenant-resolutio
 import { AuthModule } from './modules/auth/auth.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
-  imports: [AppConfigModule, PrismaModule, ThrottlerModule, AuthModule, RolesModule, SubscriptionsModule],
+  imports: [AppConfigModule, PrismaModule, ThrottlerModule, AuthModule, RolesModule, SubscriptionsModule, UploadsModule],
   providers: [
     {
       provide: AppLoggerService,

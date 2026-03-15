@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router';
 import { Toaster } from '@/components/ui/sonner';
 import { applyBrandHue } from '@/lib/branding';
+import './i18n';
 import App from './App';
 import './index.css';
 

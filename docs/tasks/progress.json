@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T23:11:49.996677+00:00",
-  "current_task": "28-frontend-shared-foundation",
+  "last_updated": "2026-03-16T00:15:00Z",
+  "current_task": "30-frontend-auth",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -388,16 +388,16 @@
     },
     "29-frontend-i18n": {
       "title": "Frontend i18n \u2014 Internationalization with i18next",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "i18n-setup": "pending",
-        "en-translations": "pending",
-        "am-translations": "pending",
-        "language-switcher": "pending"
+        "i18n-setup": "completed",
+        "en-translations": "completed",
+        "am-translations": "completed",
+        "language-switcher": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T23:21:20Z",
+      "completed_at": "2026-03-16T00:15:00Z",
+      "notes": "i18next + react-i18next + browser language detector installed in all 3 apps. English and Amharic translation files with comprehensive coverage. LanguageSwitcher component with globe icon dropdown. Language persists to localStorage with app-specific keys. All 3 apps build with 0 errors."
     },
     "30-frontend-auth": {
       "title": "Frontend Auth \u2014 Zustand Store, Login Pages, Protected Routes",

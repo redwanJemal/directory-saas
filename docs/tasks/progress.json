@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T16:55:00.000000+00:00",
+  "last_updated": "2026-03-15T15:54:44.126565+00:00",
   "current_task": "16-background-jobs",
   "current_subtask": null,
   "tasks": {
@@ -214,18 +214,18 @@
     },
     "16-background-jobs": {
       "title": "Background Jobs \u2014 BullMQ + Redis",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "bull-module": "pending",
-        "job-processor": "pending",
-        "retry-policy": "pending",
-        "dead-letter": "pending",
-        "dashboard": "pending",
-        "tests": "pending"
+        "bull-module": "completed",
+        "job-processor": "completed",
+        "retry-policy": "completed",
+        "dead-letter": "completed",
+        "dashboard": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T15:54:44Z",
+      "completed_at": "2026-03-15T17:05:00Z",
+      "notes": "BullMQ with Redis backend. 6 named queues (email, notification, export, cleanup, indexing, ai) + dead-letter queue. JobService for adding immediate/delayed/recurring jobs. BaseProcessor with worker lifecycle, retry tracking, and automatic DLQ routing on final failure. Per-queue retry policies (email: 5 retries, AI: 2 retries, others: 3) with exponential backoff. Scheduled jobs: cleanup-refresh-tokens (daily 2 AM), cleanup-expired-uploads (daily 3 AM). Bull Board dashboard at /api/v1/admin/queues (admin-only). 47 new tests (528 total), build clean."
     },
     "17-event-system": {
       "title": "Domain Event System \u2014 Async Handlers",

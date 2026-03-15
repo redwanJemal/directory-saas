@@ -11,10 +11,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
+import { JobsModule } from './modules/jobs/jobs.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
-  imports: [AppConfigModule, PrismaModule, ThrottlerModule, AuthModule, RolesModule, SubscriptionsModule, UploadsModule],
+  imports: [AppConfigModule, PrismaModule, ThrottlerModule, AuthModule, RolesModule, SubscriptionsModule, UploadsModule, JobsModule],
   providers: [
     {
       provide: AppLoggerService,

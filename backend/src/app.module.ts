@@ -19,6 +19,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { HealthModule } from './modules/health/health.module';
 import { AuditModule } from './modules/audit/audit.module';
 import { SearchModule } from './modules/search/search.module';
+import { AiModule } from './modules/ai/ai.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -37,6 +38,7 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     HealthModule,
     AuditModule,
     SearchModule,
+    AiModule,
   ],
   providers: [
     {

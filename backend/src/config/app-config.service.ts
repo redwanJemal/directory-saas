@@ -131,4 +131,23 @@ export class AppConfigService {
   get logLevel(): string {
     return this.configService.get<string>('LOG_LEVEL', 'log');
   }
+
+  get ai(): {
+    provider: string;
+    model: string;
+    apiKey: string;
+    maxTokens: number;
+    temperature: number;
+  } {
+    return {
+      provider: this.configService.get<string>('AI_PROVIDER', 'anthropic'),
+      model: this.configService.get<string>(
+        'AI_MODEL',
+        'claude-sonnet-4-20250514',
+      ),
+      apiKey: this.configService.get<string>('AI_API_KEY', ''),
+      maxTokens: this.configService.get<number>('AI_MAX_TOKENS', 4096),
+      temperature: this.configService.get<number>('AI_TEMPERATURE', 0.7),
+    };
+  }
 }

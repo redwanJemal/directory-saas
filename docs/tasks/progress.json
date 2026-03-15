@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T19:13:26.052216+00:00",
-  "current_task": "22-search-infrastructure",
+  "last_updated": "2026-03-15T19:24:57.916987+00:00",
+  "current_task": "23-ai-module",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -309,17 +309,17 @@
     },
     "23-ai-module": {
       "title": "AI Module \u2014 Vercel AI SDK, Tools, Streaming",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "ai-service": "pending",
-        "tool-system": "pending",
-        "streaming": "pending",
-        "prompts": "pending",
-        "tests": "pending"
+        "ai-service": "completed",
+        "tool-system": "completed",
+        "streaming": "completed",
+        "prompts": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T19:24:57Z",
+      "completed_at": "2026-03-15T21:10:00Z",
+      "notes": "Vercel AI SDK v6 with configurable provider (Anthropic/OpenAI) via AiProviderFactory. SSE streaming chat endpoint at POST /api/v1/ai/chat. 4 AI tools: searchProviders (Meilisearch integration), estimateBudget (weighted allocation), checkAvailability (stub), createPlan (structured output). AiConversation Prisma model for conversation memory. Conversation CRUD endpoints. Feature-gated to ai-planner (Professional+ plans). Stricter rate limit (10 req/min). AI SDK types isolated via dynamic require to avoid TypeScript OOM. SWC builder enabled for NestJS. 28 new tests (729 total), build clean."
     },
     "24-testing-infrastructure": {
       "title": "Testing \u2014 Jest Unit + E2E + Factories",

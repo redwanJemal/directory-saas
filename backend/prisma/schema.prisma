@@ -241,6 +241,25 @@ model DomainEvent {
   @@map("domain_events")
 }
 
+// === NOTIFICATIONS ===
+
+model Notification {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String?   @map("tenant_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  userType  String    @map("user_type")
+  type      String
+  title     String
+  message   String
+  data      Json?
+  readAt    DateTime? @map("read_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([userId, userType, readAt])
+  @@index([tenantId])
+  @@map("notifications")
+}
+
 // === ENUMS ===
 
 enum AdminRole {

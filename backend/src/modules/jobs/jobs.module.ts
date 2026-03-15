@@ -1,6 +1,7 @@
 import { Module, Global } from '@nestjs/common';
 import { AppConfigModule } from '../../config/app-config.module';
 import { JobService } from '../../common/services/job.service';
+import { EmailService } from '../../common/services/email.service';
 import { JobsDashboardController } from './jobs-dashboard.controller';
 import { JobsSchedulerService } from './jobs-scheduler.service';
 import {
@@ -18,6 +19,7 @@ import {
   controllers: [JobsDashboardController],
   providers: [
     JobService,
+    EmailService,
     JobsSchedulerService,
     EmailProcessor,
     NotificationProcessor,
@@ -26,6 +28,6 @@ import {
     IndexingProcessor,
     AiProcessor,
   ],
-  exports: [JobService],
+  exports: [JobService, EmailService],
 })
 export class JobsModule {}

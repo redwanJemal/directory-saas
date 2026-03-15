@@ -4,6 +4,7 @@ import { AppConfigService } from '../../../config/app-config.service';
 import { JobService } from '../../../common/services/job.service';
 import { QUEUES } from '../../../common/constants/queues';
 import { BaseProcessor } from './base.processor';
+import { PrismaService } from '../../../prisma/prisma.service';
 
 @Injectable()
 export class NotificationProcessor
@@ -16,6 +17,7 @@ export class NotificationProcessor
   constructor(
     jobService: JobService,
     private readonly config: AppConfigService,
+    private readonly prisma: PrismaService,
   ) {
     super(jobService);
   }
@@ -34,20 +36,35 @@ export class NotificationProcessor
     this.logger.log(`Processing notification job '${job.name}' [${job.id}]`);
 
     switch (job.name) {
-      case 'push-notification':
       case 'in-app-notification':
-        await this.sendNotification(job.data);
+        await this.createInAppNotification(job.data);
+        break;
+      case 'push-notification':
+        this.logger.log(
+          `Push notification stub: user ${job.data.userId} [type: ${job.data.type}]`,
+        );
         break;
       default:
         this.logger.warn(`Unknown notification job name: ${job.name}`);
     }
   }
 
-  private async sendNotification(
+  private async createInAppNotification(
     data: Record<string, unknown>,
   ): Promise<void> {
+    await this.prisma.notification.create({
+      data: {
+        tenantId: data.tenantId as string | undefined,
+        userId: data.userId as string,
+        userType: data.userType as string,
+        type: data.type as string,
+        title: data.title as string,
+        message: data.message as string,
+        data: (data.data as object) ?? undefined,
+      },
+    });
     this.logger.log(
-      `Notification sent to user ${data.userId} [type: ${data.type}]`,
+      `In-app notification created for user ${data.userId} [type: ${data.type}]`,
     );
   }
 }

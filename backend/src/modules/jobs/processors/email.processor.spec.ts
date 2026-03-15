@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EmailProcessor } from './email.processor';
 import { JobService } from '../../../common/services/job.service';
 import { AppConfigService } from '../../../config/app-config.service';
+import { EmailService } from '../../../common/services/email.service';
 
 const mockWorkerOn = jest.fn();
 const mockWorkerClose = jest.fn();
@@ -16,9 +17,14 @@ jest.mock('bullmq', () => ({
 
 describe('EmailProcessor', () => {
   let processor: EmailProcessor;
+  let emailServiceMock: Record<string, jest.Mock>;
 
   beforeEach(async () => {
     jest.clearAllMocks();
+
+    emailServiceMock = {
+      sendDirect: jest.fn().mockResolvedValue(undefined),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -32,6 +38,10 @@ describe('EmailProcessor', () => {
           useValue: {
             redis: { host: 'localhost', port: 6379, password: undefined },
           },
+        },
+        {
+          provide: EmailService,
+          useValue: emailServiceMock,
         },
       ],
     }).compile();
@@ -50,34 +60,44 @@ describe('EmailProcessor', () => {
     );
   });
 
-  it('should process send-welcome job', async () => {
+  it('should process email job by calling sendDirect', async () => {
     const mockJob = {
       name: 'send-welcome',
       id: 'job-1',
-      data: { to: 'user@example.com', template: 'welcome' },
+      data: {
+        to: 'user@example.com',
+        template: 'welcome',
+        data: { firstName: 'John' },
+      },
     };
 
-    await expect(processor.process(mockJob as any)).resolves.not.toThrow();
+    await processor.process(mockJob as any);
+
+    expect(emailServiceMock.sendDirect).toHaveBeenCalledWith(
+      'user@example.com',
+      'welcome',
+      { firstName: 'John' },
+    );
   });
 
   it('should process send-password-reset job', async () => {
     const mockJob = {
       name: 'send-password-reset',
       id: 'job-2',
-      data: { to: 'user@example.com', template: 'password-reset' },
+      data: {
+        to: 'user@example.com',
+        template: 'password-reset',
+        data: { firstName: 'Bob', resetUrl: 'https://example.com/reset' },
+      },
     };
 
-    await expect(processor.process(mockJob as any)).resolves.not.toThrow();
-  });
+    await processor.process(mockJob as any);
 
-  it('should handle unknown job names gracefully', async () => {
-    const mockJob = {
-      name: 'unknown-job',
-      id: 'job-3',
-      data: {},
-    };
-
-    await expect(processor.process(mockJob as any)).resolves.not.toThrow();
+    expect(emailServiceMock.sendDirect).toHaveBeenCalledWith(
+      'user@example.com',
+      'password-reset',
+      { firstName: 'Bob', resetUrl: 'https://example.com/reset' },
+    );
   });
 
   it('should close worker on module destroy', async () => {

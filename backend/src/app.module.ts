@@ -14,6 +14,7 @@ import { SubscriptionsModule } from './modules/subscriptions/subscriptions.modul
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { EventsModule } from './modules/events/events.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -28,6 +29,7 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     UploadsModule,
     JobsModule,
     EventsModule,
+    NotificationsModule,
   ],
   providers: [
     {

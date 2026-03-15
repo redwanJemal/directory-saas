@@ -2,6 +2,7 @@ import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/commo
 import { Job } from 'bullmq';
 import { AppConfigService } from '../../../config/app-config.service';
 import { JobService } from '../../../common/services/job.service';
+import { EmailService } from '../../../common/services/email.service';
 import { QUEUES } from '../../../common/constants/queues';
 import { BaseProcessor } from './base.processor';
 
@@ -16,6 +17,7 @@ export class EmailProcessor
   constructor(
     jobService: JobService,
     private readonly config: AppConfigService,
+    private readonly emailService: EmailService,
   ) {
     super(jobService);
   }
@@ -33,20 +35,12 @@ export class EmailProcessor
   async process(job: Job): Promise<void> {
     this.logger.log(`Processing email job '${job.name}' [${job.id}]`);
 
-    switch (job.name) {
-      case 'send-welcome':
-      case 'send-password-reset':
-      case 'send-verification':
-      case 'send-notification':
-        await this.sendEmail(job.data);
-        break;
-      default:
-        this.logger.warn(`Unknown email job name: ${job.name}`);
-    }
-  }
+    const { to, template, data } = job.data as {
+      to: string;
+      template: string;
+      data: Record<string, string | number>;
+    };
 
-  private async sendEmail(data: Record<string, unknown>): Promise<void> {
-    // Placeholder: actual email sending logic will be implemented in Task 18
-    this.logger.log(`Email sent to ${data.to} [template: ${data.template}]`);
+    await this.emailService.sendDirect(to, template, data);
   }
 }

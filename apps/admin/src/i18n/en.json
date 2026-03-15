@@ -78,11 +78,16 @@
     "usersCount": "Users",
     "createdAt": "Created",
     "suspendReason": "Reason for suspension",
-    "confirmSuspend": "Are you sure you want to suspend this tenant?",
+    "confirmSuspend": "Are you sure you want to suspend this tenant? This action will disable access for all users in this tenant.",
     "ownerEmail": "Owner Email",
     "tenantCreated": "Tenant created successfully",
     "tenantUpdated": "Tenant updated successfully",
-    "tenantSuspended": "Tenant suspended"
+    "tenantSuspended": "Tenant suspended",
+    "cancelled": "Cancelled",
+    "searchPlaceholder": "Search tenants...",
+    "sectionGeneral": "General Information",
+    "sectionSubscription": "Subscription",
+    "sectionUsers": "Users"
   },
   "users": {
     "title": "Users",

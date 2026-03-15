@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T23:36:39.395078+00:00",
-  "current_task": "31-admin-layout",
+  "last_updated": "2026-03-16T12:00:00Z",
+  "current_task": "33-admin-pages",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -430,18 +430,18 @@
     },
     "32-admin-tenants": {
       "title": "Admin App \u2014 Tenants Management with Data Table",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "data-table": "pending",
-        "tenants-page": "pending",
-        "create-dialog": "pending",
-        "edit-dialog": "pending",
-        "view-sheet": "pending",
-        "query-hooks": "pending"
+        "data-table": "completed",
+        "tenants-page": "completed",
+        "create-dialog": "completed",
+        "edit-dialog": "completed",
+        "view-sheet": "completed",
+        "query-hooks": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T23:39:52Z",
+      "completed_at": "2026-03-16T12:00:00Z",
+      "notes": "Reusable DataTable with server-side sorting/pagination/filtering. Tenants page with search (debounced 300ms), status filter, sortable columns. Create/Edit dialogs with Zod validation, auto-slug generation. View sheet with tenant details. Suspend dialog with AlertDialog + reason. StatusBadge using theme CSS variables. All strings i18n'd (en + am). Build passes with 0 errors."
     },
     "33-admin-pages": {
       "title": "Admin App \u2014 Users, Roles, Subscriptions, Audit, Jobs, Settings",

@@ -78,11 +78,16 @@
     "usersCount": "ተጠቃሚዎች",
     "createdAt": "የተፈጠረ",
     "suspendReason": "የማገድ ምክንያት",
-    "confirmSuspend": "ይህን ተከራይ ለማገድ እርግጠኛ ነዎት?",
+    "confirmSuspend": "ይህን ተከራይ ለማገድ እርግጠኛ ነዎት? ይህ ድርጊት ለሁሉም ተጠቃሚዎች መዳረሻን ያሰናክላል።",
     "ownerEmail": "የባለቤት ኢሜል",
     "tenantCreated": "ተከራይ በተሳካ ሁኔታ ተፈጥሯል",
     "tenantUpdated": "ተከራይ በተሳካ ሁኔታ ተዘምኗል",
-    "tenantSuspended": "ተከራይ ታግዷል"
+    "tenantSuspended": "ተከራይ ታግዷል",
+    "cancelled": "የተሰረዘ",
+    "searchPlaceholder": "ተከራዮችን ፈልግ...",
+    "sectionGeneral": "አጠቃላይ መረጃ",
+    "sectionSubscription": "ምዝገባ",
+    "sectionUsers": "ተጠቃሚዎች"
   },
   "users": {
     "title": "ተጠቃሚዎች",

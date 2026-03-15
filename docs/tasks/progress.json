@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T21:48:22.149968+00:00",
-  "current_task": null,
+  "last_updated": "2026-03-15T23:11:49.996677+00:00",
+  "current_task": "28-frontend-shared-foundation",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -373,21 +373,21 @@
       "notes": "Comprehensive CLAUDE.md with full project context, patterns, module guide, commands. API conventions doc with response envelope, query params, error codes, rate limiting, auth details. Architecture guide with system diagram, multi-tenancy strategy, auth flow, request lifecycle, module communication, deployment. Getting started guide with step-by-step setup, verification checklist, troubleshooting."
     },
     "28-frontend-shared-foundation": {
-      "title": "Frontend Shared Foundation — shadcn/ui, OKLch Theming, Utilities",
-      "status": "pending",
+      "title": "Frontend Shared Foundation \u2014 shadcn/ui, OKLch Theming, Utilities",
+      "status": "completed",
       "subtasks": {
-        "dependencies": "pending",
-        "ui-components": "pending",
-        "theme-system": "pending",
-        "branding": "pending",
-        "utils": "pending"
+        "dependencies": "completed",
+        "ui-components": "completed",
+        "theme-system": "completed",
+        "branding": "completed",
+        "utils": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T23:11:49Z",
+      "completed_at": "2026-03-16T00:00:00Z",
+      "notes": "All 3 apps (web, admin, provider-portal) have: shadcn/ui with 29 components (Radix + CVA), OKLch theme system with --brand-hue CSS variable (light/dark modes), Tailwind CSS 4 @theme mapping, cn() utility, branding config with applyBrandHue(), useTheme() hook with localStorage persistence and system detection, ThemeToggle dropdown component, Sonner toaster. Path aliases @/* configured in tsconfig + vite. All 3 apps build with 0 errors."
     },
     "29-frontend-i18n": {
-      "title": "Frontend i18n — Internationalization with i18next",
+      "title": "Frontend i18n \u2014 Internationalization with i18next",
       "status": "pending",
       "subtasks": {
         "i18n-setup": "pending",
@@ -400,7 +400,7 @@
       "notes": ""
     },
     "30-frontend-auth": {
-      "title": "Frontend Auth — Zustand Store, Login Pages, Protected Routes",
+      "title": "Frontend Auth \u2014 Zustand Store, Login Pages, Protected Routes",
       "status": "pending",
       "subtasks": {
         "auth-store": "pending",
@@ -414,7 +414,7 @@
       "notes": ""
     },
     "31-admin-layout": {
-      "title": "Admin App — Layout, Sidebar, Header, Dashboard",
+      "title": "Admin App \u2014 Layout, Sidebar, Header, Dashboard",
       "status": "pending",
       "subtasks": {
         "dashboard-layout": "pending",
@@ -429,7 +429,7 @@
       "notes": ""
     },
     "32-admin-tenants": {
-      "title": "Admin App — Tenants Management with Data Table",
+      "title": "Admin App \u2014 Tenants Management with Data Table",
       "status": "pending",
       "subtasks": {
         "data-table": "pending",
@@ -444,7 +444,7 @@
       "notes": ""
     },
     "33-admin-pages": {
-      "title": "Admin App — Users, Roles, Subscriptions, Audit, Jobs, Settings",
+      "title": "Admin App \u2014 Users, Roles, Subscriptions, Audit, Jobs, Settings",
       "status": "pending",
       "subtasks": {
         "users-page": "pending",
@@ -459,7 +459,7 @@
       "notes": ""
     },
     "34-provider-layout": {
-      "title": "Provider Portal — Layout, Navigation, Dashboard",
+      "title": "Provider Portal \u2014 Layout, Navigation, Dashboard",
       "status": "pending",
       "subtasks": {
         "dashboard-layout": "pending",
@@ -474,7 +474,7 @@
       "notes": ""
     },
     "35-provider-profile": {
-      "title": "Provider Portal — Profile & Portfolio Management",
+      "title": "Provider Portal \u2014 Profile & Portfolio Management",
       "status": "pending",
       "subtasks": {
         "profile-page": "pending",
@@ -488,7 +488,7 @@
       "notes": ""
     },
     "36-provider-pages": {
-      "title": "Provider Portal — Bookings, Reviews, Team, Messages, Calendar",
+      "title": "Provider Portal \u2014 Bookings, Reviews, Team, Messages, Calendar",
       "status": "pending",
       "subtasks": {
         "bookings-page": "pending",
@@ -504,7 +504,7 @@
       "notes": ""
     },
     "37-web-public": {
-      "title": "Web App — Public Layout, Landing Page, Vendor Search",
+      "title": "Web App \u2014 Public Layout, Landing Page, Vendor Search",
       "status": "pending",
       "subtasks": {
         "public-layout": "pending",
@@ -518,7 +518,7 @@
       "notes": ""
     },
     "38-web-dashboard": {
-      "title": "Web App — Client Dashboard, Wedding Planner Tools",
+      "title": "Web App \u2014 Client Dashboard, Wedding Planner Tools",
       "status": "pending",
       "subtasks": {
         "dashboard-layout": "pending",
@@ -535,7 +535,7 @@
       "notes": ""
     },
     "39-frontend-shared-components": {
-      "title": "Frontend Shared Components — Data Table, Forms, Hooks",
+      "title": "Frontend Shared Components \u2014 Data Table, Forms, Hooks",
       "status": "pending",
       "subtasks": {
         "data-table": "pending",

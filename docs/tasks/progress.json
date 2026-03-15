@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T19:24:57.916987+00:00",
-  "current_task": "23-ai-module",
+  "last_updated": "2026-03-15T20:11:02.148061+00:00",
+  "current_task": "24-testing-infrastructure",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -323,17 +323,17 @@
     },
     "24-testing-infrastructure": {
       "title": "Testing \u2014 Jest Unit + E2E + Factories",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "jest-config": "pending",
-        "test-db": "pending",
-        "factories": "pending",
-        "e2e-setup": "pending",
-        "coverage": "pending"
+        "jest-config": "completed",
+        "test-db": "completed",
+        "factories": "completed",
+        "e2e-setup": "completed",
+        "coverage": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T20:11:02Z",
+      "completed_at": "2026-03-15T21:17:00Z",
+      "notes": "jest.config.ts with moduleNameMapper (@common, @modules, @config), coverage thresholds (70/75/80/80), coverage exclusions (modules, main, DTOs, index). E2E config with 30s timeout. Test DB setup with TRUNCATE CASCADE for all 16 tables. 7 entity factories (Tenant, TenantUser, ClientUser, AdminUser, Role, Permission, SubscriptionPlan) with plain object + DB variants. Test helpers: auth (getAdminToken/getTenantToken/getClientToken), request (authenticatedRequest/tenantRequest), assertion (expectSuccessResponse/expectPaginatedResponse/expectErrorResponse/expectValidUuid/expectTimestamps). E2E harness with health check, auth flow, protected routes, token refresh, and response envelope tests. test:e2e:watch script added. 729 unit tests pass, build clean."
     },
     "25-coding-standards-validator": {
       "title": "Coding Standards Validator Script",

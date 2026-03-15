@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T16:36:27.331256+00:00",
-  "current_task": "21-audit-logging",
+  "last_updated": "2026-03-15T19:13:26.052216+00:00",
+  "current_task": "22-search-infrastructure",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -295,17 +295,17 @@
     },
     "22-search-infrastructure": {
       "title": "Full-Text & Vector Search",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "meilisearch": "pending",
-        "pgvector": "pending",
-        "indexing": "pending",
-        "search-api": "pending",
-        "tests": "pending"
+        "meilisearch": "completed",
+        "pgvector": "completed",
+        "indexing": "completed",
+        "search-api": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T19:13:25Z",
+      "completed_at": "2026-03-15T20:25:00Z",
+      "notes": "Meilisearch SearchService (create index, index/remove documents, search with tenant isolation via filterable tenantId). VectorSearchService with pgvector raw SQL (store/remove embeddings, cosine similarity search, HNSW index). Embedding model in Prisma schema with unique constraint on [tenantId, entity, entityId]. SearchIndexSyncService listens to entity.created/updated/deleted events, queues BullMQ indexing jobs. IndexingProcessor updated to use SearchService for index/reindex/remove operations. SearchModule with unified GET /api/v1/search endpoint (fulltext/semantic/hybrid modes). SearchFacadeService orchestrates Meilisearch + pgvector. 33 new tests (701 total), build clean."
     },
     "23-ai-module": {
       "title": "AI Module \u2014 Vercel AI SDK, Tools, Streaming",

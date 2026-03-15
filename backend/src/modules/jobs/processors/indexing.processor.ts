@@ -2,6 +2,7 @@ import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/commo
 import { Job } from 'bullmq';
 import { AppConfigService } from '../../../config/app-config.service';
 import { JobService } from '../../../common/services/job.service';
+import { SearchService } from '../../../common/services/search.service';
 import { QUEUES } from '../../../common/constants/queues';
 import { BaseProcessor } from './base.processor';
 
@@ -16,6 +17,7 @@ export class IndexingProcessor
   constructor(
     jobService: JobService,
     private readonly config: AppConfigService,
+    private readonly searchService: SearchService,
   ) {
     super(jobService);
   }
@@ -35,19 +37,64 @@ export class IndexingProcessor
 
     switch (job.name) {
       case 'index-entity':
+        await this.indexEntity(job.data);
+        break;
       case 'reindex-tenant':
+        await this.reindexTenant(job.data);
+        break;
       case 'remove-from-index':
-        await this.updateIndex(job.data);
+        await this.removeFromIndex(job.data);
         break;
       default:
         this.logger.warn(`Unknown indexing job name: ${job.name}`);
     }
   }
 
-  private async updateIndex(data: Record<string, unknown>): Promise<void> {
-    // Placeholder: actual search index logic will be implemented in Task 22
+  private async indexEntity(data: Record<string, unknown>): Promise<void> {
+    const { entityType, entityId, tenantId } = data as {
+      entityType: string;
+      entityId: string;
+      tenantId: string;
+      data?: Record<string, unknown>;
+    };
+
+    const docData = (data.data as Record<string, unknown>) ?? {};
+    const document = { id: entityId, ...docData };
+
+    await this.searchService.index(entityType, tenantId, [document]);
+
     this.logger.log(
-      `Index updated for entity ${data.entityType}:${data.entityId}`,
+      `Indexed entity ${entityType}:${entityId} for tenant ${tenantId}`,
+    );
+  }
+
+  private async reindexTenant(data: Record<string, unknown>): Promise<void> {
+    const { tenantId, entityType, documents } = data as {
+      tenantId: string;
+      entityType: string;
+      documents: Record<string, unknown>[];
+    };
+
+    if (documents?.length) {
+      await this.searchService.index(entityType, tenantId, documents);
+    }
+
+    this.logger.log(
+      `Reindexed ${documents?.length ?? 0} ${entityType} documents for tenant ${tenantId}`,
+    );
+  }
+
+  private async removeFromIndex(data: Record<string, unknown>): Promise<void> {
+    const { entityType, entityId, tenantId } = data as {
+      entityType: string;
+      entityId: string;
+      tenantId: string;
+    };
+
+    await this.searchService.remove(entityType, tenantId, [entityId]);
+
+    this.logger.log(
+      `Removed ${entityType}:${entityId} from index for tenant ${tenantId}`,
     );
   }
 }

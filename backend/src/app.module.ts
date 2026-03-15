@@ -17,6 +17,7 @@ import { JobsModule } from './modules/jobs/jobs.module';
 import { EventsModule } from './modules/events/events.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { HealthModule } from './modules/health/health.module';
+import { AuditModule } from './modules/audit/audit.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -33,6 +34,7 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     EventsModule,
     NotificationsModule,
     HealthModule,
+    AuditModule,
   ],
   providers: [
     {

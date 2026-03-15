@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T16:30:42.697894+00:00",
-  "current_task": "20-health-checks",
+  "last_updated": "2026-03-15T16:36:27.331256+00:00",
+  "current_task": "21-audit-logging",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -282,16 +282,16 @@
     },
     "21-audit-logging": {
       "title": "Audit Logging \u2014 Entity Change Tracking",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "audit-module": "pending",
-        "interceptor": "pending",
-        "query-api": "pending",
-        "tests": "pending"
+        "audit-module": "completed",
+        "interceptor": "completed",
+        "query-api": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T16:36:27Z",
+      "completed_at": "2026-03-15T18:50:00Z",
+      "notes": "AuditService with immutable log() and findAll() methods, sensitive data masking (passwordHash, twoFactorSecret, tokenHash, etc.). AuditInterceptor auto-captures POST/PATCH/PUT/DELETE with entity/entityId/newData/metadata. @Audited() decorator for selective auditing. Tenant-scoped GET /api/v1/tenants/:tenantId/audit-logs and admin GET /api/v1/admin/audit-logs with filtering (entity, action, userId, dateRange) and sorting. 33 new tests (668 total), build clean."
     },
     "22-search-infrastructure": {
       "title": "Full-Text & Vector Search",

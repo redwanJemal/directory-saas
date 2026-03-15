@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T23:29:52.640064+00:00",
+  "last_updated": "2026-03-15T23:36:39.395078+00:00",
   "current_task": "31-admin-layout",
   "current_subtask": null,
   "tasks": {
@@ -415,18 +415,18 @@
     },
     "31-admin-layout": {
       "title": "Admin App \u2014 Layout, Sidebar, Header, Dashboard",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "dashboard-layout": "pending",
-        "sidebar": "pending",
-        "header": "pending",
-        "routing": "pending",
-        "dashboard-page": "pending",
-        "placeholder-pages": "pending"
+        "dashboard-layout": "completed",
+        "sidebar": "completed",
+        "header": "completed",
+        "routing": "completed",
+        "dashboard-page": "completed",
+        "placeholder-pages": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T23:36:39Z",
+      "completed_at": "2026-03-16T00:00:00Z",
+      "notes": "DashboardLayout with collapsible sidebar (persists to localStorage), header with mobile Sheet drawer, user menu, language/theme toggles. 8 routes: dashboard, tenants, users, roles, subscriptions, audit-logs, jobs, settings. All i18n'd. Build passes with 0 errors."
     },
     "32-admin-tenants": {
       "title": "Admin App \u2014 Tenants Management with Data Table",

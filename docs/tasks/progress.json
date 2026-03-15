@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T17:30:00.000000+00:00",
-  "current_task": null,
+  "last_updated": "2026-03-15T16:30:42.697894+00:00",
+  "current_task": "20-health-checks",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -269,16 +269,16 @@
     },
     "20-health-checks": {
       "title": "Health Checks & Readiness Probes",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "liveness": "pending",
-        "readiness": "pending",
-        "dependency-checks": "pending",
-        "tests": "pending"
+        "liveness": "completed",
+        "readiness": "completed",
+        "dependency-checks": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T16:30:42Z",
+      "completed_at": "2026-03-15T17:35:00Z",
+      "notes": "@nestjs/terminus health module. GET /api/v1/health (liveness, always 200). GET /api/v1/health/ready (readiness: PostgreSQL, Redis, MinIO, Meilisearch, disk, memory heap checks). Custom HealthIndicators for each dependency. @Public() decorator skips auth. Middleware already skips health paths. 15 new tests (635 total), build clean."
     },
     "21-audit-logging": {
       "title": "Audit Logging \u2014 Entity Change Tracking",

@@ -1,0 +1,302 @@
+# Task 02: Database Schema & Prisma Setup
+
+## Summary
+Design and implement the foundational Prisma schema with all base models, tenant model, user models, and seed data. This schema serves as the boilerplate foundation — domain-specific models are added per-project.
+
+## Current State
+- Minimal `schema.prisma` with only datasource + generator from Task 01.
+- PostgreSQL running via Docker.
+
+## Required Changes
+
+### 2.1 Prisma Schema — Base Models
+
+**File**: `backend/prisma/schema.prisma`
+
+```prisma
+// === PLATFORM ===
+
+model AdminUser {
+  id              String    @id @default(uuid()) @db.Uuid
+  email           String    @unique
+  passwordHash    String    @map("password_hash")
+  firstName       String    @map("first_name")
+  lastName        String    @map("last_name")
+  role            AdminRole @default(SUPPORT)
+  twoFactorSecret String?   @map("two_factor_secret")
+  twoFactorEnabled Boolean  @default(false) @map("two_factor_enabled")
+  isActive        Boolean   @default(true) @map("is_active")
+  lastLoginAt     DateTime? @map("last_login_at") @db.Timestamptz
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  @@map("admin_users")
+}
+
+model Tenant {
+  id              String       @id @default(uuid()) @db.Uuid
+  name            String
+  slug            String       @unique
+  domain          String?      @unique  // custom domain
+  status          TenantStatus @default(ACTIVE)
+  logoUrl         String?      @map("logo_url")
+  primaryColor    String?      @map("primary_color")
+  secondaryColor  String?      @map("secondary_color")
+  settings        Json?        @default("{}")
+  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt       DateTime?    @map("deleted_at") @db.Timestamptz
+
+  // Relations
+  users           TenantUser[]
+  roles           Role[]
+  subscription    TenantSubscription?
+  @@map("tenants")
+}
+
+model TenantUser {
+  id              String         @id @default(uuid()) @db.Uuid
+  tenantId        String         @map("tenant_id") @db.Uuid
+  email           String
+  passwordHash    String         @map("password_hash")
+  firstName       String         @map("first_name")
+  lastName        String         @map("last_name")
+  role            TenantUserRole @default(MEMBER)
+  isActive        Boolean        @default(true) @map("is_active")
+  emailVerified   Boolean        @default(false) @map("email_verified")
+  avatarUrl       String?        @map("avatar_url")
+  phone           String?
+  lastLoginAt     DateTime?      @map("last_login_at") @db.Timestamptz
+  createdAt       DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime       @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt       DateTime?      @map("deleted_at") @db.Timestamptz
+
+  tenant          Tenant         @relation(fields: [tenantId], references: [id])
+  roleAssignments UserRole[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@map("tenant_users")
+}
+
+model ClientUser {
+  id              String    @id @default(uuid()) @db.Uuid
+  email           String    @unique
+  passwordHash    String    @map("password_hash")
+  firstName       String    @map("first_name")
+  lastName        String    @map("last_name")
+  phone           String?
+  avatarUrl       String?   @map("avatar_url")
+  isActive        Boolean   @default(true) @map("is_active")
+  emailVerified   Boolean   @default(false) @map("email_verified")
+  lastLoginAt     DateTime? @map("last_login_at") @db.Timestamptz
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz
+  @@map("client_users")
+}
+
+// === RBAC ===
+
+model Role {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  name        String
+  displayName String    @map("display_name")
+  description String?
+  isSystem    Boolean   @default(false) @map("is_system")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  permissions RolePermission[]
+  users       UserRole[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  resource    String
+  action      String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  roles       RolePermission[]
+
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String @map("role_id") @db.Uuid
+  permissionId String @map("permission_id") @db.Uuid
+
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserRole {
+  userId String     @map("user_id") @db.Uuid
+  roleId String     @map("role_id") @db.Uuid
+
+  user   TenantUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+// === AUTH ===
+
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique @map("token_hash")
+  userType  String   @map("user_type")  // 'admin' | 'tenant' | 'client'
+  userId    String   @map("user_id") @db.Uuid
+  deviceInfo String? @map("device_info")
+  ipAddress  String? @map("ip_address")
+  expiresAt DateTime @map("expires_at") @db.Timestamptz
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([userId, userType])
+  @@map("refresh_tokens")
+}
+
+// === SUBSCRIPTIONS ===
+
+model SubscriptionPlan {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String   @unique
+  displayName     String   @map("display_name")
+  description     String?
+  priceMonthly    Decimal  @map("price_monthly") @db.Decimal(10, 2)
+  priceYearly     Decimal  @map("price_yearly") @db.Decimal(10, 2)
+  maxUsers        Int      @map("max_users")
+  maxStorage      Int      @map("max_storage")  // MB
+  features        Json     @default("[]")
+  isActive        Boolean  @default(true) @map("is_active")
+  sortOrder       Int      @default(0) @map("sort_order")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  subscriptions   TenantSubscription[]
+  @@map("subscription_plans")
+}
+
+model TenantSubscription {
+  id        String             @id @default(uuid()) @db.Uuid
+  tenantId  String             @unique @map("tenant_id") @db.Uuid
+  planId    String             @map("plan_id") @db.Uuid
+  status    SubscriptionStatus @default(ACTIVE)
+  startedAt DateTime           @map("started_at") @db.Timestamptz
+  renewsAt  DateTime?          @map("renews_at") @db.Timestamptz
+  cancelledAt DateTime?        @map("cancelled_at") @db.Timestamptz
+  overrides Json?              @default("{}")  // per-tenant limit overrides
+  createdAt DateTime           @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime           @updatedAt @map("updated_at") @db.Timestamptz
+
+  tenant    Tenant             @relation(fields: [tenantId], references: [id])
+  plan      SubscriptionPlan   @relation(fields: [planId], references: [id])
+  @@map("tenant_subscriptions")
+}
+
+// === AUDIT ===
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String?  @map("tenant_id") @db.Uuid
+  userId     String?  @map("user_id") @db.Uuid
+  userType   String?  @map("user_type")
+  action     String
+  entity     String
+  entityId   String?  @map("entity_id")
+  oldData    Json?    @map("old_data")
+  newData    Json?    @map("new_data")
+  metadata   Json?
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([tenantId, entity, createdAt])
+  @@index([userId])
+  @@map("audit_logs")
+}
+
+// === ENUMS ===
+
+enum AdminRole {
+  SUPER_ADMIN
+  SUPPORT
+}
+
+enum TenantStatus {
+  ACTIVE
+  SUSPENDED
+  TRIAL
+  CANCELLED
+}
+
+enum TenantUserRole {
+  OWNER
+  ADMIN
+  MANAGER
+  MEMBER
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  TRIAL
+}
+```
+
+### 2.2 Database Init SQL
+
+**File**: `docker/postgres/init.sql`
+```sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgvector";
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";  -- trigram for fuzzy text search
+```
+
+### 2.3 Seed File
+
+**File**: `backend/prisma/seed.ts`
+
+Idempotent seed that creates:
+1. Default admin user (`admin@directory-saas.local` / `admin123`)
+2. Default subscription plans (Starter, Professional, Enterprise)
+3. Default permissions (CRUD for each resource: tenants, users, roles, subscriptions, audit-logs)
+4. Demo tenant with owner user (for development)
+
+### 2.4 Prisma Configuration
+
+Update `schema.prisma`:
+- `provider = "postgresql"`
+- `url = env("DATABASE_URL")`
+- `previewFeatures = ["postgresqlExtensions"]`
+- `extensions = [uuidOssp(map: "uuid-ossp"), pgvector, pg_trgm]`
+
+Add to `package.json`:
+```json
+"prisma": { "seed": "ts-node prisma/seed.ts" }
+```
+
+## Acceptance Criteria
+
+1. `npx prisma migrate dev --name init` creates all tables successfully
+2. `npx prisma db seed` runs idempotently (safe to run multiple times)
+3. All models have proper `@@map` for snake_case table names
+4. All fields have proper `@map` for snake_case column names
+5. All timestamps use `@db.Timestamptz`
+6. All IDs are UUID
+7. Indexes on all `tenantId` fields and frequently queried columns
+8. Unique constraints prevent duplicate emails per tenant
+9. Enum types created in PostgreSQL
+10. Extensions (uuid-ossp, pgvector, pg_trgm) installed

@@ -1,0 +1,376 @@
+{
+  "version": 1,
+  "last_updated": "2026-03-15T15:43:25.080248+00:00",
+  "current_task": "14-caching-layer",
+  "current_subtask": null,
+  "tasks": {
+    "01-project-scaffolding": {
+      "title": "Project Scaffolding \u2014 NestJS Monorepo + Prisma + Docker",
+      "status": "completed",
+      "subtasks": {
+        "backend": "completed",
+        "frontend-web": "completed",
+        "frontend-provider": "completed",
+        "frontend-admin": "completed",
+        "docker": "completed",
+        "scripts": "completed"
+      },
+      "started_at": "2026-03-15T13:18:38Z",
+      "completed_at": "2026-03-15T14:30:00Z",
+      "notes": "All scaffolding complete. Backend builds, tests pass (14/14). All 3 frontend apps build with Vite. Docker compose configured with postgres (pgvector), redis, minio, meilisearch, mailpit."
+    },
+    "02-database-schema": {
+      "title": "Database Schema & Prisma Setup",
+      "status": "completed",
+      "subtasks": {
+        "schema": "completed",
+        "base-entities": "completed",
+        "migration": "completed",
+        "seed": "completed"
+      },
+      "started_at": "2026-03-15T13:27:17Z",
+      "completed_at": "2026-03-15T15:00:00Z",
+      "notes": "Full Prisma schema with 11 models (AdminUser, Tenant, TenantUser, ClientUser, Role, Permission, RolePermission, UserRole, RefreshToken, SubscriptionPlan, TenantSubscription, AuditLog), 4 enums, PostgreSQL extensions (uuid-ossp, pgvector, pg_trgm). Idempotent seed with admin user, 3 subscription plans, CRUD permissions for 5 resources, and demo tenant. Build passes, all 14 tests pass."
+    },
+    "03-configuration-management": {
+      "title": "Configuration & Environment Management",
+      "status": "completed",
+      "subtasks": {
+        "config-module": "completed",
+        "env-validation": "completed",
+        "env-files": "completed"
+      },
+      "started_at": "2026-03-15T13:30:22Z",
+      "completed_at": "2026-03-15T14:34:00Z",
+      "notes": "Zod config schema with fail-fast validation, typed AppConfigService, AppConfigModule (global), .env.example with docs, .env.test for test overrides. 42 tests pass, build clean."
+    },
+    "04-exception-handling": {
+      "title": "Exception Handling & Error Response Format",
+      "status": "completed",
+      "subtasks": {
+        "exception-filter": "completed",
+        "error-codes": "completed",
+        "validation-pipe": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T13:51:26Z",
+      "completed_at": "2026-03-15T14:52:00Z",
+      "notes": "ErrorCodes + ErrorCodeHttpStatus mapping, AppException extending HttpException, GlobalExceptionFilter (handles AppException/ZodError/HttpException/Prisma/unknown), ZodValidationPipe with field-level errors, ServiceResult.toHttpException(). 90 tests pass, build clean."
+    },
+    "05-request-response-envelope": {
+      "title": "Request/Response Envelope & API Conventions",
+      "status": "completed",
+      "subtasks": {
+        "interceptor": "completed",
+        "pagination": "completed",
+        "conventions-doc": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T13:52:54Z",
+      "completed_at": "2026-03-15T14:55:00Z",
+      "notes": "TransformInterceptor wraps all responses in {success, data, timestamp, traceId} envelope. PaginatedResult class + paginate() utility for paginated responses with pagination metadata. Backend api-response.types.ts + frontend types already aligned. Registered globally in main.ts. 17 new tests (8 interceptor + 9 pagination), 107 total tests pass."
+    },
+    "06-logging-infrastructure": {
+      "title": "Logging Infrastructure \u2014 Structured JSON, Tracing",
+      "status": "completed",
+      "subtasks": {
+        "logger-service": "completed",
+        "request-logging": "completed",
+        "correlation-id": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T13:55:38Z",
+      "completed_at": "2026-03-15T15:02:00Z",
+      "notes": "Pino-based structured logger (JSON in prod, pretty in dev), RequestContext with AsyncLocalStorage, CorrelationIdMiddleware, RequestLoggingMiddleware. 148 tests pass, build clean."
+    },
+    "07-multi-tenancy-middleware": {
+      "title": "Multi-Tenancy Middleware \u2014 Tenant Resolution",
+      "status": "completed",
+      "subtasks": {
+        "middleware": "completed",
+        "tenant-context": "completed",
+        "interceptor": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T14:02:27Z",
+      "completed_at": "2026-03-15T15:07:00Z",
+      "notes": "TenantResolutionMiddleware resolves from subdomain/X-Tenant-ID/X-Tenant-Slug/JWT (priority order). TenantCacheService with 30s TTL (in-memory, swap to Redis in task 14). TenantScopeInterceptor auto-injects tenantId on write ops. CurrentTenant decorator. Skips admin/auth/health/docs routes. 190 total tests pass, build clean."
+    },
+    "08-postgresql-rls": {
+      "title": "PostgreSQL Row-Level Security Policies",
+      "status": "completed",
+      "subtasks": {
+        "rls-sql": "completed",
+        "prisma-extension": "completed",
+        "migration": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T14:07:34Z",
+      "completed_at": "2026-03-15T15:20:00Z",
+      "notes": "RLS enabled on 6 tenant-scoped tables (tenant_users, roles, role_permissions, user_roles, audit_logs, tenant_subscriptions) with FORCE ROW LEVEL SECURITY. Policies use app.current_tenant_id session variable for tenant isolation and app.bypass_rls for admin bypass. Prisma extension (withRLS/withRLSBypass) wraps queries in transactions with SET LOCAL. PrismaService exposes .rls (auto from RequestContext), .rlsBypass (admin), and .forTenant(id) methods. 25 new tests (215 total), build clean."
+    },
+    "09-authentication-system": {
+      "title": "Authentication \u2014 JWT + Refresh + 3 User Types",
+      "status": "completed",
+      "subtasks": {
+        "auth-module": "completed",
+        "jwt-strategy": "completed",
+        "refresh-tokens": "completed",
+        "admin-auth": "completed",
+        "tenant-auth": "completed",
+        "client-auth": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T14:21:25Z",
+      "completed_at": "2026-03-15T15:30:00Z",
+      "notes": "Full auth system with 3 login flows (admin, tenant, client), client registration, JWT access tokens (15m) + refresh token rotation (7d, SHA-256 hashed, max 5 per user). @Public() decorator skips auth, @CurrentUser() extracts JWT payload. GET /me returns user profile with permissions for tenant users. JwtAuthGuard with TOKEN_EXPIRED vs UNAUTHORIZED distinction. 246 total tests pass, build clean."
+    },
+    "10-rbac-permissions": {
+      "title": "RBAC & Permissions System",
+      "status": "completed",
+      "subtasks": {
+        "roles-module": "completed",
+        "permission-guard": "completed",
+        "decorators": "completed",
+        "caching": "completed",
+        "seed": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T14:28:58Z",
+      "completed_at": "2026-03-15T15:37:00Z",
+      "notes": "Full RBAC system: @Roles() and @RequirePermission() decorators, RolesGuard with 30s in-memory permission cache, roles CRUD module with tenant scoping, manage wildcard permission, default system roles (OWNER/ADMIN/MANAGER/MEMBER) seeded per tenant, 20 permissions across 6 resources. 291 total tests pass, build clean."
+    },
+    "11-subscription-plan-limits": {
+      "title": "Subscription & Plan Limit Enforcement",
+      "status": "completed",
+      "subtasks": {
+        "plans-module": "completed",
+        "plan-guard": "completed",
+        "usage-tracking": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T14:37:59Z",
+      "completed_at": "2026-03-15T16:00:00Z",
+      "notes": "Full subscriptions module: Admin CRUD for plans, tenant subscription management, per-tenant overrides. PlanLimitGuard with @PlanLimit() decorator enforces resource limits (users, storage). FeatureGateGuard with @FeatureGate() decorator enforces feature access. Usage counts cached with 60s TTL. Admin bypass for both guards. Seed data updated to match spec (Starter free/3 users, Professional $49/25 users, Enterprise $199/unlimited). 341 total tests pass, build clean."
+    },
+    "12-query-parameters-filtering": {
+      "title": "Query Parameters \u2014 Filters, Sorting, Pagination, Includes",
+      "status": "completed",
+      "subtasks": {
+        "query-dto": "completed",
+        "filter-parser": "completed",
+        "array-filters": "completed",
+        "sorting": "completed",
+        "pagination": "completed",
+        "includes": "completed",
+        "prisma-builder": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T14:48:25Z",
+      "completed_at": "2026-03-15T16:35:00Z",
+      "notes": "QueryParameters DTO with types/interfaces, QueryParametersPipe (bracket-notation filter parsing, sort, pagination, includes with allowlists), buildPrismaQuery helper (maps all operators to Prisma where/orderBy/skip/take/include with auto soft-delete filter). 63 new tests (404 total), build clean."
+    },
+    "13-rate-limiting": {
+      "title": "Rate Limiting \u2014 Redis Sliding Window",
+      "status": "completed",
+      "subtasks": {
+        "throttler-module": "completed",
+        "per-tenant": "completed",
+        "per-endpoint": "completed",
+        "headers": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T15:36:27Z",
+      "completed_at": "2026-03-15T16:43:00Z",
+      "notes": "Redis sliding window rate limiting using ioredis sorted sets. RedisService (connection manager), RateLimitService (sliding window check with sorted sets), ThrottlerGuard (global APP_GUARD with multi-tier rate limiting), @Throttle() and @SkipThrottle() decorators. Tiers: per-IP (100/60s), auth endpoints (10/60s), upload endpoints (20/60s), per-tenant (1000/60s), per-user (300/60s). X-RateLimit-Limit/Remaining/Reset headers on all responses, Retry-After on 429. Fail-open on Redis errors. X-Forwarded-For proxy support. 27 new tests (431 total), build clean."
+    },
+    "14-caching-layer": {
+      "title": "Caching Layer \u2014 Redis, Tenant-Aware",
+      "status": "completed",
+      "subtasks": {
+        "cache-service": "completed",
+        "tenant-keys": "completed",
+        "invalidation": "completed",
+        "decorator": "completed",
+        "tests": "completed"
+      },
+      "started_at": "2026-03-15T15:43:25Z",
+      "completed_at": "2026-03-15T16:48:00Z",
+      "notes": "CacheService with tenant-aware keys (saas:{tenantId}:{namespace}:{key}), default 5min TTL, pattern-based invalidation via SCAN, getOrSet cache-aside pattern. @Cacheable and @CacheEvict decorators with custom keyGenerator support. Platform cache via _platform tenantId. All 452 tests pass, build clean."
+    },
+    "15-file-storage": {
+      "title": "File Storage \u2014 MinIO/S3, Tenant-Scoped",
+      "status": "pending",
+      "subtasks": {
+        "storage-service": "pending",
+        "upload-endpoint": "pending",
+        "presigned-urls": "pending",
+        "tenant-buckets": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "16-background-jobs": {
+      "title": "Background Jobs \u2014 BullMQ + Redis",
+      "status": "pending",
+      "subtasks": {
+        "bull-module": "pending",
+        "job-processor": "pending",
+        "retry-policy": "pending",
+        "dead-letter": "pending",
+        "dashboard": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "17-event-system": {
+      "title": "Domain Event System \u2014 Async Handlers",
+      "status": "pending",
+      "subtasks": {
+        "event-bus": "pending",
+        "event-handler": "pending",
+        "event-store": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "18-email-notifications": {
+      "title": "Email & Notification Service",
+      "status": "pending",
+      "subtasks": {
+        "email-service": "pending",
+        "templates": "pending",
+        "in-app": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "19-security-hardening": {
+      "title": "Security Hardening \u2014 Helmet, CORS, Sanitization",
+      "status": "pending",
+      "subtasks": {
+        "helmet": "pending",
+        "cors": "pending",
+        "sanitization": "pending",
+        "csrf": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "20-health-checks": {
+      "title": "Health Checks & Readiness Probes",
+      "status": "pending",
+      "subtasks": {
+        "liveness": "pending",
+        "readiness": "pending",
+        "dependency-checks": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "21-audit-logging": {
+      "title": "Audit Logging \u2014 Entity Change Tracking",
+      "status": "pending",
+      "subtasks": {
+        "audit-module": "pending",
+        "interceptor": "pending",
+        "query-api": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "22-search-infrastructure": {
+      "title": "Full-Text & Vector Search",
+      "status": "pending",
+      "subtasks": {
+        "meilisearch": "pending",
+        "pgvector": "pending",
+        "indexing": "pending",
+        "search-api": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "23-ai-module": {
+      "title": "AI Module \u2014 Vercel AI SDK, Tools, Streaming",
+      "status": "pending",
+      "subtasks": {
+        "ai-service": "pending",
+        "tool-system": "pending",
+        "streaming": "pending",
+        "prompts": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "24-testing-infrastructure": {
+      "title": "Testing \u2014 Jest Unit + E2E + Factories",
+      "status": "pending",
+      "subtasks": {
+        "jest-config": "pending",
+        "test-db": "pending",
+        "factories": "pending",
+        "e2e-setup": "pending",
+        "coverage": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "25-coding-standards-validator": {
+      "title": "Coding Standards Validator Script",
+      "status": "pending",
+      "subtasks": {
+        "validator-script": "pending",
+        "rules": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "26-docker-compose": {
+      "title": "Docker Compose \u2014 Dev + Coolify Production",
+      "status": "pending",
+      "subtasks": {
+        "dev-compose": "pending",
+        "coolify-compose": "pending",
+        "dockerfiles": "pending",
+        "health-checks": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "27-documentation": {
+      "title": "Documentation & CLAUDE.md",
+      "status": "pending",
+      "subtasks": {
+        "claude-md": "pending",
+        "api-conventions": "pending",
+        "architecture-guide": "pending",
+        "onboarding": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    }
+  }
+}

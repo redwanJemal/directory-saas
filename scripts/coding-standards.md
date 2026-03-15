@@ -1,0 +1,394 @@
+# Directory SaaS — Coding Standards
+
+> These standards are injected into every Claude task session. Follow them exactly.
+
+---
+
+## 1. Project Structure
+
+```
+backend/src/
+├── common/                    # Shared infrastructure (NEVER domain logic)
+│   ├── decorators/            # @CurrentUser, @CurrentTenant, @Public, @Roles, @RequirePermission
+│   ├── dto/                   # QueryParametersDto, PaginationDto, ApiResponseDto
+│   ├── filters/               # GlobalExceptionFilter, ValidationExceptionFilter
+│   ├── guards/                # JwtAuthGuard, RolesGuard, PlanLimitGuard, ThrottlerGuard
+│   ├── interceptors/          # TransformInterceptor, TenantScopeInterceptor, LoggingInterceptor
+│   ├── middleware/             # TenantResolutionMiddleware, RequestLoggingMiddleware, CorrelationIdMiddleware
+│   ├── pipes/                 # QueryParametersPipe, ZodValidationPipe
+│   ├── services/              # CacheService, StorageService, EmailService
+│   └── types/                 # Shared TypeScript types/interfaces
+├── modules/                   # Domain modules
+│   ├── auth/
+│   ├── tenants/
+│   ├── users/
+│   ├── roles/
+│   ├── subscriptions/
+│   └── ...
+├── prisma/                    # Prisma module + service
+├── config/                    # Configuration schemas + loader
+├── app.module.ts
+└── main.ts
+```
+
+## 2. Naming Conventions
+
+### Files
+- **Modules**: `kebab-case.module.ts` (e.g., `auth.module.ts`)
+- **Controllers**: `kebab-case.controller.ts` (e.g., `tenants.controller.ts`)
+- **Services**: `kebab-case.service.ts` (e.g., `tenants.service.ts`)
+- **DTOs**: `kebab-case.dto.ts` (e.g., `create-tenant.dto.ts`)
+- **Guards**: `kebab-case.guard.ts` (e.g., `jwt-auth.guard.ts`)
+- **Interceptors**: `kebab-case.interceptor.ts`
+- **Middleware**: `kebab-case.middleware.ts`
+- **Tests**: `kebab-case.spec.ts` (unit), `kebab-case.e2e-spec.ts` (e2e)
+- **Factories**: `kebab-case.factory.ts` (test data)
+
+### Classes
+- **PascalCase** for all classes: `TenantsService`, `CreateTenantDto`, `JwtAuthGuard`
+- **Suffix matches file type**: Service, Controller, Module, Guard, Interceptor, Middleware, Pipe, Filter
+
+### Variables & Functions
+- **camelCase** for variables and functions
+- **UPPER_SNAKE_CASE** for constants and env vars
+- **No abbreviations** unless universally understood (e.g., `id`, `url`, `dto`)
+
+### Database
+- **snake_case** for all table and column names (Prisma `@@map` / `@map`)
+- **Plural** table names: `tenants`, `users`, `audit_logs`
+- **Singular** model names in Prisma: `Tenant`, `User`, `AuditLog`
+
+## 3. API Conventions
+
+### URL Structure
+```
+/api/v1/{resource}                     # Collection
+/api/v1/{resource}/:id                 # Single resource
+/api/v1/tenants/:tenantId/{resource}   # Tenant-scoped resource
+/api/v1/admin/{resource}               # Platform admin
+/api/v1/me                             # Current user
+```
+
+- **Plural nouns** for resources (never verbs)
+- **kebab-case** for multi-word resources: `/api/v1/subscription-plans`
+- **Version prefix**: Always `/api/v1/`
+
+### HTTP Methods
+| Method | Purpose | Response Code |
+|--------|---------|---------------|
+| GET | Read (single or list) | 200 |
+| POST | Create | 201 |
+| PATCH | Partial update | 200 |
+| DELETE | Soft delete | 200 |
+| PUT | Full replace (rare) | 200 |
+
+### Response Envelope
+
+**Success (single)**:
+```json
+{
+  "success": true,
+  "data": { "id": "uuid", "name": "..." },
+  "timestamp": "2026-03-15T12:00:00Z",
+  "traceId": "abc-123"
+}
+```
+
+**Success (paginated list)**:
+```json
+{
+  "success": true,
+  "data": [{ ... }, { ... }],
+  "pagination": {
+    "page": 1,
+    "pageSize": 20,
+    "totalCount": 150,
+    "totalPages": 8
+  },
+  "timestamp": "2026-03-15T12:00:00Z",
+  "traceId": "abc-123"
+}
+```
+
+**Error**:
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Validation failed",
+    "details": [
+      { "field": "email", "message": "Invalid email format" }
+    ]
+  },
+  "timestamp": "2026-03-15T12:00:00Z",
+  "traceId": "abc-123"
+}
+```
+
+### Query Parameters — Filtering
+
+**Bracket notation** with array support:
+```
+GET /api/v1/providers?filter[category]=photography,catering,venue
+GET /api/v1/providers?filter[status]=active,verified
+GET /api/v1/providers?filter[rating][gte]=4.0
+GET /api/v1/providers?filter[price][gte]=100&filter[price][lte]=5000
+GET /api/v1/providers?filter[city]=addis-ababa
+GET /api/v1/providers?filter[createdAt][gte]=2026-01-01
+```
+
+**Operators**: `eq` (default), `gt`, `gte`, `lt`, `lte`, `contains`, `startsWith`, `endsWith`, `in`, `isNull`
+
+**Multiple values** (comma-separated = OR within field):
+```
+filter[category]=photography,catering    → category IN ('photography', 'catering')
+filter[status]=active,verified           → status IN ('active', 'verified')
+```
+
+**Sorting**:
+```
+sort=name             # ASC
+sort=-createdAt       # DESC (prefix with -)
+sort=-rating,name     # Multiple: rating DESC, then name ASC
+```
+
+**Pagination**:
+```
+page=1&pageSize=20    # Defaults: page=1, pageSize=20, max pageSize=100
+```
+
+**Includes** (eager load relations):
+```
+include=reviews,services    # Load related entities
+```
+
+**Search** (full-text):
+```
+search=wedding photographer addis    # Full-text search across configured fields
+```
+
+### Error Codes
+
+Standard error codes (defined in `common/constants/error-codes.ts`):
+```typescript
+export const ErrorCodes = {
+  // Auth
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  FORBIDDEN: 'FORBIDDEN',
+  TOKEN_EXPIRED: 'TOKEN_EXPIRED',
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  ACCOUNT_DISABLED: 'ACCOUNT_DISABLED',
+
+  // Validation
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  INVALID_INPUT: 'INVALID_INPUT',
+
+  // Resources
+  NOT_FOUND: 'NOT_FOUND',
+  ALREADY_EXISTS: 'ALREADY_EXISTS',
+  CONFLICT: 'CONFLICT',
+
+  // Tenancy
+  TENANT_NOT_FOUND: 'TENANT_NOT_FOUND',
+  TENANT_SUSPENDED: 'TENANT_SUSPENDED',
+  TENANT_REQUIRED: 'TENANT_REQUIRED',
+
+  // Plan limits
+  PLAN_LIMIT_REACHED: 'PLAN_LIMIT_REACHED',
+  FEATURE_NOT_AVAILABLE: 'FEATURE_NOT_AVAILABLE',
+
+  // Rate limiting
+  RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
+
+  // Server
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+  SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
+} as const;
+```
+
+## 4. Module Structure
+
+Every domain module follows this structure:
+```
+modules/{name}/
+├── {name}.module.ts           # Module definition
+├── {name}.controller.ts       # REST endpoints
+├── {name}.service.ts          # Business logic
+├── dto/
+│   ├── create-{name}.dto.ts   # Zod schema + inferred type
+│   ├── update-{name}.dto.ts
+│   └── {name}-query.dto.ts    # Module-specific filters (extends base)
+├── {name}.spec.ts             # Unit tests for service
+├── {name}.controller.spec.ts  # Unit tests for controller
+└── {name}.e2e-spec.ts         # E2E tests
+```
+
+### Rules
+- **One module = one bounded context**. Don't split prematurely.
+- **Services NEVER throw**. Return `{ success, data, error }` result objects.
+- **Controllers** handle HTTP concerns (status codes, headers). Services handle domain logic.
+- **Cross-module communication**: Import the other module, inject its service. For async: use the event bus.
+- **DTOs use Zod schemas** — derive TypeScript types with `z.infer<>`.
+
+## 5. DTOs & Validation
+
+```typescript
+// dto/create-tenant.dto.ts
+import { z } from 'zod';
+
+export const CreateTenantSchema = z.object({
+  name: z.string().min(2).max(100),
+  slug: z.string().min(2).max(50).regex(/^[a-z0-9-]+$/),
+  ownerEmail: z.string().email(),
+  plan: z.enum(['starter', 'professional', 'enterprise']).default('starter'),
+});
+
+export type CreateTenantDto = z.infer<typeof CreateTenantSchema>;
+```
+
+### Rules
+- **Always define Zod schema first**, then infer the DTO type.
+- **Never use class-validator/class-transformer** — Zod only.
+- **Validate at the controller level** using `ZodValidationPipe`.
+- **Separate create/update DTOs** — update should use `.partial()`.
+
+## 6. Service Pattern
+
+```typescript
+@Injectable()
+export class TenantsService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cache: CacheService,
+  ) {}
+
+  async create(dto: CreateTenantDto): Promise<ServiceResult<Tenant>> {
+    const existing = await this.prisma.tenant.findUnique({ where: { slug: dto.slug } });
+    if (existing) {
+      return ServiceResult.fail('ALREADY_EXISTS', `Tenant with slug '${dto.slug}' already exists`);
+    }
+
+    const tenant = await this.prisma.tenant.create({ data: dto });
+    return ServiceResult.ok(tenant);
+  }
+
+  async findAll(tenantId: string, query: QueryParametersDto): Promise<ServiceResult<PaginatedResult<Tenant>>> {
+    const { where, orderBy, skip, take } = buildPrismaQuery(query);
+    const [items, total] = await Promise.all([
+      this.prisma.tenant.findMany({ where, orderBy, skip, take }),
+      this.prisma.tenant.count({ where }),
+    ]);
+    return ServiceResult.ok(paginate(items, total, query));
+  }
+}
+```
+
+### Rules
+- **Never throw from services**. Always return `ServiceResult<T>`.
+- **Never access `Request` or `Response`** in services — that's controller territory.
+- **Prisma queries always include `tenantId`** in where clauses (unless explicitly platform-wide).
+- **Cache keys always include tenantId**: `tenant:{tenantId}:{entity}:{id}`.
+
+## 7. Controller Pattern
+
+```typescript
+@ApiTags('Tenants')
+@Controller('api/v1/admin/tenants')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('SUPER_ADMIN')
+export class TenantsController {
+  constructor(private readonly tenantsService: TenantsService) {}
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body(new ZodValidationPipe(CreateTenantSchema)) dto: CreateTenantDto) {
+    const result = await this.tenantsService.create(dto);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  @Get()
+  async findAll(@Query() query: QueryParametersDto) {
+    const result = await this.tenantsService.findAll(query);
+    if (!result.success) throw result.toHttpException();
+    return result.data; // TransformInterceptor wraps this
+  }
+}
+```
+
+### Rules
+- **Always use `@ApiTags`** for Swagger grouping.
+- **Always specify `@HttpCode`** for POST (201), DELETE (200).
+- **Inject ZodValidationPipe** per-parameter, not globally (keeps validation explicit).
+- **Controllers convert ServiceResult failures to HTTP exceptions** via `result.toHttpException()`.
+- **The TransformInterceptor wraps the return value** — don't manually construct the envelope.
+
+## 8. Testing
+
+### Unit Tests (`.spec.ts`)
+- Test services in isolation with mocked dependencies.
+- Use factories for test data (never hardcode UUIDs or strings).
+- One `describe` block per method, one `it` block per behavior.
+- Test both success and failure paths.
+
+### E2E Tests (`.e2e-spec.ts`)
+- Hit real endpoints with a test database.
+- Create test tenant + user per suite (cleanup in `afterAll`).
+- Assert on response envelope structure, status codes, and data.
+- Test auth (valid token, expired token, wrong role).
+- Test tenant isolation (user A can't see user B's data).
+
+### Coverage Target
+- **Services**: 80%+ line coverage
+- **Guards/Interceptors**: 90%+ (they're critical infrastructure)
+- **Controllers**: E2E tests cover these implicitly
+
+### Test File Naming
+```
+tenants.service.spec.ts          # Unit
+tenants.controller.spec.ts       # Unit (mocked service)
+tenants.e2e-spec.ts              # E2E (real HTTP)
+```
+
+## 9. Database & Prisma
+
+### Schema Rules
+- Every tenant-scoped model has `tenantId String @db.Uuid` with `@relation`.
+- Every model has `createdAt DateTime @default(now()) @db.Timestamptz` and `updatedAt DateTime @updatedAt @db.Timestamptz`.
+- Soft-deletable models have `deletedAt DateTime? @db.Timestamptz`.
+- Use `@map("snake_case")` for column names, `@@map("snake_case_plural")` for tables.
+- Indexes on: `tenantId`, `status`, `createdAt`, `deletedAt` (partial index for non-null).
+- UUIDs for all primary keys: `id String @id @default(uuid()) @db.Uuid`.
+- Decimals as `Decimal` type (never Float): `price Decimal @db.Decimal(12, 2)`.
+
+### Migration Rules
+- **Never edit existing migrations** — always create new ones.
+- **Migration names are descriptive**: `npx prisma migrate dev --name add_reviews_table`.
+- **Seed file** (`prisma/seed.ts`): Idempotent — safe to run multiple times.
+
+## 10. Security Rules
+
+- **Never log sensitive data**: passwords, tokens, API keys, PII.
+- **Never expose stack traces** in production error responses.
+- **Always validate at system boundaries**: controller inputs (Zod), query params (pipe), file uploads (type + size).
+- **Always use parameterized queries** — Prisma handles this, but raw queries MUST use `$queryRaw` with tagged template.
+- **Sanitize HTML** in user-generated content (descriptions, reviews) before storage.
+- **Rate limit all public endpoints** and auth endpoints more aggressively.
+- **Refresh tokens**: stored hashed, single-use (rotate on refresh), tied to device/IP.
+
+## 11. Performance Rules
+
+- **Always paginate lists** — no unbounded queries. Max `pageSize` = 100.
+- **Select only needed fields** — use Prisma `select` for large entities.
+- **Batch related queries** — `Promise.all()` for independent DB calls.
+- **Cache expensive computations** — tenant settings, permissions, plan limits.
+- **Use database indexes** — every `WHERE` clause field should have an index.
+- **Lazy load relations** — use `include` parameter, don't always eager-load.
+- **Connection pooling** — Prisma handles this; don't open new connections manually.
+
+## 12. Git & Commit Rules
+
+- **Conventional commits**: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`.
+- **One concern per commit** — don't mix features with fixes.
+- **Never commit**: `.env`, `node_modules/`, `dist/`, `*.log`, `.prisma/client/`.

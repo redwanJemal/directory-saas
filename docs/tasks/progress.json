@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T16:15:16.895912+00:00",
-  "current_task": "18-email-notifications",
+  "last_updated": "2026-03-15T17:30:00.000000+00:00",
+  "current_task": null,
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -251,21 +251,21 @@
       },
       "started_at": "2026-03-15T16:15:16Z",
       "completed_at": "2026-03-15T17:25:00Z",
-      "notes": "EmailService with nodemailer SMTP + BullMQ queue integration (send, sendBulk, sendDirect, renderTemplate). 4 HTML email templates (welcome, password-reset, tenant-invite, plan-upgrade) with variable substitution. Notification model in Prisma schema with userId/userType/type/readAt. NotificationsModule with full CRUD: list (paginated, filterable by read/unread/type), markRead, markAllRead, getUnreadCount — all scoped to userId+userType. EmailProcessor updated to use EmailService.sendDirect. NotificationProcessor creates in-app notifications via Prisma. Push notification stub included. 22 new tests (603 total), build clean."
+      "notes": "EmailService with nodemailer SMTP + BullMQ queue integration (send, sendBulk, sendDirect, renderTemplate). 4 HTML email templates (welcome, password-reset, tenant-invite, plan-upgrade) with variable substitution. Notification model in Prisma schema with userId/userType/type/readAt. NotificationsModule with full CRUD: list (paginated, filterable by read/unread/type), markRead, markAllRead, getUnreadCount \u2014 all scoped to userId+userType. EmailProcessor updated to use EmailService.sendDirect. NotificationProcessor creates in-app notifications via Prisma. Push notification stub included. 22 new tests (603 total), build clean."
     },
     "19-security-hardening": {
       "title": "Security Hardening \u2014 Helmet, CORS, Sanitization",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "helmet": "pending",
-        "cors": "pending",
-        "sanitization": "pending",
-        "csrf": "pending",
-        "tests": "pending"
+        "helmet": "completed",
+        "cors": "completed",
+        "sanitization": "completed",
+        "csrf": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T16:24:57Z",
+      "completed_at": "2026-03-15T17:30:00Z",
+      "notes": "Helmet with production CSP, HSTS (1yr, includeSubDomains). CORS with explicit origin allowlist, methods, allowed/exposed headers, 86400s maxAge. SanitizePipe strips all HTML tags from string inputs (global pipe). SecurityHeadersMiddleware adds X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy. Request body size limited to 1MB. ESLint rule bans $queryRawUnsafe/$executeRawUnsafe. 17 new tests (620 total), build clean."
     },
     "20-health-checks": {
       "title": "Health Checks & Readiness Probes",

@@ -8,6 +8,7 @@ import { TenantCacheService } from './common/services/tenant-cache.service';
 import { CorrelationIdMiddleware } from './common/middleware/correlation-id.middleware';
 import { RequestLoggingMiddleware } from './common/middleware/request-logging.middleware';
 import { TenantResolutionMiddleware } from './common/middleware/tenant-resolution.middleware';
+import { SecurityHeadersMiddleware } from './common/middleware/security-headers.middleware';
 import { AuthModule } from './modules/auth/auth.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
@@ -49,7 +50,11 @@ import { ThrottlerModule } from './common/modules/throttler.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
-      .apply(CorrelationIdMiddleware, RequestLoggingMiddleware)
+      .apply(
+        SecurityHeadersMiddleware,
+        CorrelationIdMiddleware,
+        RequestLoggingMiddleware,
+      )
       .forRoutes('*');
 
     consumer

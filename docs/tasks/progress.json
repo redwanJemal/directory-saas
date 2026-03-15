@@ -371,6 +371,198 @@
       "started_at": "2026-03-15T21:43:11Z",
       "completed_at": "2026-03-15T22:00:00Z",
       "notes": "Comprehensive CLAUDE.md with full project context, patterns, module guide, commands. API conventions doc with response envelope, query params, error codes, rate limiting, auth details. Architecture guide with system diagram, multi-tenancy strategy, auth flow, request lifecycle, module communication, deployment. Getting started guide with step-by-step setup, verification checklist, troubleshooting."
+    },
+    "28-frontend-shared-foundation": {
+      "title": "Frontend Shared Foundation — shadcn/ui, OKLch Theming, Utilities",
+      "status": "pending",
+      "subtasks": {
+        "dependencies": "pending",
+        "ui-components": "pending",
+        "theme-system": "pending",
+        "branding": "pending",
+        "utils": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "29-frontend-i18n": {
+      "title": "Frontend i18n — Internationalization with i18next",
+      "status": "pending",
+      "subtasks": {
+        "i18n-setup": "pending",
+        "en-translations": "pending",
+        "am-translations": "pending",
+        "language-switcher": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "30-frontend-auth": {
+      "title": "Frontend Auth — Zustand Store, Login Pages, Protected Routes",
+      "status": "pending",
+      "subtasks": {
+        "auth-store": "pending",
+        "api-interceptors": "pending",
+        "login-pages": "pending",
+        "protected-route": "pending",
+        "register-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "31-admin-layout": {
+      "title": "Admin App — Layout, Sidebar, Header, Dashboard",
+      "status": "pending",
+      "subtasks": {
+        "dashboard-layout": "pending",
+        "sidebar": "pending",
+        "header": "pending",
+        "routing": "pending",
+        "dashboard-page": "pending",
+        "placeholder-pages": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "32-admin-tenants": {
+      "title": "Admin App — Tenants Management with Data Table",
+      "status": "pending",
+      "subtasks": {
+        "data-table": "pending",
+        "tenants-page": "pending",
+        "create-dialog": "pending",
+        "edit-dialog": "pending",
+        "view-sheet": "pending",
+        "query-hooks": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "33-admin-pages": {
+      "title": "Admin App — Users, Roles, Subscriptions, Audit, Jobs, Settings",
+      "status": "pending",
+      "subtasks": {
+        "users-page": "pending",
+        "roles-page": "pending",
+        "subscriptions-page": "pending",
+        "audit-logs-page": "pending",
+        "jobs-page": "pending",
+        "settings-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "34-provider-layout": {
+      "title": "Provider Portal — Layout, Navigation, Dashboard",
+      "status": "pending",
+      "subtasks": {
+        "dashboard-layout": "pending",
+        "sidebar": "pending",
+        "header": "pending",
+        "routing": "pending",
+        "dashboard-page": "pending",
+        "placeholder-pages": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "35-provider-profile": {
+      "title": "Provider Portal — Profile & Portfolio Management",
+      "status": "pending",
+      "subtasks": {
+        "profile-page": "pending",
+        "packages-tab": "pending",
+        "faqs-tab": "pending",
+        "availability-tab": "pending",
+        "portfolio-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "36-provider-pages": {
+      "title": "Provider Portal — Bookings, Reviews, Team, Messages, Calendar",
+      "status": "pending",
+      "subtasks": {
+        "bookings-page": "pending",
+        "reviews-page": "pending",
+        "team-page": "pending",
+        "messages-page": "pending",
+        "calendar-page": "pending",
+        "analytics-page": "pending",
+        "settings-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "37-web-public": {
+      "title": "Web App — Public Layout, Landing Page, Vendor Search",
+      "status": "pending",
+      "subtasks": {
+        "public-layout": "pending",
+        "landing-page": "pending",
+        "vendor-search": "pending",
+        "vendor-profile": "pending",
+        "categories-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "38-web-dashboard": {
+      "title": "Web App — Client Dashboard, Wedding Planner Tools",
+      "status": "pending",
+      "subtasks": {
+        "dashboard-layout": "pending",
+        "dashboard-page": "pending",
+        "wedding-page": "pending",
+        "guest-list-page": "pending",
+        "budget-page": "pending",
+        "checklist-page": "pending",
+        "vendors-page": "pending",
+        "messages-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "39-frontend-shared-components": {
+      "title": "Frontend Shared Components — Data Table, Forms, Hooks",
+      "status": "pending",
+      "subtasks": {
+        "data-table": "pending",
+        "form-components": "pending",
+        "shared-hooks": "pending",
+        "error-boundary": "pending",
+        "not-found-page": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "40-frontend-testing": {
+      "title": "Frontend Testing & Build Validation",
+      "status": "pending",
+      "subtasks": {
+        "vitest-setup": "pending",
+        "test-utilities": "pending",
+        "msw-mocks": "pending",
+        "component-tests": "pending",
+        "eslint-prettier": "pending",
+        "build-validation": "pending",
+        "claude-md-update": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     }
   }
 }

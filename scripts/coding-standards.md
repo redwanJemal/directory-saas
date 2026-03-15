@@ -387,7 +387,59 @@ tenants.e2e-spec.ts              # E2E (real HTTP)
 - **Lazy load relations** — use `include` parameter, don't always eager-load.
 - **Connection pooling** — Prisma handles this; don't open new connections manually.
 
-## 12. Git & Commit Rules
+## 12. Frontend Standards (CRITICAL — Apply to ALL frontend tasks)
+
+### No Static Colors
+- **NEVER hardcode color values** (hex, rgb, hsl, oklch) in components or Tailwind classes
+- **ALL colors MUST come from CSS variables** defined in index.css (--background, --foreground, --primary, --secondary, --accent, --muted, --card, --border, --destructive, etc.)
+- Use Tailwind semantic classes: `bg-background`, `text-foreground`, `bg-primary`, `text-primary-foreground`, `bg-card`, `border-border`, `bg-muted`, `text-muted-foreground`, `bg-accent`, `bg-destructive`
+- **NEVER use**: `bg-blue-500`, `text-gray-700`, `border-red-300`, `bg-white`, `bg-black`, `text-[#hex]`, or any Tailwind default color palette class
+- The ONLY color source is the OKLch theme system via `--brand-hue`. Changing `--brand-hue` must rebrand the entire app.
+- Dark mode must work automatically via `.dark` class on `<html>` element
+
+### No Static Text
+- **NEVER hardcode user-facing strings** in components — no English text in JSX/TSX
+- **ALL visible text MUST use `t()` from react-i18next**: `{t('nav.dashboard')}`, `{t('common.save')}`, `{t('auth.login_title')}`
+- This includes: page titles, button labels, form labels, placeholder text, error messages, toast messages, empty states, tooltips, menu items, breadcrumbs, column headers, status labels, confirmation dialogs
+- Only exceptions: brand name (from branding.ts), icons, numeric values, dates
+- Translation keys use dot notation: `nav.*`, `common.*`, `auth.*`, `tenants.*`, `errors.*`, `dashboard.*`
+- Every new string must be added to BOTH en.json and am.json (Amharic can be placeholder initially)
+
+### Reusability Rules
+- **All branding from lib/branding.ts** — app name, logo, tagline, hue. No hardcoded app names.
+- **All config from environment variables** — API URL, storage keys, feature flags
+- **localStorage keys prefixed**: `saas_admin_*`, `saas_provider_*`, `saas_web_*`
+- **Components must be generic** — no domain-specific logic in UI components (components/ui/)
+- **Feature-specific code in features/ directory** — pages, dialogs, domain hooks
+
+### Frontend File Naming
+- **Files**: `kebab-case.tsx` (components), `kebab-case.ts` (hooks, utils, stores)
+- **Components**: `PascalCase` export (e.g., `export function DashboardLayout()`)
+- **Hooks**: `use-kebab-case.ts` with `useKebabCase` export
+- **Stores**: `kebab-case-store.ts`
+- **Translations**: `en.json`, `am.json` in i18n/ directory
+
+### Frontend Directory Structure (per app)
+```
+apps/{app}/src/
+├── components/
+│   ├── layout/          # DashboardLayout, Sidebar, Header, ProtectedRoute
+│   ├── ui/              # shadcn/ui components (Button, Card, Dialog, etc.)
+│   └── data-table/      # Reusable data table components
+├── features/            # Feature modules (pages + feature-specific components)
+│   ├── auth/            # LoginPage, RegisterPage
+│   ├── dashboard/       # DashboardPage
+│   └── {feature}/       # Feature-specific pages, dialogs, hooks
+├── hooks/               # Shared custom hooks
+├── i18n/                # i18next config + translation JSON files
+├── lib/                 # Utilities (api.ts, branding.ts, utils.ts)
+├── stores/              # Zustand stores
+├── test/                # Test setup + utilities
+├── main.tsx
+└── index.css            # Tailwind + OKLch theme variables
+```
+
+## 13. Git & Commit Rules
 
 - **Conventional commits**: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`.
 - **One concern per commit** — don't mix features with fixes.

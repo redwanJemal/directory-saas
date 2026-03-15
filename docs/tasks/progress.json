@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T15:54:44.126565+00:00",
-  "current_task": "16-background-jobs",
+  "last_updated": "2026-03-15T16:03:15.824286+00:00",
+  "current_task": "17-event-system",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -229,16 +229,16 @@
     },
     "17-event-system": {
       "title": "Domain Event System \u2014 Async Handlers",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "event-bus": "pending",
-        "event-handler": "pending",
-        "event-store": "pending",
-        "tests": "pending"
+        "event-bus": "completed",
+        "event-handler": "completed",
+        "event-store": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T16:03:15Z",
+      "completed_at": "2026-03-15T17:15:00Z",
+      "notes": "EventEmitter2-based event bus (wildcard, dot-delimited). 14 typed domain events (tenant/user/auth/entity/subscription/role) with DomainEvent base class carrying traceId/tenantId/userId from RequestContext. EventStoreService persists events to domain_events table. EventHandlersService with @OnEvent(async:true) handlers for all events. Prisma migration for domain_events table. 53 new tests (581 total), build clean."
     },
     "18-email-notifications": {
       "title": "Email & Notification Service",

@@ -226,6 +226,21 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+// === DOMAIN EVENTS ===
+
+model DomainEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      String
+  tenantId  String?  @map("tenant_id") @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  payload   Json
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([type, createdAt])
+  @@index([tenantId, createdAt])
+  @@map("domain_events")
+}
+
 // === ENUMS ===
 
 enum AdminRole {

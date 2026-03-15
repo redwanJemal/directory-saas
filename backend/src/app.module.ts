@@ -1,4 +1,5 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppConfigModule } from './config/app-config.module';
 import { AppConfigService } from './config/app-config.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -12,10 +13,22 @@ import { RolesModule } from './modules/roles/roles.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { JobsModule } from './modules/jobs/jobs.module';
+import { EventsModule } from './modules/events/events.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
-  imports: [AppConfigModule, PrismaModule, ThrottlerModule, AuthModule, RolesModule, SubscriptionsModule, UploadsModule, JobsModule],
+  imports: [
+    AppConfigModule,
+    PrismaModule,
+    EventEmitterModule.forRoot({ wildcard: true, delimiter: '.' }),
+    ThrottlerModule,
+    AuthModule,
+    RolesModule,
+    SubscriptionsModule,
+    UploadsModule,
+    JobsModule,
+    EventsModule,
+  ],
   providers: [
     {
       provide: AppLoggerService,

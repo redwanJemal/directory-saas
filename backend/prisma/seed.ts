@@ -1,20 +1,21 @@
 import { PrismaClient, AdminRole } from '@prisma/client';
-import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password).digest('hex');
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
 }
 
 async function seedAdminUser() {
   const email = 'admin@directory-saas.local';
+  const hashedAdmin = await hashPassword('admin123');
   await prisma.adminUser.upsert({
     where: { email },
-    update: {},
+    update: { passwordHash: hashedAdmin },
     create: {
       email,
-      passwordHash: hashPassword('admin123'),
+      passwordHash: hashedAdmin,
       firstName: 'Super',
       lastName: 'Admin',
       role: AdminRole.SUPER_ADMIN,
@@ -217,13 +218,14 @@ async function seedDemoTenant() {
 
   // Create owner user for demo tenant
   const ownerEmail = 'owner@demo.directory-saas.local';
+  const hashedDemo = await hashPassword('demo123');
   await prisma.tenantUser.upsert({
     where: { tenantId_email: { tenantId: tenant.id, email: ownerEmail } },
-    update: {},
+    update: { passwordHash: hashedDemo },
     create: {
       tenantId: tenant.id,
       email: ownerEmail,
-      passwordHash: hashPassword('demo123'),
+      passwordHash: hashedDemo,
       firstName: 'Demo',
       lastName: 'Owner',
       role: 'OWNER',

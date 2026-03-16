@@ -27,9 +27,6 @@ export class ReviewsService {
           client: {
             select: { id: true, firstName: true, lastName: true },
           },
-          booking: {
-            select: { id: true, eventType: true, eventDate: true },
-          },
         },
         skip: (page - 1) * pageSize,
         take: pageSize,
@@ -83,8 +80,7 @@ export class ReviewsService {
     const updated = await this.prisma.review.update({
       where: { id: reviewId },
       data: {
-        providerResponse: dto.response,
-        respondedAt: new Date(),
+        response: dto.response,
       },
     });
 

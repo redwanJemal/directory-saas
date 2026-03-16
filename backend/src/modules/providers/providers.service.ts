@@ -52,12 +52,14 @@ export class ProvidersService {
   ): Promise<ServiceResult<unknown>> {
     const profile = await this.ensureProfile(tenantId);
 
+    const { metadata, socialLinks, galleryUrls, ...rest } = dto;
     const updated = await this.prisma.providerProfile.update({
       where: { id: profile.id },
       data: {
-        ...dto,
-        latitude: dto.latitude !== undefined ? dto.latitude : undefined,
-        longitude: dto.longitude !== undefined ? dto.longitude : undefined,
+        ...rest,
+        ...(metadata !== undefined && { metadata: metadata === null ? Prisma.JsonNull : metadata as Prisma.InputJsonValue }),
+        ...(socialLinks !== undefined && { socialLinks: socialLinks as Prisma.InputJsonValue }),
+        ...(galleryUrls !== undefined && { galleryUrls: galleryUrls as Prisma.InputJsonValue }),
       },
     });
 

@@ -20,7 +20,7 @@ export class ConversationsService {
     };
 
     if (search) {
-      where.lastMessagePreview = { contains: search, mode: 'insensitive' };
+      where.title = { contains: search, mode: 'insensitive' };
     }
 
     const [items, totalCount] = await Promise.all([
@@ -91,10 +91,6 @@ export class ConversationsService {
       return ServiceResult.fail(ErrorCodes.FORBIDDEN, 'Not a participant in this conversation');
     }
 
-    const preview = dto.content.length > 100
-      ? dto.content.substring(0, 100) + '...'
-      : dto.content;
-
     const [message] = await this.prisma.$transaction([
       this.prisma.message.create({
         data: {
@@ -102,14 +98,12 @@ export class ConversationsService {
           senderId: userId,
           senderType,
           content: dto.content,
-          attachments: dto.attachments ?? [],
         },
       }),
       this.prisma.conversation.update({
         where: { id: conversationId },
         data: {
           lastMessageAt: new Date(),
-          lastMessagePreview: preview,
         },
       }),
     ]);

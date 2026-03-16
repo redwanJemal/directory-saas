@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ServiceResult } from '../../common/types';
 import { PaginatedResult, paginate } from '../../common/dto/pagination.dto';
@@ -61,13 +62,17 @@ export class WeddingsService {
       where: { clientId },
       data: {
         ...(dto.title !== undefined && { title: dto.title }),
-        ...(dto.date !== undefined && { date: new Date(dto.date) }),
+        ...(dto.brideName !== undefined && { brideName: dto.brideName }),
+        ...(dto.groomName !== undefined && { groomName: dto.groomName }),
+        ...(dto.weddingDate !== undefined && { weddingDate: dto.weddingDate ? new Date(dto.weddingDate) : null }),
         ...(dto.venue !== undefined && { venue: dto.venue }),
         ...(dto.city !== undefined && { city: dto.city }),
-        ...(dto.guestCountEstimate !== undefined && { guestCountEstimate: dto.guestCountEstimate }),
-        ...(dto.totalBudget !== undefined && { totalBudget: dto.totalBudget }),
+        ...(dto.country !== undefined && { country: dto.country }),
+        ...(dto.guestCount !== undefined && { guestCount: dto.guestCount }),
+        ...(dto.budget !== undefined && { budget: dto.budget }),
         ...(dto.currency !== undefined && { currency: dto.currency }),
-        ...(dto.settings !== undefined && { settings: dto.settings }),
+        ...(dto.coverImageUrl !== undefined && { coverImageUrl: dto.coverImageUrl }),
+        ...(dto.metadata !== undefined && { metadata: dto.metadata === null ? Prisma.JsonNull : dto.metadata as Prisma.InputJsonValue }),
       },
       include: {
         events: { orderBy: { sortOrder: 'asc' } },
@@ -91,12 +96,14 @@ export class WeddingsService {
       data: {
         weddingId: wedding.data!.id,
         name: dto.name,
-        date: dto.date ? new Date(dto.date) : undefined,
+        description: dto.description,
+        eventDate: dto.eventDate ? new Date(dto.eventDate) : undefined,
         startTime: dto.startTime,
         endTime: dto.endTime,
-        location: dto.location,
-        notes: dto.notes,
+        venue: dto.venue,
+        address: dto.address,
         sortOrder: dto.sortOrder ?? 0,
+        metadata: dto.metadata ? dto.metadata as Prisma.InputJsonValue : undefined,
       },
     });
 
@@ -129,14 +136,13 @@ export class WeddingsService {
     clientId: string,
     page: number,
     pageSize: number,
-    filters?: { group?: string; side?: string; rsvpStatus?: string },
+    filters?: { group?: string; rsvpStatus?: string },
   ): Promise<ServiceResult<unknown>> {
     const wedding = await this.ensureWedding(clientId);
     if (!wedding.success) return wedding;
 
     const where: Record<string, unknown> = { weddingId: wedding.data!.id };
     if (filters?.group) where.group = filters.group;
-    if (filters?.side) where.side = filters.side;
     if (filters?.rsvpStatus) where.rsvpStatus = filters.rsvpStatus;
 
     const [items, totalCount] = await Promise.all([
@@ -162,16 +168,16 @@ export class WeddingsService {
     const guest = await this.prisma.guest.create({
       data: {
         weddingId: wedding.data!.id,
-        name: dto.name,
+        firstName: dto.firstName,
+        lastName: dto.lastName,
         email: dto.email,
         phone: dto.phone,
         group: dto.group,
-        side: dto.side,
         rsvpStatus: dto.rsvpStatus ?? 'PENDING',
-        plusOne: dto.plusOne ?? false,
+        plusOnes: dto.plusOnes ?? 0,
         dietaryNotes: dto.dietaryNotes,
         tableNumber: dto.tableNumber,
-        notes: dto.notes,
+        metadata: dto.metadata ? dto.metadata as Prisma.InputJsonValue : undefined,
       },
     });
 
@@ -208,16 +214,16 @@ export class WeddingsService {
     const created = await this.prisma.guest.createMany({
       data: guests.map((g) => ({
         weddingId: wedding.data!.id,
-        name: g.name,
+        firstName: g.firstName,
+        lastName: g.lastName,
         email: g.email,
         phone: g.phone,
         group: g.group,
-        side: g.side,
         rsvpStatus: g.rsvpStatus ?? 'PENDING',
-        plusOne: g.plusOne ?? false,
+        plusOnes: g.plusOnes ?? 0,
         dietaryNotes: g.dietaryNotes,
         tableNumber: g.tableNumber,
-        notes: g.notes,
+        metadata: g.metadata ? g.metadata as Prisma.InputJsonValue : undefined,
       })),
     });
 
@@ -239,22 +245,19 @@ export class WeddingsService {
       (sum, item) => sum + Number(item.actualCost ?? 0),
       0,
     );
-    const paid = items.reduce(
-      (sum, item) => sum + Number(item.paidAmount ?? 0),
-      0,
-    );
+    const paidCount = items.filter((item) => item.isPaid).length;
     const estimated = items.reduce(
       (sum, item) => sum + Number(item.estimatedCost ?? 0),
       0,
     );
 
     return ServiceResult.ok({
-      totalBudget: Number(wedding.data!.totalBudget ?? 0),
+      budget: Number(wedding.data!.budget ?? 0),
       currency: wedding.data!.currency,
       spent,
-      paid,
+      paidCount,
       estimated,
-      remaining: Number(wedding.data!.totalBudget ?? 0) - spent,
+      remaining: Number(wedding.data!.budget ?? 0) - spent,
       items,
     });
   }
@@ -274,13 +277,13 @@ export class WeddingsService {
     const updated = await this.prisma.wedding.update({
       where: { clientId },
       data: {
-        totalBudget: dto.totalBudget,
+        budget: dto.budget,
         ...(dto.currency !== undefined && { currency: dto.currency }),
       },
     });
 
     return ServiceResult.ok({
-      totalBudget: Number(updated.totalBudget ?? 0),
+      budget: Number(updated.budget ?? 0),
       currency: updated.currency,
     });
   }
@@ -296,10 +299,11 @@ export class WeddingsService {
       data: {
         weddingId: wedding.data!.id,
         category: dto.category,
-        name: dto.name,
-        estimatedCost: dto.estimatedCost ?? 0,
-        actualCost: dto.actualCost ?? 0,
-        paidAmount: dto.paidAmount ?? 0,
+        description: dto.description,
+        estimatedCost: dto.estimatedCost,
+        actualCost: dto.actualCost ?? null,
+        isPaid: dto.isPaid ?? false,
+        paidDate: dto.paidDate ? new Date(dto.paidDate) : null,
         vendor: dto.vendor,
         notes: dto.notes,
       },
@@ -355,7 +359,7 @@ export class WeddingsService {
         title: dto.title,
         description: dto.description,
         dueDate: dto.dueDate ? new Date(dto.dueDate) : undefined,
-        status: dto.status ?? 'PENDING',
+        status: dto.status ?? 'TODO',
         category: dto.category,
         sortOrder: dto.sortOrder ?? 0,
       },
@@ -379,7 +383,7 @@ export class WeddingsService {
       return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Task not found');
     }
 
-    const newStatus = task.status === 'COMPLETED' ? 'PENDING' : 'COMPLETED';
+    const newStatus = task.status === 'DONE' ? 'TODO' : 'DONE';
 
     const updated = await this.prisma.checklistTask.update({
       where: { id: taskId },
@@ -420,7 +424,7 @@ export class WeddingsService {
 
     // Check if already invited
     const existing = await this.prisma.weddingCollaborator.findFirst({
-      where: { weddingId: wedding.data!.id, email: dto.email },
+      where: { weddingId: wedding.data!.id, userId: dto.userId },
     });
 
     if (existing) {
@@ -433,8 +437,8 @@ export class WeddingsService {
     const collaborator = await this.prisma.weddingCollaborator.create({
       data: {
         weddingId: wedding.data!.id,
-        email: dto.email,
-        name: dto.name,
+        userId: dto.userId,
+        userType: dto.userType,
         role: dto.role ?? 'VIEWER',
       },
     });
@@ -468,10 +472,10 @@ export class WeddingsService {
 
   private async ensureWedding(
     clientId: string,
-  ): Promise<ServiceResult<{ id: string; totalBudget: unknown; currency: string }>> {
+  ): Promise<ServiceResult<{ id: string; budget: unknown; currency: string }>> {
     let wedding = await this.prisma.wedding.findUnique({
       where: { clientId },
-      select: { id: true, totalBudget: true, currency: true },
+      select: { id: true, budget: true, currency: true },
     });
 
     if (!wedding) {
@@ -481,7 +485,7 @@ export class WeddingsService {
           title: 'My Wedding',
           currency: 'ETB',
         },
-        select: { id: true, totalBudget: true, currency: true },
+        select: { id: true, budget: true, currency: true },
       });
     }
 

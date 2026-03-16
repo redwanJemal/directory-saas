@@ -20,7 +20,7 @@ export class ConversationsController {
 
   @Get()
   async list(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: { sub: string },
     @Query('page') page?: string,
     @Query('pageSize') pageSize?: string,
     @Query('search') search?: string,
@@ -29,7 +29,7 @@ export class ConversationsController {
     const pageSizeNum = Math.min(100, Math.max(1, parseInt(pageSize || '20', 10) || 20));
 
     const result = await this.conversationsService.listConversations(
-      user.id,
+      user.sub,
       pageNum,
       pageSizeNum,
       search,
@@ -40,7 +40,7 @@ export class ConversationsController {
 
   @Get(':conversationId/messages')
   async messages(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: { sub: string },
     @Param('conversationId') conversationId: string,
     @Query('page') page?: string,
     @Query('pageSize') pageSize?: string,
@@ -50,7 +50,7 @@ export class ConversationsController {
 
     const result = await this.conversationsService.getMessages(
       conversationId,
-      user.id,
+      user.sub,
       pageNum,
       pageSizeNum,
     );
@@ -60,14 +60,14 @@ export class ConversationsController {
 
   @Post(':conversationId/messages')
   async send(
-    @CurrentUser() user: { id: string; type: string },
+    @CurrentUser() user: { sub: string; userType: string },
     @Param('conversationId') conversationId: string,
     @Body(new ZodValidationPipe(SendMessageSchema)) dto: SendMessageDto,
   ) {
     const result = await this.conversationsService.sendMessage(
       conversationId,
-      user.id,
-      user.type,
+      user.sub,
+      user.userType,
       dto,
     );
     if (!result.success) throw result.toHttpException();

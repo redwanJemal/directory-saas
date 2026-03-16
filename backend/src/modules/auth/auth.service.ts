@@ -128,7 +128,7 @@ export class AuthService {
 
     return ServiceResult.ok({
       ...tokens,
-      user: { id: user.id, email: user.email, role: user.role, tenantId: tenant.id },
+      user: { id: user.id, email: user.email, role: user.role, tenantId: tenant.id, tenantSlug: tenant.slug },
     });
   }
 

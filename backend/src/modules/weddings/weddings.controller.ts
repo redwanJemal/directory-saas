@@ -90,12 +90,11 @@ export class WeddingsController {
     @Query('page') page?: string,
     @Query('pageSize') pageSize?: string,
     @Query('group') group?: string,
-    @Query('side') side?: string,
     @Query('rsvpStatus') rsvpStatus?: string,
   ) {
     const pageNum = Math.max(1, parseInt(page || '1', 10) || 1);
     const pageSizeNum = Math.min(100, Math.max(1, parseInt(pageSize || '20', 10) || 20));
-    const filters = { group, side, rsvpStatus };
+    const filters = { group, rsvpStatus };
 
     const result = await this.weddingsService.listGuests(
       user.sub,

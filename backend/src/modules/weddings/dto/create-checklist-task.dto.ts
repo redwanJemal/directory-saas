@@ -4,7 +4,7 @@ export const CreateChecklistTaskSchema = z.object({
   title: z.string().min(1).max(300),
   description: z.string().max(2000).optional(),
   dueDate: z.string().datetime().optional(),
-  status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED']).optional(),
+  status: z.enum(['TODO', 'IN_PROGRESS', 'DONE']).optional(),
   category: z.string().max(100).optional(),
   sortOrder: z.number().int().min(0).optional(),
 });

@@ -97,9 +97,8 @@ export class BookingsService {
     const updated = await this.prisma.booking.update({
       where: { id: bookingId },
       data: {
-        quotedPrice: dto.quotedPrice,
-        quoteMessage: dto.quoteMessage,
-        quoteSentAt: new Date(),
+        totalAmount: dto.totalAmount,
+        ...(dto.notes !== undefined && { notes: dto.notes }),
       },
     });
 

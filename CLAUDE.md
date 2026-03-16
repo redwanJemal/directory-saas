@@ -141,6 +141,35 @@ Defined in `common/constants/error-codes.ts`. Standard codes: `UNAUTHORIZED`, `F
 - Tenant-scoped models always have `tenantId String @db.Uuid`
 - Decimals as `Decimal @db.Decimal(12, 2)`, never Float
 
+### Frontend Architecture
+Each frontend app follows this structure:
+```
+apps/{app}/src/
+├── components/
+│   ├── layout/          # DashboardLayout, Sidebar, Header, ProtectedRoute
+│   ├── ui/              # shadcn/ui components (Button, Card, Dialog, etc.)
+│   └── data-table/      # Reusable DataTable, pagination, toolbar
+├── features/            # Feature modules (pages + feature-specific components)
+│   ├── auth/            # LoginPage, RegisterPage
+│   ├── dashboard/       # DashboardPage
+│   └── {feature}/       # Feature-specific pages, dialogs, hooks
+├── hooks/               # Shared hooks (useTheme, useDebounce, useMediaQuery, etc.)
+├── i18n/                # i18next config + en.json, am.json translation files
+├── lib/                 # api.ts, branding.ts, utils.ts, auth-types.ts
+├── stores/              # Zustand stores (auth-store.ts)
+├── test/                # Vitest setup, utils, MSW mocks
+├── main.tsx
+└── index.css            # Tailwind + OKLch theme variables
+```
+
+**Key frontend patterns:**
+- **Components**: shadcn/ui based, using `cn()` for className merging, CSS variable themes
+- **Auth**: Zustand store + localStorage persistence, JWT token rotation via Axios interceptor
+- **Data fetching**: TanStack Query hooks in `features/*/hooks/`
+- **Forms**: Zod schemas for validation + manual error display
+- **i18n**: `useTranslation()` hook, dot-notation keys (`auth.login`, `common.save`)
+- **Testing**: Vitest + Testing Library + MSW, custom render with QueryClient + Router providers
+
 ## How to Add a New Module
 
 1. **Create module directory**: `backend/src/modules/{name}/`
@@ -176,6 +205,16 @@ cd backend && npm run test:cov     # Coverage report
 cd apps/web && npm run dev         # Client SPA (:3000)
 cd apps/provider-portal && npm run dev  # Provider (:3001)
 cd apps/admin && npm run dev       # Admin (:3002)
+
+# Frontend Testing
+cd apps/admin && npm test              # Admin unit tests (22 tests)
+cd apps/provider-portal && npm test    # Provider unit tests (22 tests)
+cd apps/web && npm test                # Web unit tests (22 tests)
+cd apps/admin && npm run test:cov      # Coverage report
+cd apps/web && npm run test:watch      # Watch mode
+cd apps/admin && npm run lint          # ESLint (0 errors required)
+cd apps/provider-portal && npm run lint
+cd apps/web && npm run lint
 
 # Database
 cd backend && npx prisma migrate dev --name description   # New migration
@@ -228,6 +267,6 @@ See `scripts/coding-standards.md` for full details. Key rules:
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`
 
 ## Task System
-27 tasks in 6 phases. All 27 tasks completed.
+40 tasks total. All 40 tasks completed (27 backend + 13 frontend).
 See `docs/tasks/00-overview.md` for full list.
 Progress tracked in `docs/tasks/progress.json`.

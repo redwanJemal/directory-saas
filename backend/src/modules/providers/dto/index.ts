@@ -4,3 +4,4 @@ export { CreateFaqSchema, UpdateFaqSchema, type CreateFaqDto, type UpdateFaqDto 
 export { CreatePortfolioItemSchema, UpdatePortfolioItemSchema, type CreatePortfolioItemDto, type UpdatePortfolioItemDto } from './create-portfolio-item.dto';
 export { UpdateAvailabilitySchema, type UpdateAvailabilityDto } from './update-availability.dto';
 export { ReorderSchema, type ReorderDto } from './reorder.dto';
+export { BlockDateSchema, type BlockDateDto } from './availability-block.dto';

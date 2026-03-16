@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type RowSelectionState,
   type SortingState,
   type VisibilityState,
   flexRender,
@@ -16,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DataTablePagination } from './data-table-pagination';
 import { useTranslation } from 'react-i18next';
@@ -23,15 +25,22 @@ import { useTranslation } from 'react-i18next';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  // Pagination
   pageCount?: number;
   page?: number;
   pageSize?: number;
   totalCount?: number;
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (pageSize: number) => void;
-  onSortingChange?: (sorting: SortingState) => void;
+  // Sorting
   sorting?: SortingState;
+  onSortingChange?: (sorting: SortingState) => void;
+  // Selection
+  enableRowSelection?: boolean;
+  onSelectionChange?: (selectedRows: TData[]) => void;
+  // State
   isLoading?: boolean;
+  emptyState?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -45,23 +54,68 @@ export function DataTable<TData, TValue>({
   onPageSizeChange,
   onSortingChange,
   sorting: externalSorting,
+  enableRowSelection = false,
+  onSelectionChange,
   isLoading,
+  emptyState,
 }: DataTableProps<TData, TValue>) {
   const { t } = useTranslation();
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [internalSorting, setInternalSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const sorting = externalSorting ?? internalSorting;
 
+  const selectionColumn: ColumnDef<TData, unknown> = {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  };
+
+  const allColumns = enableRowSelection
+    ? [selectionColumn, ...columns]
+    : columns;
+
   const table = useReactTable({
     data,
-    columns,
+    columns: allColumns,
     pageCount,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      rowSelection,
+    },
+    enableRowSelection,
+    onRowSelectionChange: (updater) => {
+      const newSelection =
+        typeof updater === 'function' ? updater(rowSelection) : updater;
+      setRowSelection(newSelection);
+      if (onSelectionChange) {
+        const selectedRows = Object.keys(newSelection)
+          .filter((key) => newSelection[key])
+          .map((key) => data[Number(key)])
+          .filter(Boolean);
+        onSelectionChange(selectedRows);
+      }
     },
     onSortingChange: onSortingChange
       ? (updater) => {
@@ -79,10 +133,31 @@ export function DataTable<TData, TValue>({
 
   if (isLoading) {
     return (
-      <div className="space-y-3">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-12 w-full" />
-        ))}
+      <div className="space-y-4">
+        <div className="rounded-md border border-border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {allColumns.map((_, i) => (
+                  <TableHead key={i}>
+                    <Skeleton className="h-4 w-24" />
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 5 }).map((_, rowIdx) => (
+                <TableRow key={rowIdx}>
+                  {allColumns.map((_, colIdx) => (
+                    <TableCell key={colIdx}>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     );
   }
@@ -110,7 +185,10 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -124,10 +202,10 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={allColumns.length}
                   className="h-24 text-center"
                 >
-                  {t('common.noResults')}
+                  {emptyState ?? t('common.noResults')}
                 </TableCell>
               </TableRow>
             )}

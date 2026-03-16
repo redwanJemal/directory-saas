@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router';
+import { Routes, Route } from 'react-router';
 import { PublicLayout } from '@/components/layout/public-layout';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { LoginPage } from '@/features/auth/login-page';
@@ -16,37 +16,41 @@ import { ChecklistPage } from '@/features/checklist/checklist-page';
 import { MyVendorsPage } from '@/features/vendors/my-vendors-page';
 import { MessagesPage } from '@/features/messages/messages-page';
 import { SettingsPage } from '@/features/settings/settings-page';
+import { NotFoundPage } from '@/features/not-found/not-found-page';
+import { ErrorBoundary } from '@/components/error-boundary';
 
 export default function App() {
   return (
-    <Routes>
-      {/* Public routes with PublicLayout */}
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/search" element={<VendorSearchPage />} />
-        <Route path="/vendors/:vendorId" element={<VendorProfilePage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
-      </Route>
-
-      {/* Auth routes (no layout wrapper) */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-
-      {/* Protected dashboard routes */}
-      <Route element={<ProtectedRoute />}>
-        <Route element={<DashboardLayout />}>
-          <Route path="/dashboard" element={<ClientDashboardPage />} />
-          <Route path="/dashboard/wedding" element={<WeddingPage />} />
-          <Route path="/dashboard/guests" element={<GuestListPage />} />
-          <Route path="/dashboard/budget" element={<BudgetPage />} />
-          <Route path="/dashboard/checklist" element={<ChecklistPage />} />
-          <Route path="/dashboard/vendors" element={<MyVendorsPage />} />
-          <Route path="/dashboard/messages" element={<MessagesPage />} />
-          <Route path="/dashboard/settings" element={<SettingsPage />} />
+    <ErrorBoundary>
+      <Routes>
+        {/* Public routes with PublicLayout */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/search" element={<VendorSearchPage />} />
+          <Route path="/vendors/:vendorId" element={<VendorProfilePage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
         </Route>
-      </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Auth routes (no layout wrapper) */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* Protected dashboard routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<ClientDashboardPage />} />
+            <Route path="/dashboard/wedding" element={<WeddingPage />} />
+            <Route path="/dashboard/guests" element={<GuestListPage />} />
+            <Route path="/dashboard/budget" element={<BudgetPage />} />
+            <Route path="/dashboard/checklist" element={<ChecklistPage />} />
+            <Route path="/dashboard/vendors" element={<MyVendorsPage />} />
+            <Route path="/dashboard/messages" element={<MessagesPage />} />
+            <Route path="/dashboard/settings" element={<SettingsPage />} />
+          </Route>
+        </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </ErrorBoundary>
   );
 }

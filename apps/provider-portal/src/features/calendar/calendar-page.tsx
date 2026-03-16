@@ -10,14 +10,12 @@ import {
   addMonths,
   subMonths,
   isSameMonth,
-  isSameDay,
   isToday,
 } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -153,7 +151,6 @@ export function CalendarPage() {
               {calendarDays.map((day) => {
                 const dateStr = format(day, 'yyyy-MM-dd');
                 const dayEvents = eventsByDate.get(dateStr) ?? [];
-                const hasBooking = dayEvents.some((e) => e.type === 'booking');
                 const isBlocked = dayEvents.some((e) => e.type === 'blocked');
                 const inMonth = isSameMonth(day, currentDate);
 

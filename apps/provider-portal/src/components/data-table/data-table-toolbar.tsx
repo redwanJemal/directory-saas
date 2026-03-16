@@ -1,5 +1,6 @@
+import { type Table as ReactTable } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
-import { Search, X } from 'lucide-react';
+import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,10 +10,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface FilterOption {
   label: string;
   value: string;
+}
+
+interface BulkAction {
+  label: string;
+  onClick: () => void;
+  icon?: React.ComponentType<{ className?: string }>;
+  variant?: 'default' | 'destructive';
 }
 
 interface DataTableToolbarProps {
@@ -26,6 +40,10 @@ interface DataTableToolbarProps {
     value: string;
     onChange: (value: string) => void;
   }>;
+  bulkActions?: BulkAction[];
+  selectedCount?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  table?: ReactTable<any>;
   actions?: React.ReactNode;
 }
 
@@ -34,9 +52,14 @@ export function DataTableToolbar({
   onSearchChange,
   searchPlaceholder,
   filters,
+  bulkActions,
+  selectedCount = 0,
+  table,
   actions,
 }: DataTableToolbarProps) {
   const { t } = useTranslation();
+  const hasActiveFilters =
+    searchValue || filters?.some((f) => f.value && f.value !== 'all');
 
   return (
     <div className="flex items-center justify-between gap-2">
@@ -79,8 +102,68 @@ export function DataTableToolbar({
             </SelectContent>
           </Select>
         ))}
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              onSearchChange('');
+              filters?.forEach((f) => f.onChange('all'));
+            }}
+          >
+            <X className="mr-2 h-4 w-4" />
+            {t('common.clearFilters', { defaultValue: 'Clear filters' })}
+          </Button>
+        )}
       </div>
-      {actions && <div className="flex items-center gap-2">{actions}</div>}
+      <div className="flex items-center gap-2">
+        {selectedCount > 0 && bulkActions && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              {selectedCount} {t('common.selected', { defaultValue: 'selected' })}
+            </span>
+            {bulkActions.map((action, i) => (
+              <Button
+                key={i}
+                variant={action.variant === 'destructive' ? 'destructive' : 'outline'}
+                size="sm"
+                onClick={action.onClick}
+              >
+                {action.icon && <action.icon className="mr-2 h-4 w-4" />}
+                {action.label}
+              </Button>
+            ))}
+          </div>
+        )}
+        {table && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <SlidersHorizontal className="mr-2 h-4 w-4" />
+                {t('common.columns', { defaultValue: 'Columns' })}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+        {actions && <>{actions}</>}
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { SearchFacadeService } from './search.service';
 import { SearchQuerySchema, SearchQueryDto } from './dto/search-query.dto';
 
 @ApiTags('Search')
-@Controller('api/v1/search')
+@Controller('search')
 @UseGuards(JwtAuthGuard)
 export class SearchController {
   constructor(private readonly searchFacadeService: SearchFacadeService) {}

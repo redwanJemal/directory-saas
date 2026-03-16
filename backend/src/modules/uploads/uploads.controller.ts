@@ -29,7 +29,7 @@ import {
 } from './dto/upload-file.dto';
 
 @ApiTags('Uploads')
-@Controller('api/v1/uploads')
+@Controller('uploads')
 @UseGuards(JwtAuthGuard)
 export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
@@ -72,7 +72,7 @@ export class UploadsController {
     return result.data;
   }
 
-  @Get('presigned/:key(*)')
+  @Get('presigned/*key')
   async getPresignedUrl(
     @CurrentTenant() tenantId: string,
     @Param('key') key: string,
@@ -82,7 +82,7 @@ export class UploadsController {
     return { url: result.data };
   }
 
-  @Delete(':key(*)')
+  @Delete('*key')
   @HttpCode(HttpStatus.OK)
   async delete(
     @CurrentTenant() tenantId: string,

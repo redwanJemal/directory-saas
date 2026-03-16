@@ -28,7 +28,7 @@ import {
 } from './dto/chat.dto';
 
 @ApiTags('AI')
-@Controller('api/v1/ai')
+@Controller('ai')
 @UseGuards(JwtAuthGuard, RolesGuard, FeatureGateGuard)
 @FeatureGate('ai-planner')
 export class AiController {

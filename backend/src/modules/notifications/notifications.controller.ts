@@ -20,7 +20,7 @@ import {
 } from './dto/notification-query.dto';
 
 @ApiTags('Notifications')
-@Controller('api/v1/notifications')
+@Controller('notifications')
 @UseGuards(JwtAuthGuard)
 export class NotificationsController {
   constructor(

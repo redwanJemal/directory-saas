@@ -31,7 +31,7 @@ import {
 
 // === Admin Plan Management ===
 
-@Controller('api/v1/admin/plans')
+@Controller('admin/plans')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('SUPER_ADMIN')
 export class AdminPlansController {
@@ -74,7 +74,7 @@ export class AdminPlansController {
 
 // === Admin Tenant Subscription Management ===
 
-@Controller('api/v1/admin/tenants/:tenantId/subscription')
+@Controller('admin/tenants/:tenantId/subscription')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('SUPER_ADMIN')
 export class AdminTenantSubscriptionController {
@@ -110,7 +110,7 @@ export class AdminTenantSubscriptionController {
 
 // === Public Plans ===
 
-@Controller('api/v1/plans')
+@Controller('plans')
 export class PublicPlansController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
@@ -125,7 +125,7 @@ export class PublicPlansController {
 
 // === Tenant Subscription View ===
 
-@Controller('api/v1/tenants/:tenantId/subscription')
+@Controller('tenants/:tenantId/subscription')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class TenantSubscriptionController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}

@@ -18,7 +18,7 @@ const AUDIT_FILTERS: AllowedFilter[] = [
 const AUDIT_SORTS = ['createdAt', 'entity', 'action'];
 
 @ApiTags('Audit Logs')
-@Controller('api/v1/tenants/:tenantId/audit-logs')
+@Controller('tenants/:tenantId/audit-logs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('OWNER', 'ADMIN')
 export class AuditController {
@@ -36,7 +36,7 @@ export class AuditController {
 }
 
 @ApiTags('Admin Audit Logs')
-@Controller('api/v1/admin/audit-logs')
+@Controller('admin/audit-logs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('SUPER_ADMIN')
 export class AdminAuditController {

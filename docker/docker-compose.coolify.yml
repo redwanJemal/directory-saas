@@ -8,8 +8,8 @@ services:
     environment:
       NODE_ENV: production
       APP_PORT: 3000
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
-      REDIS_HOST: redis
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@directory-saas-postgres:5432/${POSTGRES_DB}?schema=public
+      REDIS_HOST: directory-saas-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
@@ -17,13 +17,13 @@ services:
       JWT_ACCESS_EXPIRY: ${JWT_ACCESS_EXPIRY:-15m}
       JWT_REFRESH_EXPIRY: ${JWT_REFRESH_EXPIRY:-7d}
       CORS_ORIGINS: ${CORS_ORIGINS}
-      S3_ENDPOINT: http://minio:9000
+      S3_ENDPOINT: http://directory-saas-minio:9000
       S3_PUBLIC_URL: ${S3_PUBLIC_URL:-https://s3.${DOMAIN}}
       S3_ACCESS_KEY: ${MINIO_ROOT_USER}
       S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
       S3_BUCKET: ${S3_BUCKET:-directory-saas}
       S3_REGION: ${S3_REGION:-us-east-1}
-      MEILISEARCH_URL: http://meilisearch:7700
+      MEILISEARCH_URL: http://directory-saas-meilisearch:7700
       MEILISEARCH_API_KEY: ${MEILI_MASTER_KEY}
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT:-587}
@@ -31,7 +31,7 @@ services:
       SMTP_PASS: ${SMTP_PASS}
       SMTP_FROM: ${SMTP_FROM}
       SMTP_SECURE: ${SMTP_SECURE:-true}
-      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_LEVEL: ${LOG_LEVEL:-log}
       THROTTLE_TTL: ${THROTTLE_TTL:-60}
       THROTTLE_LIMIT: ${THROTTLE_LIMIT:-100}
       DOMAIN: ${DOMAIN}
@@ -53,9 +53,11 @@ services:
       start_period: 40s
     labels:
       - "traefik.enable=true"
+      # Route on both HTTP and HTTPS (Cloudflare terminates SSL, sends HTTP to origin)
       - "traefik.http.routers.api.rule=Host(`api.${DOMAIN}`)"
-      - "traefik.http.routers.api.entrypoints=https"
+      - "traefik.http.routers.api.entrypoints=http,https"
       - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
       - "traefik.http.services.api.loadbalancer.server.port=3000"
       - "traefik.http.routers.api.middlewares=api-cors@docker"
       # CORS middleware
@@ -87,8 +89,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.web.rule=Host(`app.${DOMAIN}`)"
-      - "traefik.http.routers.web.entrypoints=https"
+      - "traefik.http.routers.web.entrypoints=http,https"
       - "traefik.http.routers.web.tls=true"
+      - "traefik.http.routers.web.tls.certresolver=letsencrypt"
       - "traefik.http.services.web.loadbalancer.server.port=80"
 
   admin:
@@ -114,8 +117,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.admin.rule=Host(`admin.${DOMAIN}`)"
-      - "traefik.http.routers.admin.entrypoints=https"
+      - "traefik.http.routers.admin.entrypoints=http,https"
       - "traefik.http.routers.admin.tls=true"
+      - "traefik.http.routers.admin.tls.certresolver=letsencrypt"
       - "traefik.http.services.admin.loadbalancer.server.port=80"
 
   provider-portal:
@@ -140,16 +144,15 @@ services:
       retries: 3
     labels:
       - "traefik.enable=true"
-      # Wildcard: any subdomain not matched by api/web/admin → provider portal
-      # Priority lower than specific subdomain routes
-      - "traefik.http.routers.provider.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.${DOMAIN}`) && !Host(`api.${DOMAIN}`) && !Host(`app.${DOMAIN}`) && !Host(`admin.${DOMAIN}`) && !Host(`s3.${DOMAIN}`)"
-      - "traefik.http.routers.provider.entrypoints=https"
+      - "traefik.http.routers.provider.rule=HostRegexp(`^[a-z0-9-]+\\.${DOMAIN}$$`) && !Host(`api.${DOMAIN}`) && !Host(`app.${DOMAIN}`) && !Host(`admin.${DOMAIN}`) && !Host(`s3.${DOMAIN}`)"
+      - "traefik.http.routers.provider.entrypoints=http,https"
       - "traefik.http.routers.provider.tls=true"
+      - "traefik.http.routers.provider.tls.certresolver=letsencrypt"
       - "traefik.http.routers.provider.priority=1"
       - "traefik.http.services.provider.loadbalancer.server.port=80"
 
   postgres:
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:pg17
     container_name: directory-saas-postgres
     restart: unless-stopped
     environment:
@@ -157,7 +160,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-directory_saas}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - directory_pg_data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - internal
@@ -173,7 +176,7 @@ services:
     restart: unless-stopped
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD} --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
-      - redis_data:/data
+      - directory_redis_data:/data
     networks:
       - internal
     healthcheck:
@@ -191,7 +194,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
     volumes:
-      - minio_data:/data
+      - directory_minio_data:/data
     networks:
       - internal
       - coolify
@@ -202,10 +205,10 @@ services:
       retries: 5
     labels:
       - "traefik.enable=true"
-      # MinIO API (for public file access via presigned URLs)
       - "traefik.http.routers.minio.rule=Host(`s3.${DOMAIN}`)"
-      - "traefik.http.routers.minio.entrypoints=https"
+      - "traefik.http.routers.minio.entrypoints=http,https"
       - "traefik.http.routers.minio.tls=true"
+      - "traefik.http.routers.minio.tls.certresolver=letsencrypt"
       - "traefik.http.services.minio.loadbalancer.server.port=9000"
 
   meilisearch:
@@ -217,20 +220,20 @@ services:
       MEILI_ENV: production
       MEILI_MAX_INDEXING_MEMORY: 512MiB
     volumes:
-      - meilisearch_data:/meili_data
+      - directory_meili_data:/meili_data
     networks:
       - internal
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:7700/health"]
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://127.0.0.1:7700/health"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_data:
-  redis_data:
-  minio_data:
-  meilisearch_data:
+  directory_pg_data:
+  directory_redis_data:
+  directory_minio_data:
+  directory_meili_data:
 
 networks:
   internal:

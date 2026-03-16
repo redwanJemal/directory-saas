@@ -20,8 +20,7 @@
     "paths": {
       "@common/*": ["src/common/*"],
       "@modules/*": ["src/modules/*"],
-      "@config/*": ["src/config/*"],
-      "@prisma/*": ["src/prisma/*"]
+      "@config/*": ["src/config/*"]
     }
   }
 }

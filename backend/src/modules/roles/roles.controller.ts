@@ -27,7 +27,7 @@ import {
   AssignRolesDto,
 } from './dto';
 
-@Controller('api/v1/tenants/:tenantId/roles')
+@Controller('tenants/:tenantId/roles')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
@@ -107,7 +107,7 @@ export class RolesController {
   }
 }
 
-@Controller('api/v1/tenants/:tenantId/users')
+@Controller('tenants/:tenantId/users')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UserRolesController {
   constructor(private readonly rolesService: RolesService) {}

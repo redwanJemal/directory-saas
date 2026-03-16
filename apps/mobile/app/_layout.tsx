@@ -41,9 +41,15 @@ export default function RootLayout() {
         <Stack
           screenOptions={{
             headerShown: false,
-            animation: 'slide_from_right',
+            animation: 'fade',
           }}
-        />
+        >
+          <Stack.Screen
+            name="(auth)"
+            options={{ animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen name="(main)" options={{ animation: 'fade' }} />
+        </Stack>
       </View>
     </QueryClientProvider>
   );

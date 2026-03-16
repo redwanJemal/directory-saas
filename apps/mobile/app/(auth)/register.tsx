@@ -12,31 +12,52 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
+import { useState } from 'react';
 
-import { loginSchema, type LoginFormData } from '@/lib/auth-schemas';
+import { registerSchema, type RegisterFormData } from '@/lib/auth-schemas';
 import { useAuthStore } from '@/store/auth-store';
 import { appConfig } from '@/lib/config';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const { t } = useTranslation();
-  const { login, error, clearError } = useAuthStore();
+  const { register: registerUser, error, clearError } = useAuthStore();
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      acceptTerms: undefined as unknown as true,
+    },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const toggleTerms = () => {
+    const newValue = !termsAccepted;
+    setTermsAccepted(newValue);
+    setValue('acceptTerms', newValue as unknown as true, {
+      shouldValidate: true,
+    });
+  };
+
+  const onSubmit = async (data: RegisterFormData) => {
     clearError();
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     try {
-      await login(data.email, data.password);
+      await registerUser({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       router.replace('/(main)');
     } catch {
@@ -51,20 +72,20 @@ export default function LoginScreen() {
         className="flex-1"
       >
         <ScrollView
-          contentContainerClassName="flex-grow justify-center px-6 py-8"
+          contentContainerClassName="flex-grow px-6 py-8"
           keyboardShouldPersistTaps="handled"
         >
-          <View className="mb-10 items-center">
+          <View className="mb-8 items-center">
             <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-brand-600">
               <Text className="text-2xl font-bold text-content-inverse">
                 {appConfig.shortName}
               </Text>
             </View>
             <Text className="text-2xl font-bold text-content">
-              {appConfig.name}
+              {t('auth.register')}
             </Text>
             <Text className="mt-2 text-center text-content-secondary">
-              {t('auth.loginSubtitle')}
+              {t('auth.registerSubtitle')}
             </Text>
           </View>
 
@@ -75,6 +96,24 @@ export default function LoginScreen() {
               </Text>
             </View>
           )}
+
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label={t('auth.name')}
+                placeholder={t('auth.name')}
+                error={errors.name ? t(errors.name.message ?? '') : undefined}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                autoCapitalize="words"
+                autoComplete="name"
+                textContentType="name"
+              />
+            )}
+          />
 
           <Controller
             control={control}
@@ -111,35 +150,75 @@ export default function LoginScreen() {
                 onBlur={onBlur}
                 value={value}
                 secureTextEntry
-                autoComplete="password"
-                textContentType="password"
+                autoComplete="new-password"
+                textContentType="newPassword"
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="confirmPassword"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label={t('auth.confirmPassword')}
+                placeholder={t('auth.confirmPassword')}
+                error={
+                  errors.confirmPassword
+                    ? t(errors.confirmPassword.message ?? '')
+                    : undefined
+                }
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                secureTextEntry
+                autoComplete="new-password"
+                textContentType="newPassword"
               />
             )}
           />
 
           <Pressable
-            className="mb-6 self-end"
-            onPress={() => router.push('/(auth)/forgot-password')}
+            className="mb-2 flex-row items-center"
+            onPress={toggleTerms}
           >
-            <Text className="text-sm font-medium text-brand-600">
-              {t('auth.forgotPassword')}
+            <View
+              className={`mr-3 h-5 w-5 items-center justify-center rounded border ${
+                termsAccepted
+                  ? 'border-brand-600 bg-brand-600'
+                  : 'border-border bg-surface'
+              }`}
+            >
+              {termsAccepted && (
+                <Text className="text-xs text-content-inverse">✓</Text>
+              )}
+            </View>
+            <Text className="flex-1 text-sm text-content">
+              {t('auth.termsAgree')}
             </Text>
           </Pressable>
+          {errors.acceptTerms && (
+            <Text className="mb-4 text-sm text-danger-500">
+              {t(errors.acceptTerms.message ?? '')}
+            </Text>
+          )}
 
-          <Button
-            title={t('auth.login')}
-            onPress={handleSubmit(onSubmit)}
-            loading={isSubmitting}
-            haptic="medium"
-          />
+          <View className="mt-4">
+            <Button
+              title={t('auth.register')}
+              onPress={handleSubmit(onSubmit)}
+              loading={isSubmitting}
+              haptic="medium"
+            />
+          </View>
 
           <View className="mt-6 flex-row items-center justify-center">
             <Text className="text-content-secondary">
-              {t('auth.noAccount')}{' '}
+              {t('auth.haveAccount')}{' '}
             </Text>
-            <Pressable onPress={() => router.push('/(auth)/register')}>
+            <Pressable onPress={() => router.back()}>
               <Text className="font-semibold text-brand-600">
-                {t('auth.signUp')}
+                {t('auth.signIn')}
               </Text>
             </Pressable>
           </View>

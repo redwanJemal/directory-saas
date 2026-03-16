@@ -19,7 +19,9 @@
     "or": "ወይም",
     "and": "እና",
     "offline": "ከመስመር ውጪ ነዎት",
-    "pullToRefresh": "ለማዘመን ይጎትቱ"
+    "pullToRefresh": "ለማዘመን ይጎትቱ",
+    "skip": "ዝለል",
+    "getStarted": "ጀምር"
   },
   "auth": {
     "login": "ግባ",
@@ -110,7 +112,9 @@
   "bookings": {
     "title": "ቦታ ማስያዣዎቼ",
     "noBookings": "እስካሁን ምንም ቦታ ማስያዣ የለም",
+    "noBookingsSubtitle": "አቅራቢዎችን በመፈለግ ጥያቄ ይላኩ",
     "findVendors": "አቅራቢዎችን ፈልግ",
+    "filterAll": "ሁሉም",
     "status": {
       "inquiry": "ጥያቄ",
       "quoted": "ዋጋ ተሰጥቷል",
@@ -120,8 +124,14 @@
     },
     "acceptQuote": "ዋጋውን ተቀበል",
     "declineQuote": "ዋጋውን ውድቅ አድርግ",
-    "viewDetails": "ዝርዝር ይመልከቱ",
-    "messageVendor": "ለአቅራቢ መልእክት ላክ"
+    "viewDetails": "የቦታ ማስያዣ ዝርዝር",
+    "messageVendor": "ለአቅራቢ መልእክት ላክ",
+    "statusProgress": "የሁኔታ ሂደት",
+    "details": "ዝርዝሮች",
+    "confirmAcceptTitle": "ዋጋ ተቀበል",
+    "confirmAcceptMessage": "ይህን ዋጋ መቀበል እንደሚፈልጉ እርግጠኛ ነዎት? ይህ ቦታ ማስያዣዎን ያረጋግጣል።",
+    "confirmDeclineTitle": "ዋጋ ውድቅ አድርግ",
+    "confirmDeclineMessage": "ይህን ዋጋ ውድቅ ማድረግ እንደሚፈልጉ እርግጠኛ ነዎት?"
   },
   "planner": {
     "title": "የሰርግ እቅድ",
@@ -199,6 +209,40 @@
     "countdown": "{{days}} ቀናት ቀሩ!",
     "budgetSpent": "{{percent}}% የበጀት ወጪ",
     "overallProgress": "አጠቃላይ ሂደት"
+  },
+  "weddingSetup": {
+    "whenIsWedding": "ሰርግዎ መቼ ነው?",
+    "dateSubtitle": "ቆጠራውን ለመጀመር የሰርግ ቀንዎን ይምረጡ",
+    "notDecided": "እስካሁን አልወሰንኩም",
+    "whoMarrying": "ማን ነው የሚያገቡት?",
+    "partnerSubtitle": "የባለቤትዎን ስም ያስገቡ",
+    "howManyGuests": "ስንት እንግዶች?",
+    "guestsSubtitle": "ግምታዊ ቁጥር ለእቅድ ይረዳል",
+    "customCount": "የራስዎ ቁጥር ያስገቡ",
+    "haveVenue": "ቦታ አለዎት?",
+    "venueSubtitle": "ይህን ቆይተው ማስገባት ይችላሉ",
+    "whatsYourStyle": "ዘይቤዎ ምንድን ነው?",
+    "styleSubtitle": "ሁሉንም ተስማሚ ይምረጡ",
+    "setupSubtitle": "በመሳሪያዎቻችን ፍጹም ሰርግዎን ያቅዱ",
+    "styles": {
+      "traditional": "ባህላዊ",
+      "modern": "ዘመናዊ",
+      "rustic": "ባህላዊ ገጠር",
+      "elegant": "ግርማ ሞገስ",
+      "bohemian": "ቦሄሚያን",
+      "classic": "ክላሲክ",
+      "minimalist": "ቀላል",
+      "romantic": "ሮማንቲክ"
+    }
+  },
+  "dashboard": {
+    "quickActions": "ፈጣን ተግባራት",
+    "addGuest": "እንግዳ ጨምር",
+    "checkBudget": "በጀት ይመልከቱ",
+    "findVendors": "አቅራቢ ፈልግ",
+    "viewChecklist": "ዝርዝር ይመልከቱ",
+    "myVendors": "አቅራቢዎቼ",
+    "findMore": "ተጨማሪ ፈልግ"
   },
   "errors": {
     "networkError": "የአውታረ መረብ ስህተት። ግንኙነትዎን ያረጋግጡ።",

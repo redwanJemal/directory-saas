@@ -19,7 +19,9 @@
     "or": "or",
     "and": "and",
     "offline": "You are offline",
-    "pullToRefresh": "Pull to refresh"
+    "pullToRefresh": "Pull to refresh",
+    "skip": "Skip",
+    "getStarted": "Get Started"
   },
   "auth": {
     "login": "Log In",
@@ -110,7 +112,9 @@
   "bookings": {
     "title": "My Bookings",
     "noBookings": "No bookings yet",
+    "noBookingsSubtitle": "Start by finding vendors and sending inquiries",
     "findVendors": "Find Vendors",
+    "filterAll": "All",
     "status": {
       "inquiry": "Inquiry",
       "quoted": "Quoted",
@@ -120,8 +124,14 @@
     },
     "acceptQuote": "Accept Quote",
     "declineQuote": "Decline Quote",
-    "viewDetails": "View Details",
-    "messageVendor": "Message Vendor"
+    "viewDetails": "Booking Details",
+    "messageVendor": "Message Vendor",
+    "statusProgress": "Status Progress",
+    "details": "Details",
+    "confirmAcceptTitle": "Accept Quote",
+    "confirmAcceptMessage": "Are you sure you want to accept this quote? This will confirm your booking.",
+    "confirmDeclineTitle": "Decline Quote",
+    "confirmDeclineMessage": "Are you sure you want to decline this quote?"
   },
   "planner": {
     "title": "Wedding Planner",
@@ -199,6 +209,40 @@
     "countdown": "{{days}} days to go!",
     "budgetSpent": "{{percent}}% of budget spent",
     "overallProgress": "Overall Progress"
+  },
+  "weddingSetup": {
+    "whenIsWedding": "When is your wedding?",
+    "dateSubtitle": "Pick your wedding date to start the countdown",
+    "notDecided": "Haven't decided yet",
+    "whoMarrying": "Who are you marrying?",
+    "partnerSubtitle": "Enter your partner's name",
+    "howManyGuests": "How many guests?",
+    "guestsSubtitle": "An estimate helps us plan better",
+    "customCount": "Enter custom number",
+    "haveVenue": "Do you have a venue?",
+    "venueSubtitle": "You can always add this later",
+    "whatsYourStyle": "What's your style?",
+    "styleSubtitle": "Select all that apply",
+    "setupSubtitle": "Plan your perfect wedding with our tools",
+    "styles": {
+      "traditional": "Traditional",
+      "modern": "Modern",
+      "rustic": "Rustic",
+      "elegant": "Elegant",
+      "bohemian": "Bohemian",
+      "classic": "Classic",
+      "minimalist": "Minimalist",
+      "romantic": "Romantic"
+    }
+  },
+  "dashboard": {
+    "quickActions": "Quick Actions",
+    "addGuest": "Add Guest",
+    "checkBudget": "Check Budget",
+    "findVendors": "Find Vendors",
+    "viewChecklist": "View Checklist",
+    "myVendors": "My Vendors",
+    "findMore": "Find More"
   },
   "errors": {
     "networkError": "Network error. Please check your connection.",

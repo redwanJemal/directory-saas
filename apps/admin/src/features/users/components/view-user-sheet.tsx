@@ -20,11 +20,11 @@ interface ViewUserSheetProps {
 
 const typeStyles: Record<string, string> = {
   admin:
-    'bg-purple-500/10 text-purple-700 border-purple-500/20 dark:bg-purple-500/20 dark:text-purple-400',
+    'bg-destructive/10 text-destructive border-destructive/20 dark:bg-destructive/20 dark:text-destructive',
   tenant:
-    'bg-blue-500/10 text-blue-700 border-blue-500/20 dark:bg-blue-500/20 dark:text-blue-400',
+    'bg-primary/10 text-primary border-primary/20 dark:bg-primary/20 dark:text-primary',
   client:
-    'bg-green-500/10 text-green-700 border-green-500/20 dark:bg-green-500/20 dark:text-green-400',
+    'bg-accent text-accent-foreground border-accent dark:bg-accent dark:text-accent-foreground',
 };
 
 function InfoRow({

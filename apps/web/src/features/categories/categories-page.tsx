@@ -26,14 +26,14 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 };
 
 const FALLBACK_CATEGORIES = [
-  { slug: 'photography', name: 'categories.photography', vendorCount: 120, description: 'categories.photographyDesc' },
-  { slug: 'catering', name: 'categories.catering', vendorCount: 85, description: 'categories.cateringDesc' },
-  { slug: 'venue', name: 'categories.venue', vendorCount: 64, description: 'categories.venueDesc' },
-  { slug: 'decoration', name: 'categories.decoration', vendorCount: 92, description: 'categories.decorationDesc' },
-  { slug: 'music', name: 'categories.music', vendorCount: 73, description: 'categories.musicDesc' },
-  { slug: 'planning', name: 'categories.planning', vendorCount: 48, description: 'categories.planningDesc' },
-  { slug: 'florist', name: 'categories.florist', vendorCount: 56, description: 'categories.floristDesc' },
-  { slug: 'transport', name: 'categories.transport', vendorCount: 31, description: 'categories.transportDesc' },
+  { slug: 'photography', name: 'categories.photography', vendorCount: 0, description: 'categories.photographyDesc' },
+  { slug: 'catering', name: 'categories.catering', vendorCount: 0, description: 'categories.cateringDesc' },
+  { slug: 'venue', name: 'categories.venue', vendorCount: 0, description: 'categories.venueDesc' },
+  { slug: 'decoration', name: 'categories.decoration', vendorCount: 0, description: 'categories.decorationDesc' },
+  { slug: 'music', name: 'categories.music', vendorCount: 0, description: 'categories.musicDesc' },
+  { slug: 'planning', name: 'categories.planning', vendorCount: 0, description: 'categories.planningDesc' },
+  { slug: 'florist', name: 'categories.florist', vendorCount: 0, description: 'categories.floristDesc' },
+  { slug: 'transport', name: 'categories.transport', vendorCount: 0, description: 'categories.transportDesc' },
 ];
 
 export function CategoriesPage() {

@@ -36,7 +36,7 @@ export function GuestListPage() {
     setPage(1);
   }, [debouncedSearch, rsvpFilter, groupFilter, sideFilter]);
 
-  const { data, isLoading } = useGuests({
+  const { data, isLoading, error, refetch } = useGuests({
     page,
     pageSize,
     search: debouncedSearch,
@@ -113,6 +113,17 @@ export function GuestListPage() {
           ))}
         </div>
         <Skeleton className="h-96" />
+      </div>
+    );
+  }
+
+  if (error && !data) {
+    return (
+      <div className="py-12 text-center space-y-4">
+        <p className="text-destructive">{t('common.errorOccurred')}</p>
+        <Button variant="outline" onClick={() => refetch()}>
+          {t('common.retry')}
+        </Button>
       </div>
     );
   }

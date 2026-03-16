@@ -1,19 +1,40 @@
 import { useTranslation } from 'react-i18next';
 import { CalendarCheck, Clock, Star, DollarSign } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/stores/auth-store';
+import { api } from '@/lib/api';
 import { Link } from 'react-router';
+
+interface DashboardStats {
+  totalBookings: number;
+  pendingInquiries: number;
+  averageRating: number;
+  revenueThisMonth: number;
+}
+
+function useDashboardStats() {
+  return useQuery<DashboardStats>({
+    queryKey: ['provider', 'dashboard', 'stats'],
+    queryFn: async () => {
+      const response = await api.get('/providers/dashboard/stats');
+      return response.data?.data ?? response.data;
+    },
+  });
+}
 
 export function DashboardPage() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const { data: dashboardStats, isLoading: statsLoading } = useDashboardStats();
 
   const stats = [
-    { titleKey: 'dashboard.totalBookings', value: '—', icon: CalendarCheck },
-    { titleKey: 'dashboard.pendingInquiries', value: '—', icon: Clock },
-    { titleKey: 'dashboard.averageRating', value: '—', icon: Star },
-    { titleKey: 'dashboard.revenueThisMonth', value: '—', icon: DollarSign },
+    { titleKey: 'dashboard.totalBookings', value: dashboardStats?.totalBookings ?? '—', icon: CalendarCheck },
+    { titleKey: 'dashboard.pendingInquiries', value: dashboardStats?.pendingInquiries ?? '—', icon: Clock },
+    { titleKey: 'dashboard.averageRating', value: dashboardStats?.averageRating ?? '—', icon: Star },
+    { titleKey: 'dashboard.revenueThisMonth', value: dashboardStats?.revenueThisMonth ?? '—', icon: DollarSign },
   ];
 
   return (
@@ -34,7 +55,11 @@ export function DashboardPage() {
               <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
+              {statsLoading ? (
+                <Skeleton className="h-8 w-16" />
+              ) : (
+                <div className="text-2xl font-bold">{stat.value}</div>
+              )}
             </CardContent>
           </Card>
         ))}

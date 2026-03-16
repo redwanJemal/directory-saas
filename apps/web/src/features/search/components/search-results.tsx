@@ -17,6 +17,7 @@ interface SearchResultsProps {
   vendors: VendorSearchResult[];
   pagination: PaginationMeta | null;
   isLoading: boolean;
+  error?: boolean;
   sort: string;
   onSortChange: (sort: string) => void;
   onPageChange: (page: number) => void;
@@ -27,12 +28,24 @@ export function SearchResults({
   vendors,
   pagination,
   isLoading,
+  error,
   sort,
   onSortChange,
   onPageChange,
   onClearFilters,
 }: SearchResultsProps) {
   const { t } = useTranslation();
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <p className="text-destructive mb-4">{t('common.errorOccurred')}</p>
+        <Button variant="outline" onClick={onClearFilters}>
+          {t('common.retry')}
+        </Button>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (

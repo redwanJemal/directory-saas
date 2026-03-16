@@ -38,7 +38,7 @@ export function VendorSearchPage() {
     [urlParams],
   );
 
-  const { data, isLoading } = useSearchQuery(params);
+  const { data, isLoading, error } = useSearchQuery(params);
 
   const updateParams = useCallback(
     (updates: Partial<SearchParams>) => {
@@ -131,6 +131,7 @@ export function VendorSearchPage() {
             vendors={data?.data ?? []}
             pagination={data?.pagination ?? null}
             isLoading={isLoading}
+            error={!!error}
             sort={params.sort ?? 'recommended'}
             onSortChange={(sort) => updateParams({ sort })}
             onPageChange={(page) => updateParams({ page })}

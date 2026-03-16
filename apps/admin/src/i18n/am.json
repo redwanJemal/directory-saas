@@ -43,7 +43,10 @@
     "theme": "ገጽታ",
     "light": "ብሩህ",
     "dark": "ጨለማ",
-    "system": "ስርዓት"
+    "system": "ስርዓት",
+    "clearFilters": "ማጣሪያዎችን አጽዳ",
+    "selected": "ተመርጠዋል",
+    "columns": "ዓምዶች"
   },
   "auth": {
     "login": "ግባ",
@@ -202,7 +205,10 @@
     "apiUrl": "ኤፒአይ ዩአርኤል",
     "saved": "ቅንብሮች በተሳካ ሁኔታ ተቀምጠዋል",
     "lastChecked": "የመጨረሻ ፍተሻ: {{time}}",
-    "autoRefreshNote": "የጤና ፍተሻ በየ 30 ሰከንድ ራስ-ሰር ይታደሳል።"
+    "autoRefreshNote": "የጤና ፍተሻ በየ 30 ሰከንድ ራስ-ሰር ይታደሳል።",
+    "healthy": "ጤናማ",
+    "unhealthy": "ጤናማ ያልሆነ",
+    "unknown": "ያልታወቀ"
   },
   "errors": {
     "required": "ይህ መስክ ያስፈልጋል",

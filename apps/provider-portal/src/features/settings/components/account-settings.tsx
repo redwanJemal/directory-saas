@@ -24,12 +24,12 @@ import { useAuthStore } from '@/stores/auth-store';
 
 const ChangePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, 'Current password is required'),
-    newPassword: z.string().min(8, 'Password must be at least 8 characters'),
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
+    currentPassword: z.string().min(1),
+    newPassword: z.string().min(8),
+    confirmPassword: z.string().min(1),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: 'PASSWORDS_MISMATCH',
     path: ['confirmPassword'],
   });
 

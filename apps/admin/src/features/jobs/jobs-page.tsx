@@ -46,13 +46,13 @@ function QueueCard({ stats }: { stats: QueueStats }) {
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">{t('jobs.pending')}</span>
-            <span className="font-bold text-blue-600 dark:text-blue-400">
+            <span className="font-bold text-primary">
               {stats.pending}
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">{t('jobs.active')}</span>
-            <span className="font-bold text-green-600 dark:text-green-400">
+            <span className="font-bold text-accent-foreground">
               {stats.active}
             </span>
           </div>
@@ -64,7 +64,7 @@ function QueueCard({ stats }: { stats: QueueStats }) {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">{t('jobs.failed')}</span>
-            <span className="font-bold text-red-600 dark:text-red-400">
+            <span className="font-bold text-destructive">
               {stats.failed}
             </span>
           </div>

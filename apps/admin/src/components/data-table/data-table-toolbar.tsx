@@ -112,7 +112,7 @@ export function DataTableToolbar({
             }}
           >
             <X className="mr-2 h-4 w-4" />
-            {t('common.clearFilters', { defaultValue: 'Clear filters' })}
+            {t('common.clearFilters')}
           </Button>
         )}
       </div>
@@ -120,7 +120,7 @@ export function DataTableToolbar({
         {selectedCount > 0 && bulkActions && (
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              {selectedCount} {t('common.selected', { defaultValue: 'selected' })}
+              {selectedCount} {t('common.selected')}
             </span>
             {bulkActions.map((action, i) => (
               <Button
@@ -140,7 +140,7 @@ export function DataTableToolbar({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
                 <SlidersHorizontal className="mr-2 h-4 w-4" />
-                {t('common.columns', { defaultValue: 'Columns' })}
+                {t('common.columns')}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

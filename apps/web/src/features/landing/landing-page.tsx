@@ -26,7 +26,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { useCategories } from '@/features/search/hooks/use-search';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useCategories, useSearchQuery } from '@/features/search/hooks/use-search';
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   photography: <Camera className="h-6 w-6" />,
@@ -40,14 +41,14 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 };
 
 const FALLBACK_CATEGORIES = [
-  { slug: 'photography', name: 'categories.photography', vendorCount: 120 },
-  { slug: 'catering', name: 'categories.catering', vendorCount: 85 },
-  { slug: 'venue', name: 'categories.venue', vendorCount: 64 },
-  { slug: 'decoration', name: 'categories.decoration', vendorCount: 92 },
-  { slug: 'music', name: 'categories.music', vendorCount: 73 },
-  { slug: 'planning', name: 'categories.planning', vendorCount: 48 },
-  { slug: 'florist', name: 'categories.florist', vendorCount: 56 },
-  { slug: 'transport', name: 'categories.transport', vendorCount: 31 },
+  { slug: 'photography', name: 'categories.photography', vendorCount: 0 },
+  { slug: 'catering', name: 'categories.catering', vendorCount: 0 },
+  { slug: 'venue', name: 'categories.venue', vendorCount: 0 },
+  { slug: 'decoration', name: 'categories.decoration', vendorCount: 0 },
+  { slug: 'music', name: 'categories.music', vendorCount: 0 },
+  { slug: 'planning', name: 'categories.planning', vendorCount: 0 },
+  { slug: 'florist', name: 'categories.florist', vendorCount: 0 },
+  { slug: 'transport', name: 'categories.transport', vendorCount: 0 },
 ];
 
 export function LandingPage() {
@@ -123,12 +124,13 @@ function HeroSection() {
 function FeaturedVendorsSection() {
   const { t } = useTranslation();
 
-  const featured = [
-    { id: '1', name: 'Alem Photography', category: t('categories.photography'), rating: 4.9, reviewCount: 128, location: 'Addis Ababa' },
-    { id: '2', name: 'Habesha Catering', category: t('categories.catering'), rating: 4.8, reviewCount: 96, location: 'Addis Ababa' },
-    { id: '3', name: 'Grand Palace Venue', category: t('categories.venue'), rating: 4.7, reviewCount: 74, location: 'Addis Ababa' },
-    { id: '4', name: 'Eden Florals', category: t('categories.florist'), rating: 4.9, reviewCount: 63, location: 'Addis Ababa' },
-  ];
+  const { data: searchData, isLoading } = useSearchQuery({
+    sort: '-rating',
+    pageSize: 4,
+    page: 1,
+  });
+
+  const featured = searchData?.data ?? [];
 
   return (
     <section className="py-16 bg-background">
@@ -142,30 +144,46 @@ function FeaturedVendorsSection() {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featured.map((vendor) => (
-            <Link key={vendor.id} to={`/vendors/${vendor.id}`}>
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-[4/3] bg-muted flex items-center justify-center">
-                  <span className="text-4xl font-bold text-muted-foreground/20">
-                    {vendor.name.charAt(0)}
-                  </span>
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold truncate">{vendor.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {vendor.category} · {vendor.location}
-                  </p>
-                  <div className="flex items-center gap-1 mt-2">
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <span className="text-sm font-medium">{vendor.rating}</span>
-                    <span className="text-xs text-muted-foreground">
-                      ({vendor.reviewCount})
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i} className="overflow-hidden">
+                  <Skeleton className="aspect-[4/3] w-full" />
+                  <CardContent className="p-4 space-y-2">
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-4 w-1/3" />
+                  </CardContent>
+                </Card>
+              ))
+            : featured.map((vendor) => (
+                <Link key={vendor.id} to={`/vendors/${vendor.id}`}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="aspect-[4/3] bg-muted flex items-center justify-center">
+                      <span className="text-4xl font-bold text-muted-foreground/20">
+                        {vendor.name.charAt(0)}
+                      </span>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold truncate">{vendor.name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {vendor.category} · {vendor.location}
+                      </p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <Star className="h-4 w-4 fill-primary text-primary" />
+                        <span className="text-sm font-medium">{vendor.rating}</span>
+                        <span className="text-xs text-muted-foreground">
+                          ({vendor.reviewCount})
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+          {!isLoading && featured.length === 0 && (
+            <p className="col-span-full text-center text-muted-foreground py-8">
+              {t('common.noResults')}
+            </p>
+          )}
         </div>
       </div>
     </section>

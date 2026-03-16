@@ -188,8 +188,8 @@ function formatMessageTime(dateString: string): string {
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   if (date.toDateString() === yesterday.toDateString()) {
-    return `Yesterday ${time}`;
+    return `${date.toLocaleDateString(undefined, { weekday: 'short' })} ${time}`;
   }
 
-  return `${date.toLocaleDateString()} ${time}`;
+  return `${date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} ${time}`;
 }

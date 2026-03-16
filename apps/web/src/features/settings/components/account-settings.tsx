@@ -29,7 +29,7 @@ const ChangePasswordSchema = z
     confirmPassword: z.string().min(1),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: 'PASSWORDS_MISMATCH',
     path: ['confirmPassword'],
   });
 

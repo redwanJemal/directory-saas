@@ -159,8 +159,8 @@ function StatCard({
 export function ClientDashboardPage() {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
-  const { data: wedding, isLoading: weddingLoading } = useWeddingOverview();
-  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: wedding, isLoading: weddingLoading, error: weddingError } = useWeddingOverview();
+  const { data: stats, isLoading: statsLoading, error: statsError } = useDashboardStats();
   const { data: tasks } = useUpcomingTasks();
   const { data: messages } = useRecentConversations();
 
@@ -173,6 +173,14 @@ export function ClientDashboardPage() {
             <Skeleton key={i} className="h-28" />
           ))}
         </div>
+      </div>
+    );
+  }
+
+  if (weddingError && statsError) {
+    return (
+      <div className="py-12 text-center space-y-4">
+        <p className="text-destructive">{t('common.errorOccurred')}</p>
       </div>
     );
   }

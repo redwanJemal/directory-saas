@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { colors } from '@/lib/colors';
 
 interface CountdownCardProps {
   daysUntilWedding: number;
@@ -25,7 +26,7 @@ export function CountdownCard({
 
   return (
     <LinearGradient
-      colors={['#4c6ef5', '#7950f2']}
+      colors={[colors.brand[600], colors.brand[900]]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       className="mx-4 overflow-hidden rounded-card"

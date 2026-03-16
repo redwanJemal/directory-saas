@@ -12,8 +12,8 @@ import { useHealthQuery } from './hooks/use-settings';
 
 function PlatformSettingsTab() {
   const { t } = useTranslation();
-  const [appName, setAppName] = useState('Directory SaaS');
-  const [supportEmail, setSupportEmail] = useState('support@example.com');
+  const [appName, setAppName] = useState('');
+  const [supportEmail, setSupportEmail] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
   function handleSave(e: React.FormEvent) {
@@ -67,6 +67,7 @@ function ServiceStatus({
   name: string;
   status: 'up' | 'down' | 'unknown';
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-between py-2">
       <span className="text-sm font-medium capitalize">{name}</span>
@@ -74,22 +75,22 @@ function ServiceStatus({
         <span
           className={`h-2.5 w-2.5 rounded-full ${
             status === 'up'
-              ? 'bg-green-500'
+              ? 'bg-primary'
               : status === 'down'
-                ? 'bg-red-500'
+                ? 'bg-destructive'
                 : 'bg-muted-foreground'
           }`}
         />
         <span
           className={`text-sm ${
             status === 'up'
-              ? 'text-green-600 dark:text-green-400'
+              ? 'text-primary'
               : status === 'down'
-                ? 'text-red-600 dark:text-red-400'
+                ? 'text-destructive'
                 : 'text-muted-foreground'
           }`}
         >
-          {status === 'up' ? 'Healthy' : status === 'down' ? 'Unhealthy' : 'Unknown'}
+          {status === 'up' ? t('settings.healthy') : status === 'down' ? t('settings.unhealthy') : t('settings.unknown')}
         </span>
       </div>
     </div>

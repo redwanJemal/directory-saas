@@ -13,7 +13,7 @@ import { useBudget } from './hooks/use-budget';
 
 export function BudgetPage() {
   const { t } = useTranslation();
-  const { data: budget, isLoading } = useBudget();
+  const { data: budget, isLoading, error, refetch } = useBudget();
   const [addOpen, setAddOpen] = useState(false);
 
   if (isLoading) {
@@ -26,6 +26,17 @@ export function BudgetPage() {
             <Skeleton key={i} className="h-24" />
           ))}
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-12 text-center space-y-4">
+        <p className="text-destructive">{t('common.errorOccurred')}</p>
+        <Button variant="outline" onClick={() => refetch()}>
+          {t('common.retry')}
+        </Button>
       </div>
     );
   }

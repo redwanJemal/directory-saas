@@ -43,7 +43,10 @@
     "theme": "Theme",
     "light": "Light",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "clearFilters": "Clear filters",
+    "selected": "selected",
+    "columns": "Columns"
   },
   "auth": {
     "login": "Sign In",
@@ -202,7 +205,10 @@
     "apiUrl": "API URL",
     "saved": "Settings saved successfully",
     "lastChecked": "Last checked: {{time}}",
-    "autoRefreshNote": "Health checks refresh automatically every 30 seconds."
+    "autoRefreshNote": "Health checks refresh automatically every 30 seconds.",
+    "healthy": "Healthy",
+    "unhealthy": "Unhealthy",
+    "unknown": "Unknown"
   },
   "errors": {
     "required": "This field is required",

@@ -19,7 +19,7 @@ export function ChecklistPage() {
   const [filter, setFilter] = useState<FilterTab>('all');
   const [addOpen, setAddOpen] = useState(false);
 
-  const { data: tasks, isLoading } = useChecklist({ filter });
+  const { data: tasks, isLoading, error, refetch } = useChecklist({ filter });
 
   const allTasks = tasks ?? [];
   const completedCount = allTasks.filter((t) => t.completed).length;
@@ -61,6 +61,17 @@ export function ChecklistPage() {
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-16" />
         <Skeleton className="h-64" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-12 text-center space-y-4">
+        <p className="text-destructive">{t('common.errorOccurred')}</p>
+        <Button variant="outline" onClick={() => refetch()}>
+          {t('common.retry')}
+        </Button>
       </div>
     );
   }

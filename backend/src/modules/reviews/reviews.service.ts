@@ -58,9 +58,9 @@ export class ReviewsService {
     }
 
     return ServiceResult.ok({
-      averageRating: aggregate._avg.rating ?? 0,
-      totalCount: aggregate._count.id,
-      ratingDistribution,
+      average: aggregate._avg.rating ?? 0,
+      total: aggregate._count.id,
+      distribution: ratingDistribution,
     });
   }
 

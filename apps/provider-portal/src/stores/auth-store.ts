@@ -128,8 +128,10 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       return null;
     }
     try {
-      const response = await api.post<{ data: { accessToken: string; refreshToken: string } }>(
-        '/auth/refresh',
+      const axios = (await import('axios')).default;
+      const baseURL = api.defaults.baseURL;
+      const response = await axios.post<{ data: { accessToken: string; refreshToken: string } }>(
+        `${baseURL}/auth/refresh`,
         { refreshToken: currentRefreshToken },
       );
       const { accessToken, refreshToken: newRefreshToken } = response.data.data;

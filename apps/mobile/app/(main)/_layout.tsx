@@ -1,7 +1,49 @@
+import { useEffect } from 'react';
 import { Tabs, Redirect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 import { useAuthStore } from '@/store/auth-store';
+import { springConfig } from '@/lib/animations';
+import { haptics } from '@/lib/haptics';
+
+function AnimatedTabIcon({
+  focused,
+  name,
+  color,
+  size,
+}: {
+  focused: boolean;
+  name: React.ComponentProps<typeof Ionicons>['name'];
+  color: string;
+  size: number;
+}) {
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    if (focused) {
+      scale.value = withSpring(1.15, springConfig.bouncy);
+      setTimeout(() => {
+        scale.value = withSpring(1, springConfig.gentle);
+      }, 100);
+      haptics.light();
+    }
+  }, [focused]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  return (
+    <Animated.View style={animatedStyle}>
+      <Ionicons name={name} size={size} color={color} />
+    </Animated.View>
+  );
+}
 
 export default function MainLayout() {
   const { t } = useTranslation();
@@ -34,8 +76,13 @@ export default function MainLayout() {
         name="index"
         options={{
           title: t('tabs.home'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <AnimatedTabIcon
+              focused={focused}
+              name="home-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -43,8 +90,13 @@ export default function MainLayout() {
         name="search"
         options={{
           title: t('tabs.search'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <AnimatedTabIcon
+              focused={focused}
+              name="search-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -52,8 +104,13 @@ export default function MainLayout() {
         name="bookings"
         options={{
           title: t('tabs.bookings'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <AnimatedTabIcon
+              focused={focused}
+              name="calendar-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -61,8 +118,13 @@ export default function MainLayout() {
         name="planner"
         options={{
           title: t('tabs.planner'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="clipboard-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <AnimatedTabIcon
+              focused={focused}
+              name="clipboard-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -70,8 +132,13 @@ export default function MainLayout() {
         name="profile"
         options={{
           title: t('tabs.profile'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <AnimatedTabIcon
+              focused={focused}
+              name="person-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

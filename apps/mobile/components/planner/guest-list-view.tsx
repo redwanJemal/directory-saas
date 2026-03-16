@@ -1,27 +1,50 @@
 import { useState, useCallback } from 'react';
-import { View, Text, Pressable, FlatList, RefreshControl, Alert, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  RefreshControl,
+  Alert,
+  TextInput,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useGuests, useGuestSummary, useDeleteGuest, type Guest } from '@/hooks/api/use-guests';
+import {
+  useGuests,
+  useGuestSummary,
+  useDeleteGuest,
+  type Guest,
+} from '@/hooks/api/use-guests';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState } from '@/components/empty-state';
 import { StatCard } from '@/components/stat-card';
 import { AddGuestSheet } from './add-guest-sheet';
+import { staggeredFadeIn } from '@/lib/animations';
+import { haptics } from '@/lib/haptics';
 
 export function GuestListView() {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [showAddSheet, setShowAddSheet] = useState(false);
-  const { data: guests, isLoading, refetch, isRefetching } = useGuests(search || undefined);
+  const {
+    data: guests,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useGuests(search || undefined);
   const { data: summary } = useGuestSummary();
   const deleteGuest = useDeleteGuest();
 
   const handleDelete = useCallback(
     (guest: Guest) => {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      haptics.heavy();
       Alert.alert(
         t('common.confirm'),
         t('common.delete') + ` "${guest.name}"?`,
@@ -39,8 +62,10 @@ export function GuestListView() {
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: Guest }) => (
-      <GuestItem guest={item} onDelete={handleDelete} />
+    ({ item, index }: { item: Guest; index: number }) => (
+      <Animated.View entering={staggeredFadeIn(index)}>
+        <GuestItem guest={item} onDelete={handleDelete} />
+      </Animated.View>
     ),
     [handleDelete],
   );
@@ -122,7 +147,14 @@ export function GuestListView() {
         renderItem={renderItem}
         contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#4c6ef5" />
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              haptics.light();
+              refetch();
+            }}
+            tintColor="#4c6ef5"
+          />
         }
         ListEmptyComponent={
           <EmptyState
@@ -142,7 +174,10 @@ export function GuestListView() {
         <Ionicons name="person-add" size={24} color="#fff" />
       </Pressable>
 
-      <AddGuestSheet visible={showAddSheet} onClose={() => setShowAddSheet(false)} />
+      <AddGuestSheet
+        visible={showAddSheet}
+        onClose={() => setShowAddSheet(false)}
+      />
     </View>
   );
 }
@@ -187,7 +222,7 @@ function GuestItem({
   const statusStyle = statusColors[guest.rsvpStatus] ?? statusColors.pending;
 
   return (
-    <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} className="mb-2">
+    <View className="mb-2">
       <View className="overflow-hidden rounded-card">
         {/* Swipe background (delete) */}
         <Animated.View
@@ -211,7 +246,9 @@ function GuestItem({
 
             {/* Content */}
             <View className="flex-1">
-              <Text className="text-base font-medium text-content">{guest.name}</Text>
+              <Text className="text-base font-medium text-content">
+                {guest.name}
+              </Text>
               <Text className="mt-0.5 text-xs capitalize text-content-secondary">
                 {guest.relationship}
               </Text>
@@ -219,13 +256,15 @@ function GuestItem({
 
             {/* RSVP Status badge */}
             <View className={`rounded-full px-2.5 py-1 ${statusStyle.bg}`}>
-              <Text className={`text-xs font-medium capitalize ${statusStyle.text}`}>
+              <Text
+                className={`text-xs font-medium capitalize ${statusStyle.text}`}
+              >
                 {guest.rsvpStatus}
               </Text>
             </View>
           </Animated.View>
         </GestureDetector>
       </View>
-    </Animated.View>
+    </View>
   );
 }

@@ -4,8 +4,10 @@ import Animated, {
   useSharedValue,
   withRepeat,
   withTiming,
+  interpolate,
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface SkeletonProps {
   width?: DimensionValue;
@@ -14,22 +16,51 @@ interface SkeletonProps {
   className?: string;
 }
 
-export function Skeleton({ width, height = 20, borderRadius = 8, className }: SkeletonProps) {
-  const opacity = useSharedValue(0.3);
+export function Skeleton({
+  width,
+  height = 20,
+  borderRadius = 8,
+  className,
+}: SkeletonProps) {
+  const shimmer = useSharedValue(0);
 
   useEffect(() => {
-    opacity.value = withRepeat(withTiming(0.7, { duration: 800 }), -1, true);
-  }, [opacity]);
+    shimmer.value = withRepeat(withTiming(1, { duration: 1200 }), -1, false);
+  }, [shimmer]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
+  const shimmerStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: interpolate(shimmer.value, [0, 1], [-200, 200]),
+      },
+    ],
   }));
 
   return (
-    <Animated.View
-      className={`bg-surface-tertiary ${className || ''}`}
-      style={[{ width: width as number | undefined, height, borderRadius }, animatedStyle]}
-    />
+    <View
+      className={`overflow-hidden bg-surface-tertiary ${className || ''}`}
+      style={{ width: width as number | undefined, height, borderRadius }}
+    >
+      <Animated.View
+        style={[
+          {
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            width: 200,
+          },
+          shimmerStyle,
+        ]}
+      >
+        <LinearGradient
+          colors={['transparent', 'rgba(255,255,255,0.15)', 'transparent']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{ flex: 1 }}
+        />
+      </Animated.View>
+    </View>
   );
 }
 

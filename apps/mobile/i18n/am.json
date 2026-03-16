@@ -245,12 +245,18 @@
     "myVendors": "አቅራቢዎቼ",
     "findMore": "ተጨማሪ ፈልግ"
   },
+  "notifications": {
+    "permissionTitle": "ማሳወቂያዎችን ያንቁ",
+    "permissionMessage": "ስለ መልእክቶች፣ ቦታ ማስያዣዎች እና ማስታወሻዎች ዝማኔዎችን ያግኙ",
+    "enable": "አንቃ",
+    "later": "ቆይተው"
+  },
   "errors": {
     "networkError": "የአውታረ መረብ ስህተት። ግንኙነትዎን ያረጋግጡ።",
     "serverError": "የአገልጋይ ስህተት። እባክዎ ቆይተው ይሞክሩ።",
     "unauthorized": "ክፍለ ጊዜው አልቋል። እባክዎ እንደገና ይግቡ።",
     "forbidden": "ለዚህ ድርጊት ፈቃድ የለዎትም።",
-    "notFound": "የተጠየቀው ግብአት አልተገኘም።",
+    "notFound": "የተጠየቁው ግብአት አልተገኘም።",
     "rateLimited": "ብዙ ጥያቄዎች። እባክዎ ትንሽ ይጠብቁ።",
     "validationError": "እባክዎ ግብአትዎን ያረጋግጡ እና እንደገና ይሞክሩ።"
   }

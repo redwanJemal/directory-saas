@@ -2,13 +2,24 @@ import { useState, useCallback } from 'react';
 import { View, Text, Pressable, FlatList, RefreshControl } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useChecklist, useToggleTask, useDeleteTask, type ChecklistTask } from '@/hooks/api/use-checklist';
+import {
+  useChecklist,
+  useToggleTask,
+  type ChecklistTask,
+} from '@/hooks/api/use-checklist';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState } from '@/components/empty-state';
 import { AddTaskSheet } from './add-task-sheet';
+import { staggeredFadeIn } from '@/lib/animations';
+import { haptics } from '@/lib/haptics';
 
 type FilterType = 'all' | 'overdue' | 'upcoming' | 'completed';
 
@@ -16,12 +27,19 @@ export function ChecklistView() {
   const { t } = useTranslation();
   const [filter, setFilter] = useState<FilterType>('all');
   const [showAddSheet, setShowAddSheet] = useState(false);
-  const { data: tasks, isLoading, refetch, isRefetching } = useChecklist(filter);
+  const {
+    data: tasks,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useChecklist(filter);
   const toggleTask = useToggleTask();
 
-  const completedCount = tasks?.filter((task) => task.isCompleted).length ?? 0;
+  const completedCount =
+    tasks?.filter((task) => task.isCompleted).length ?? 0;
   const totalCount = tasks?.length ?? 0;
-  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+  const progressPercent =
+    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const filters: { key: FilterType; label: string }[] = [
     { key: 'all', label: t('checklist.all') },
@@ -30,9 +48,16 @@ export function ChecklistView() {
     { key: 'completed', label: t('checklist.completed') },
   ];
 
+  const handleFilterChange = (key: FilterType) => {
+    haptics.light();
+    setFilter(key);
+  };
+
   const renderItem = useCallback(
-    ({ item }: { item: ChecklistTask }) => (
-      <TaskItem task={item} onToggle={toggleTask} />
+    ({ item, index }: { item: ChecklistTask; index: number }) => (
+      <Animated.View entering={staggeredFadeIn(index)}>
+        <TaskItem task={item} onToggle={toggleTask} />
+      </Animated.View>
     ),
     [toggleTask],
   );
@@ -41,7 +66,10 @@ export function ChecklistView() {
     return (
       <View className="flex-1 px-4 pt-4">
         {Array.from({ length: 5 }).map((_, i) => (
-          <View key={i} className="mb-3 flex-row items-center rounded-card bg-surface-secondary p-3">
+          <View
+            key={i}
+            className="mb-3 flex-row items-center rounded-card bg-surface-secondary p-3"
+          >
             <Skeleton width={24} height={24} borderRadius={12} />
             <View className="ml-3 flex-1">
               <Skeleton width="70%" height={16} />
@@ -58,7 +86,10 @@ export function ChecklistView() {
       {/* Progress bar */}
       <View className="mx-4 mt-4">
         <Text className="mb-2 text-sm text-content-secondary">
-          {t('checklist.progress', { done: completedCount, total: totalCount })}
+          {t('checklist.progress', {
+            done: completedCount,
+            total: totalCount,
+          })}
         </Text>
         <View className="h-2 overflow-hidden rounded-full bg-surface-secondary">
           <View
@@ -76,11 +107,13 @@ export function ChecklistView() {
             className={`mr-2 rounded-full px-3 py-1.5 ${
               filter === f.key ? 'bg-brand-600' : 'bg-surface-secondary'
             }`}
-            onPress={() => setFilter(f.key)}
+            onPress={() => handleFilterChange(f.key)}
           >
             <Text
               className={`text-xs font-medium ${
-                filter === f.key ? 'text-content-inverse' : 'text-content-secondary'
+                filter === f.key
+                  ? 'text-content-inverse'
+                  : 'text-content-secondary'
               }`}
             >
               {f.label}
@@ -96,7 +129,14 @@ export function ChecklistView() {
         renderItem={renderItem}
         contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#4c6ef5" />
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              haptics.light();
+              refetch();
+            }}
+            tintColor="#4c6ef5"
+          />
         }
         ListEmptyComponent={
           <EmptyState
@@ -116,7 +156,10 @@ export function ChecklistView() {
         <Ionicons name="add" size={28} color="#fff" />
       </Pressable>
 
-      <AddTaskSheet visible={showAddSheet} onClose={() => setShowAddSheet(false)} />
+      <AddTaskSheet
+        visible={showAddSheet}
+        onClose={() => setShowAddSheet(false)}
+      />
     </View>
   );
 }
@@ -139,7 +182,7 @@ function TaskItem({
     })
     .onEnd((e) => {
       if (e.translationX > 60 && !task.isCompleted) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        haptics.success();
         onToggle.mutate({ id: task.id, isCompleted: true });
       }
       translateX.value = withSpring(0);
@@ -154,12 +197,12 @@ function TaskItem({
   }));
 
   const handleToggle = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    haptics.selection();
     onToggle.mutate({ id: task.id, isCompleted: !task.isCompleted });
   };
 
   return (
-    <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} className="mb-2">
+    <View className="mb-2">
       <View className="overflow-hidden rounded-card">
         {/* Swipe background */}
         <Animated.View
@@ -212,6 +255,6 @@ function TaskItem({
           </Animated.View>
         </GestureDetector>
       </View>
-    </Animated.View>
+    </View>
   );
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-16T00:01:01.475342+00:00",
-  "current_task": "35-provider-profile",
+  "last_updated": "2026-03-16T02:30:00.000000+00:00",
+  "current_task": "37-web-public",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -489,19 +489,19 @@
     },
     "36-provider-pages": {
       "title": "Provider Portal \u2014 Bookings, Reviews, Team, Messages, Calendar",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "bookings-page": "pending",
-        "reviews-page": "pending",
-        "team-page": "pending",
-        "messages-page": "pending",
-        "calendar-page": "pending",
-        "analytics-page": "pending",
-        "settings-page": "pending"
+        "bookings-page": "completed",
+        "reviews-page": "completed",
+        "team-page": "completed",
+        "messages-page": "completed",
+        "calendar-page": "completed",
+        "analytics-page": "completed",
+        "settings-page": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-16T00:12:01Z",
+      "completed_at": "2026-03-16T02:30:00Z",
+      "notes": "All 7 provider pages implemented. Bookings: data table with status tabs, detail sheet, send quote dialog, status update dialog. Reviews: rating summary card with distribution bars, review cards with star display, respond dialog. Team: data table, invite/change role/remove dialogs. Messages: split panel with conversation list and message thread, polling every 5s. Calendar: month grid with booking events, click date for details, block/unblock dates. Analytics: stat cards with trends, line/bar charts with recharts, conversion funnel. Settings: notification toggles, business hours grid, account settings with password change and delete. Data table components copied from admin. All strings i18n (en + am). Build passes with 0 errors."
     },
     "37-web-public": {
       "title": "Web App \u2014 Public Layout, Landing Page, Vendor Search",

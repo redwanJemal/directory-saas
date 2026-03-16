@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { api } from '@/lib/api';
 import type { AuthState, AuthActions, AuthResponse, TenantLoginCredentials, User } from '@/lib/auth-types';
+import { useTenantStore } from '@/stores/tenant-store';
 
 const TOKEN_KEY = 'saas_provider_token';
 const REFRESH_KEY = 'saas_provider_refresh_token';
@@ -53,6 +54,14 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       const response = await api.post<{ data: AuthResponse }>('/auth/tenant/login', credentials);
       const { accessToken, refreshToken, user } = response.data.data;
       saveToStorage(accessToken, refreshToken, user);
+      // Set tenant context from user info
+      if (user.tenantId && user.tenantSlug) {
+        useTenantStore.getState().setTenant({
+          id: user.tenantId,
+          slug: user.tenantSlug,
+          name: user.tenantSlug, // Use slug as fallback name
+        });
+      }
       set({
         user,
         token: accessToken,
@@ -75,6 +84,7 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       api.post('/auth/logout').catch(() => {});
     }
     clearStorage();
+    useTenantStore.getState().clearTenant();
     set({
       user: null,
       token: null,

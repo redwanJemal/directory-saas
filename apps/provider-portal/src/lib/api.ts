@@ -7,9 +7,14 @@ export const api = axios.create({
 
 // Lazy import to avoid circular dependencies
 let getAuthStore: (() => { token: string | null; refreshAccessToken: () => Promise<string | null>; logout: () => void }) | null = null;
+let getTenantStore: (() => { tenantId: string | null }) | null = null;
 
 export function initializeApiAuth(storeGetter: typeof getAuthStore) {
   getAuthStore = storeGetter;
+}
+
+export function initializeApiTenant(storeGetter: typeof getTenantStore) {
+  getTenantStore = storeGetter;
 }
 
 // Request interceptor — attach auth token
@@ -18,6 +23,12 @@ api.interceptors.request.use((config) => {
     const { token } = getAuthStore();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  if (getTenantStore) {
+    const { tenantId } = getTenantStore();
+    if (tenantId) {
+      config.headers['X-Tenant-ID'] = tenantId;
     }
   }
   return config;

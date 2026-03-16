@@ -4,8 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router';
 import { Toaster } from '@/components/ui/sonner';
 import { applyBrandHue } from '@/lib/branding';
-import { initializeApiAuth } from '@/lib/api';
+import { initializeApiAuth, initializeApiTenant } from '@/lib/api';
 import { useAuthStore } from '@/stores/auth-store';
+import { useTenantStore } from '@/stores/tenant-store';
 import './i18n';
 import App from './App';
 import './index.css';
@@ -13,8 +14,9 @@ import './index.css';
 // Apply brand hue on startup
 applyBrandHue();
 
-// Initialize API auth integration
+// Initialize API auth + tenant integration
 initializeApiAuth(() => useAuthStore.getState());
+initializeApiTenant(() => useTenantStore.getState());
 
 const queryClient = new QueryClient({
   defaultOptions: {

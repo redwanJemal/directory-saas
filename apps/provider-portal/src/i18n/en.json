@@ -9,7 +9,8 @@
     "messages": "Messages",
     "team": "Team",
     "analytics": "Analytics",
-    "settings": "Settings"
+    "settings": "Settings",
+    "collapse": "Collapse"
   },
   "common": {
     "appName": "Provider Portal",

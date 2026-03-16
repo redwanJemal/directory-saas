@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-15T23:44:35.289292+00:00",
-  "current_task": "33-admin-pages",
+  "last_updated": "2026-03-16T12:00:00.000000+00:00",
+  "current_task": "35-provider-profile",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -460,18 +460,18 @@
     },
     "34-provider-layout": {
       "title": "Provider Portal \u2014 Layout, Navigation, Dashboard",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "dashboard-layout": "pending",
-        "sidebar": "pending",
-        "header": "pending",
-        "routing": "pending",
-        "dashboard-page": "pending",
-        "placeholder-pages": "pending"
+        "dashboard-layout": "completed",
+        "sidebar": "completed",
+        "header": "completed",
+        "routing": "completed",
+        "dashboard-page": "completed",
+        "placeholder-pages": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-15T23:55:50Z",
+      "completed_at": "2026-03-16T12:00:00Z",
+      "notes": "Tenant context store with localStorage persistence. API client sends X-Tenant-ID header. Auth store integrates with tenant store on login/logout. Collapsible sidebar with 10 provider nav items, tooltips when collapsed, localStorage persistence. Header with mobile Sheet drawer, LanguageSwitcher, ThemeToggle, UserMenu showing tenant name. Dashboard with 4 stat cards, recent bookings/reviews, quick actions. 9 placeholder pages. All strings i18n (en + am). Build passes 0 errors."
     },
     "35-provider-profile": {
       "title": "Provider Portal \u2014 Profile & Portfolio Management",

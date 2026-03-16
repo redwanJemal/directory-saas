@@ -177,7 +177,8 @@
     "category": "ምድብ",
     "amount": "መጠን",
     "description": "መግለጫ",
-    "noExpenses": "ምንም ወጪ አልተመዘገበም"
+    "noExpenses": "ምንም ወጪ አልተመዘገበም",
+    "vendorName": "የአቅራቢ ስም"
   },
   "messages": {
     "title": "መልእክቶች",

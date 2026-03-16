@@ -57,6 +57,10 @@ export default function RootLayout() {
             name="booking/[id]"
             options={{ animation: 'slide_from_right', headerShown: false }}
           />
+          <Stack.Screen
+            name="chat/[conversationId]"
+            options={{ animation: 'slide_from_right', headerShown: false }}
+          />
         </Stack>
       </View>
     </QueryClientProvider>

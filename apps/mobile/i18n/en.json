@@ -177,7 +177,8 @@
     "category": "Category",
     "amount": "Amount",
     "description": "Description",
-    "noExpenses": "No expenses recorded"
+    "noExpenses": "No expenses recorded",
+    "vendorName": "Vendor Name"
   },
   "messages": {
     "title": "Messages",

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-16T02:20:57.902425+00:00",
-  "current_task": "46-mobile-polish",
+  "last_updated": "2026-03-16T02:29:15.874287+00:00",
+  "current_task": "47-production-deployment",
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -649,15 +649,18 @@
     },
     "47-production-deployment": {
       "title": "Production Deployment \u2014 Coolify, Domain Routing, SSL",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "docker-compose": "pending",
-        "traefik-labels": "pending",
-        "nginx-configs": "pending",
-        "env-template": "pending",
-        "deploy-script": "pending",
-        "documentation": "pending"
-      }
+        "docker-compose": "completed",
+        "traefik-labels": "completed",
+        "nginx-configs": "completed",
+        "env-template": "completed",
+        "deploy-script": "completed",
+        "documentation": "completed"
+      },
+      "started_at": "2026-03-16T02:29:15Z",
+      "completed_at": "2026-03-16T03:33:00Z",
+      "notes": "Full production deployment setup. docker-compose.coolify.yml rewritten with Traefik labels for subdomain routing (api/app/admin/s3 + wildcard for provider portals), health checks on all services, Redis memory limits, Meilisearch memory config. Per-app nginx configs (web.conf, admin.conf, provider.conf) with gzip, security headers, SPA fallback, asset caching, health endpoint. Dockerfiles updated with VITE_* build args and curl-based healthcheck. .env.production.example with all required variables. deploy.sh script (build/deploy/migrate/seed/status/logs/stop). Comprehensive docs/deployment.md with DNS, SSL, troubleshooting, production checklist. 729 tests pass, build clean."
     },
     "48-api-integration": {
       "title": "API Integration Verification \u2014 No Demo Data, Real Endpoints",

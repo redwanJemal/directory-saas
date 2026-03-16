@@ -5,8 +5,6 @@ services:
       dockerfile: docker/Dockerfile.api
     container_name: directory-saas-api
     restart: unless-stopped
-    ports:
-      - "${API_PORT:-3000}:3000"
     environment:
       NODE_ENV: production
       APP_PORT: 3000
@@ -16,20 +14,27 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      JWT_ACCESS_EXPIRY: ${JWT_ACCESS_EXPIRY:-15m}
+      JWT_REFRESH_EXPIRY: ${JWT_REFRESH_EXPIRY:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS}
       S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_URL: ${S3_PUBLIC_URL:-https://s3.${DOMAIN}}
       S3_ACCESS_KEY: ${MINIO_ROOT_USER}
       S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
       S3_BUCKET: ${S3_BUCKET:-directory-saas}
       S3_REGION: ${S3_REGION:-us-east-1}
       MEILISEARCH_URL: http://meilisearch:7700
       MEILISEARCH_API_KEY: ${MEILI_MASTER_KEY}
-      SMTP_HOST: ${SMTP_HOST:-mailpit}
-      SMTP_PORT: ${SMTP_PORT:-1025}
-      SMTP_USER: ${SMTP_USER:-}
-      SMTP_PASS: ${SMTP_PASS:-}
-      SMTP_FROM: ${SMTP_FROM:-noreply@directory.local}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: ${SMTP_FROM}
+      SMTP_SECURE: ${SMTP_SECURE:-true}
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      THROTTLE_TTL: ${THROTTLE_TTL:-60}
+      THROTTLE_LIMIT: ${THROTTLE_LIMIT:-100}
+      DOMAIN: ${DOMAIN}
     networks:
       - internal
       - coolify
@@ -38,54 +43,110 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      meilisearch:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.http.routers.api.entrypoints=https"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.services.api.loadbalancer.server.port=3000"
+      - "traefik.http.routers.api.middlewares=api-cors@docker"
+      # CORS middleware
+      - "traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods=GET,POST,PUT,PATCH,DELETE,OPTIONS"
+      - "traefik.http.middlewares.api-cors.headers.accesscontrolallowheaders=Content-Type,Authorization,X-Tenant-ID,X-Tenant-Slug"
+      - "traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist=https://app.${DOMAIN},https://admin.${DOMAIN},https://*.${DOMAIN}"
+      - "traefik.http.middlewares.api-cors.headers.accesscontrolmaxage=86400"
 
   web:
     build:
       context: ..
       dockerfile: docker/Dockerfile.web
+      args:
+        VITE_API_URL: https://api.${DOMAIN}
+        VITE_BRAND_NAME: ${BRAND_NAME:-Directory SaaS}
+        VITE_BRAND_HUE: ${BRAND_HUE:-230}
     container_name: directory-saas-web
     restart: unless-stopped
-    ports:
-      - "${WEB_PORT:-3010}:80"
     networks:
       - internal
       - coolify
     depends_on:
       - api
-
-  provider-portal:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.provider
-    container_name: directory-saas-provider
-    restart: unless-stopped
-    ports:
-      - "${PROVIDER_PORT:-3011}:80"
-    networks:
-      - internal
-      - coolify
-    depends_on:
-      - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`app.${DOMAIN}`)"
+      - "traefik.http.routers.web.entrypoints=https"
+      - "traefik.http.routers.web.tls=true"
+      - "traefik.http.services.web.loadbalancer.server.port=80"
 
   admin:
     build:
       context: ..
       dockerfile: docker/Dockerfile.admin
+      args:
+        VITE_API_URL: https://api.${DOMAIN}
+        VITE_BRAND_NAME: ${BRAND_NAME:-Directory SaaS}
+        VITE_BRAND_HUE: ${BRAND_HUE:-230}
     container_name: directory-saas-admin
     restart: unless-stopped
-    ports:
-      - "${ADMIN_PORT:-3012}:80"
     networks:
       - internal
       - coolify
     depends_on:
       - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.admin.rule=Host(`admin.${DOMAIN}`)"
+      - "traefik.http.routers.admin.entrypoints=https"
+      - "traefik.http.routers.admin.tls=true"
+      - "traefik.http.services.admin.loadbalancer.server.port=80"
+
+  provider-portal:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.provider
+      args:
+        VITE_API_URL: https://api.${DOMAIN}
+        VITE_BRAND_NAME: ${BRAND_NAME:-Directory SaaS}
+        VITE_BRAND_HUE: ${BRAND_HUE:-230}
+    container_name: directory-saas-provider
+    restart: unless-stopped
+    networks:
+      - internal
+      - coolify
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      # Wildcard: any subdomain not matched by api/web/admin → provider portal
+      # Priority lower than specific subdomain routes
+      - "traefik.http.routers.provider.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.${DOMAIN}`) && !Host(`api.${DOMAIN}`) && !Host(`app.${DOMAIN}`) && !Host(`admin.${DOMAIN}`) && !Host(`s3.${DOMAIN}`)"
+      - "traefik.http.routers.provider.entrypoints=https"
+      - "traefik.http.routers.provider.tls=true"
+      - "traefik.http.routers.provider.priority=1"
+      - "traefik.http.services.provider.loadbalancer.server.port=80"
 
   postgres:
     image: pgvector/pgvector:pg16
@@ -110,7 +171,7 @@ services:
     image: redis:7-alpine
     container_name: directory-saas-redis
     restart: unless-stopped
-    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD} --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
     networks:
@@ -139,6 +200,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    labels:
+      - "traefik.enable=true"
+      # MinIO API (for public file access via presigned URLs)
+      - "traefik.http.routers.minio.rule=Host(`s3.${DOMAIN}`)"
+      - "traefik.http.routers.minio.entrypoints=https"
+      - "traefik.http.routers.minio.tls=true"
+      - "traefik.http.services.minio.loadbalancer.server.port=9000"
 
   meilisearch:
     image: getmeili/meilisearch:v1.12
@@ -147,6 +215,7 @@ services:
     environment:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
       MEILI_ENV: production
+      MEILI_MAX_INDEXING_MEMORY: 512MiB
     volumes:
       - meilisearch_data:/meili_data
     networks:

@@ -60,6 +60,11 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry && getAuthStore) {
       const store = getAuthStore();
 
+      // Don't attempt refresh if user has no token (unauthenticated)
+      if (!store.token) {
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });

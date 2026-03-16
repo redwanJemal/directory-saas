@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { PublicLayout } from '@/components/layout/public-layout';
+import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { LoginPage } from '@/features/auth/login-page';
 import { RegisterPage } from '@/features/auth/register-page';
 import { ProtectedRoute } from '@/components/layout/protected-route';
@@ -8,15 +8,14 @@ import { LandingPage } from '@/features/landing/landing-page';
 import { VendorSearchPage } from '@/features/search/vendor-search-page';
 import { VendorProfilePage } from '@/features/search/vendor-profile-page';
 import { CategoriesPage } from '@/features/categories/categories-page';
-
-function DashboardPlaceholder() {
-  const { t } = useTranslation();
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold text-foreground">{t('dashboard.title')}</h1>
-    </div>
-  );
-}
+import { ClientDashboardPage } from '@/features/dashboard/client-dashboard-page';
+import { WeddingPage } from '@/features/wedding/wedding-page';
+import { GuestListPage } from '@/features/guests/guest-list-page';
+import { BudgetPage } from '@/features/budget/budget-page';
+import { ChecklistPage } from '@/features/checklist/checklist-page';
+import { MyVendorsPage } from '@/features/vendors/my-vendors-page';
+import { MessagesPage } from '@/features/messages/messages-page';
+import { SettingsPage } from '@/features/settings/settings-page';
 
 export default function App() {
   return (
@@ -35,7 +34,16 @@ export default function App() {
 
       {/* Protected dashboard routes */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardPlaceholder />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<ClientDashboardPage />} />
+          <Route path="/dashboard/wedding" element={<WeddingPage />} />
+          <Route path="/dashboard/guests" element={<GuestListPage />} />
+          <Route path="/dashboard/budget" element={<BudgetPage />} />
+          <Route path="/dashboard/checklist" element={<ChecklistPage />} />
+          <Route path="/dashboard/vendors" element={<MyVendorsPage />} />
+          <Route path="/dashboard/messages" element={<MessagesPage />} />
+          <Route path="/dashboard/settings" element={<SettingsPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

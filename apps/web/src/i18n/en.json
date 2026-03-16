@@ -13,7 +13,8 @@
     "checklist": "Checklist",
     "vendors": "My Vendors",
     "messages": "Messages",
-    "settings": "Settings"
+    "settings": "Settings",
+    "collapse": "Collapse"
   },
   "common": {
     "appName": "Directory SaaS",
@@ -134,7 +135,8 @@
     "message": "Message",
     "sendInquiry": "Send Inquiry",
     "inquirySent": "Inquiry sent! The vendor will respond shortly.",
-    "popular": "Most Popular"
+    "popular": "Most Popular",
+    "findMore": "Find More Vendors"
   },
   "categories": {
     "photography": "Photography",
@@ -222,7 +224,15 @@
     "attending": "Attending",
     "declined": "Declined",
     "pending": "Pending",
-    "summary": "RSVP Summary"
+    "summary": "RSVP Summary",
+    "family": "Family",
+    "friends": "Friends",
+    "colleagues": "Colleagues",
+    "bride": "Bride",
+    "groom": "Groom",
+    "mutual": "Mutual",
+    "selectFile": "Click to select a CSV file",
+    "importSuccess": "{{count}} guests imported successfully"
   },
   "budget": {
     "title": "Budget",
@@ -234,7 +244,9 @@
     "estimated": "Estimated",
     "actual": "Actual",
     "paid": "Paid",
-    "balance": "Balance"
+    "balance": "Balance",
+    "spendingByCategory": "Spending by Category",
+    "estimatedVsActual": "Estimated vs Actual"
   },
   "checklist": {
     "title": "Checklist",
@@ -252,13 +264,34 @@
     "newMessage": "New Message",
     "typeMessage": "Type a message...",
     "send": "Send",
-    "noMessages": "No messages yet"
+    "noMessages": "No messages yet",
+    "selectConversation": "Select a conversation to start messaging",
+    "quickMessage": "Quick Message"
   },
   "settings": {
     "title": "Settings",
     "account": "Account",
     "notifications": "Notifications",
-    "weddingWebsite": "Wedding Website"
+    "weddingWebsite": "Wedding Website",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "passwordChanged": "Password changed successfully",
+    "dangerZone": "Danger Zone",
+    "deleteAccount": "Delete Account",
+    "deleteAccountWarning": "Once you delete your account, there is no going back. Please be certain.",
+    "deleteAccountConfirm": "Are you sure you want to delete your account? This action cannot be undone.",
+    "notificationPreferences": "Notification Preferences",
+    "emailOnNewMessage": "Email on new message",
+    "emailOnBookingStatusChange": "Email on booking status change",
+    "emailOnVendorResponse": "Email on vendor response",
+    "emailOnRsvpUpdate": "Email on RSVP update",
+    "saved": "Settings saved",
+    "publicWebsite": "Public Wedding Website",
+    "customUrl": "Custom URL",
+    "shareLink": "Share Link",
+    "linkCopied": "Link copied to clipboard"
   },
   "errors": {
     "required": "This field is required",

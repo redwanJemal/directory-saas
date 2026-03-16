@@ -13,7 +13,8 @@
     "checklist": "ቼክሊስት",
     "vendors": "አገልግሎት ሰጪዎቼ",
     "messages": "መልዕክቶች",
-    "settings": "ቅንብሮች"
+    "settings": "ቅንብሮች",
+    "collapse": "አሳንስ"
   },
   "common": {
     "appName": "ዳይሬክቶሪ",
@@ -134,7 +135,8 @@
     "message": "መልዕክት",
     "sendInquiry": "ጥያቄ ላክ",
     "inquirySent": "ጥያቄ ተልኳል! አገልግሎት ሰጪው በቅርቡ ምላሽ ይሰጣል።",
-    "popular": "በጣም ተወዳጅ"
+    "popular": "በጣም ተወዳጅ",
+    "findMore": "ተጨማሪ አገልግሎት ሰጪዎችን ያግኙ"
   },
   "categories": {
     "photography": "ፎቶግራፍ",
@@ -222,7 +224,15 @@
     "attending": "ይመጣል",
     "declined": "አይመጣም",
     "pending": "በመጠባበቅ ላይ",
-    "summary": "የምላሽ ማጠቃለያ"
+    "summary": "የምላሽ ማጠቃለያ",
+    "family": "ቤተሰብ",
+    "friends": "ጓደኞች",
+    "colleagues": "የሥራ ባልደረቦች",
+    "bride": "ሙሽሪት",
+    "groom": "ሙሽራ",
+    "mutual": "የጋራ",
+    "selectFile": "CSV ፋይል ለመምረጥ ጠቅ ያድርጉ",
+    "importSuccess": "{{count}} እንግዶች በተሳካ ሁኔታ ገብተዋል"
   },
   "budget": {
     "title": "በጀት",
@@ -234,7 +244,9 @@
     "estimated": "የሚገመት",
     "actual": "ትክክለኛ",
     "paid": "የተከፈለ",
-    "balance": "ቀሪ ሂሳብ"
+    "balance": "ቀሪ ሂሳብ",
+    "spendingByCategory": "በምድብ ወጪ",
+    "estimatedVsActual": "የሚገመት ከትክክለኛው"
   },
   "checklist": {
     "title": "ቼክሊስት",
@@ -252,13 +264,34 @@
     "newMessage": "አዲስ መልዕክት",
     "typeMessage": "መልዕክት ይጻፉ...",
     "send": "ላክ",
-    "noMessages": "ምንም መልዕክቶች የሉም"
+    "noMessages": "ምንም መልዕክቶች የሉም",
+    "selectConversation": "መልዕክት ለመጀመር ውይይት ይምረጡ",
+    "quickMessage": "ፈጣን መልዕክት"
   },
   "settings": {
     "title": "ቅንብሮች",
     "account": "መለያ",
     "notifications": "ማሳወቂያዎች",
-    "weddingWebsite": "የሰርግ ድረ-ገጽ"
+    "weddingWebsite": "የሰርግ ድረ-ገጽ",
+    "changePassword": "የይለፍ ቃል ቀይር",
+    "currentPassword": "የአሁኑ የይለፍ ቃል",
+    "newPassword": "አዲስ የይለፍ ቃል",
+    "confirmPassword": "የይለፍ ቃል አረጋግጥ",
+    "passwordChanged": "የይለፍ ቃል በተሳካ ሁኔታ ተቀይሯል",
+    "dangerZone": "አደገኛ ቦታ",
+    "deleteAccount": "መለያ ሰርዝ",
+    "deleteAccountWarning": "መለያዎን ካጠፉ በኋላ ወደ ኋላ መመለስ አይቻልም። እባክዎ ያረጋግጡ።",
+    "deleteAccountConfirm": "መለያዎን ለመሰረዝ እርግጠኛ ነዎት? ይህ ድርጊት ሊቀለበስ አይችልም።",
+    "notificationPreferences": "የማሳወቂያ ምርጫዎች",
+    "emailOnNewMessage": "በአዲስ መልዕክት ኢሜል",
+    "emailOnBookingStatusChange": "በቦታ ማስያዝ ለውጥ ኢሜል",
+    "emailOnVendorResponse": "በአገልግሎት ሰጪ ምላሽ ኢሜል",
+    "emailOnRsvpUpdate": "በRSVP ዝማኔ ኢሜል",
+    "saved": "ቅንብሮች ተቀምጠዋል",
+    "publicWebsite": "ይፋ የሰርግ ድረ-ገጽ",
+    "customUrl": "ብጁ URL",
+    "shareLink": "ማጋራት ማገናኛ",
+    "linkCopied": "ማገናኛ ተቀድቷል"
   },
   "errors": {
     "required": "ይህ መስክ ያስፈልጋል",

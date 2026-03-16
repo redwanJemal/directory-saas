@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-03-16T02:30:00.000000+00:00",
+  "last_updated": "2026-03-16T01:45:00.000000+00:00",
   "current_task": "37-web-public",
   "current_subtask": null,
   "tasks": {
@@ -505,17 +505,17 @@
     },
     "37-web-public": {
       "title": "Web App \u2014 Public Layout, Landing Page, Vendor Search",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "public-layout": "pending",
-        "landing-page": "pending",
-        "vendor-search": "pending",
-        "vendor-profile": "pending",
-        "categories-page": "pending"
+        "public-layout": "completed",
+        "landing-page": "completed",
+        "vendor-search": "completed",
+        "vendor-profile": "completed",
+        "categories-page": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-16T00:27:39Z",
+      "completed_at": "2026-03-16T01:45:00Z",
+      "notes": "Public layout (header/footer), landing page (hero search, featured vendors, how it works, categories, testimonials, CTA), vendor search with filters/sort/pagination, vendor profile with tabs (About, Portfolio, Packages, Reviews, FAQ), categories page, inquiry form dialog. All strings i18n (en+am). Build passes with 0 errors, 729 backend tests pass."
     },
     "38-web-dashboard": {
       "title": "Web App \u2014 Client Dashboard, Wedding Planner Tools",

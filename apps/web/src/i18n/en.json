@@ -109,7 +109,11 @@
     "startingFrom": "From {{price}}",
     "viewProfile": "View Profile",
     "mapView": "Map View",
-    "listView": "List View"
+    "listView": "List View",
+    "featured": "Featured",
+    "anyRating": "Any",
+    "minPrice": "Min",
+    "maxPrice": "Max"
   },
   "vendor": {
     "about": "About",
@@ -129,7 +133,60 @@
     "budgetRange": "Budget Range",
     "message": "Message",
     "sendInquiry": "Send Inquiry",
-    "inquirySent": "Inquiry sent! The vendor will respond shortly."
+    "inquirySent": "Inquiry sent! The vendor will respond shortly.",
+    "popular": "Most Popular"
+  },
+  "categories": {
+    "photography": "Photography",
+    "catering": "Catering",
+    "venue": "Venue",
+    "decoration": "Decoration",
+    "music": "Music & DJ",
+    "planning": "Wedding Planning",
+    "florist": "Florist",
+    "transport": "Transport",
+    "vendorCount": "{{count}} vendors",
+    "subtitle": "Find the right professionals for every aspect of your event",
+    "photographyDesc": "Capture every precious moment of your special day",
+    "cateringDesc": "Delicious food and beverage services for your event",
+    "venueDesc": "Beautiful locations for your ceremony and reception",
+    "decorationDesc": "Transform your venue with stunning decor",
+    "musicDesc": "Live bands, DJs, and entertainment for your event",
+    "planningDesc": "Expert coordination for a stress-free celebration",
+    "floristDesc": "Beautiful floral arrangements and bouquets",
+    "transportDesc": "Luxury vehicles and transportation services"
+  },
+  "styles": {
+    "elegant": "Elegant",
+    "modern": "Modern",
+    "rustic": "Rustic",
+    "bohemian": "Bohemian",
+    "classic": "Classic",
+    "minimalist": "Minimalist"
+  },
+  "languages": {
+    "english": "English",
+    "amharic": "Amharic",
+    "oromo": "Oromo",
+    "tigrinya": "Tigrinya",
+    "somali": "Somali"
+  },
+  "testimonials": {
+    "quote1": "We found the most amazing photographer through this platform. The whole experience was seamless from search to booking!",
+    "name1": "Sara & Abebe",
+    "quote2": "The vendor comparison feature saved us so much time. We could easily see packages side by side and make the best choice.",
+    "name2": "Meron & Kidus",
+    "quote3": "Every vendor we booked through here was professional and talented. Our wedding was absolutely perfect!",
+    "name3": "Helen & Tewodros"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact Us",
+    "followUs": "Follow Us",
+    "copyright": "© {{year}} {{name}}. All rights reserved."
   },
   "dashboard": {
     "title": "Dashboard",

@@ -109,7 +109,11 @@
     "startingFrom": "ከ {{price}} ጀምሮ",
     "viewProfile": "መገለጫ ተመልከት",
     "mapView": "የካርታ እይታ",
-    "listView": "የዝርዝር እይታ"
+    "listView": "የዝርዝር እይታ",
+    "featured": "ተለይቶ የቀረበ",
+    "anyRating": "ሁሉም",
+    "minPrice": "ዝቅተኛ",
+    "maxPrice": "ከፍተኛ"
   },
   "vendor": {
     "about": "ስለ",
@@ -129,7 +133,60 @@
     "budgetRange": "የበጀት ክልል",
     "message": "መልዕክት",
     "sendInquiry": "ጥያቄ ላክ",
-    "inquirySent": "ጥያቄ ተልኳል! አገልግሎት ሰጪው በቅርቡ ምላሽ ይሰጣል።"
+    "inquirySent": "ጥያቄ ተልኳል! አገልግሎት ሰጪው በቅርቡ ምላሽ ይሰጣል።",
+    "popular": "በጣም ተወዳጅ"
+  },
+  "categories": {
+    "photography": "ፎቶግራፍ",
+    "catering": "ምግብ አገልግሎት",
+    "venue": "ቦታ",
+    "decoration": "ማስጌጥ",
+    "music": "ሙዚቃ እና ዲጄ",
+    "planning": "የሰርግ ዕቅድ",
+    "florist": "አበባ",
+    "transport": "ትራንስፖርት",
+    "vendorCount": "{{count}} አገልግሎት ሰጪዎች",
+    "subtitle": "ለዝግጅትዎ እያንዳንዱ ገጽታ ትክክለኛ ባለሙያዎችን ያግኙ",
+    "photographyDesc": "የልዩ ቀንዎን እያንዳንዱን ውድ ጊዜ ይያዙ",
+    "cateringDesc": "ለዝግጅትዎ ጣፋጭ ምግብ እና መጠጥ አገልግሎቶች",
+    "venueDesc": "ለሥነ ሥርዓትዎ እና ለአቀባበልዎ ቆንጆ ቦታዎች",
+    "decorationDesc": "ቦታዎን በሚያስደንቅ ማስጌጫ ይለውጡ",
+    "musicDesc": "ለዝግጅትዎ የቀጥታ ባንዶች፣ ዲጄዎች እና መዝናኛ",
+    "planningDesc": "ውጥረት ለሌለው ክብረ በዓል ባለሙያ ቅንጅት",
+    "floristDesc": "ቆንጆ የአበባ ዝግጅቶች እና ቡኬቶች",
+    "transportDesc": "የቅንጦት ተሽከርካሪዎች እና የትራንስፖርት አገልግሎቶች"
+  },
+  "styles": {
+    "elegant": "ግርማ ሞገስ",
+    "modern": "ዘመናዊ",
+    "rustic": "ባህላዊ",
+    "bohemian": "ቦሄሚያን",
+    "classic": "ክላሲክ",
+    "minimalist": "ቀላል"
+  },
+  "languages": {
+    "english": "እንግሊዝኛ",
+    "amharic": "አማርኛ",
+    "oromo": "ኦሮምኛ",
+    "tigrinya": "ትግርኛ",
+    "somali": "ሶማሊኛ"
+  },
+  "testimonials": {
+    "quote1": "በዚህ መድረክ በጣም አስደናቂ ፎቶግራፍ አንሺ አገኘን። ሙሉ ልምዱ ከፍለጋ እስከ ማስያዝ ድረስ ቀላል ነበር!",
+    "name1": "ሳራ እና አበበ",
+    "quote2": "የአገልግሎት ሰጪ ማወዳደር ባህሪ ብዙ ጊዜ አዳነን። ፓኬጆችን ጎን ለጎን በቀላሉ ማየት እና ምርጡን ምርጫ ማድረግ ቻልን።",
+    "name2": "ሜሮን እና ቅዱስ",
+    "quote3": "እዚህ ያስያዝናቸው እያንዳንዱ አገልግሎት ሰጪ ባለሙያ እና ተሰጥኦ ያለው ነበር። ሰርጋችን ሙሉ በሙሉ ፍጹም ነበር!",
+    "name3": "ሄለን እና ቴዎድሮስ"
+  },
+  "footer": {
+    "quickLinks": "ፈጣን ማገናኛዎች",
+    "legal": "ህጋዊ",
+    "privacy": "የግላዊነት መመሪያ",
+    "terms": "የአገልግሎት ውል",
+    "contact": "ያግኙን",
+    "followUs": "ይከተሉን",
+    "copyright": "© {{year}} {{name}}. መብቱ በሕግ የተጠበቀ ነው።"
   },
   "dashboard": {
     "title": "ዳሽቦርድ",

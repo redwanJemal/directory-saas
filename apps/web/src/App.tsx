@@ -1,20 +1,13 @@
 import { Routes, Route, Navigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { PublicLayout } from '@/components/layout/public-layout';
 import { LoginPage } from '@/features/auth/login-page';
 import { RegisterPage } from '@/features/auth/register-page';
 import { ProtectedRoute } from '@/components/layout/protected-route';
-
-function LandingPlaceholder() {
-  const { t } = useTranslation();
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground">{t('common.appName')}</h1>
-        <p className="mt-2 text-muted-foreground">{t('landing.heroSubtitle')}</p>
-      </div>
-    </div>
-  );
-}
+import { LandingPage } from '@/features/landing/landing-page';
+import { VendorSearchPage } from '@/features/search/vendor-search-page';
+import { VendorProfilePage } from '@/features/search/vendor-profile-page';
+import { CategoriesPage } from '@/features/categories/categories-page';
 
 function DashboardPlaceholder() {
   const { t } = useTranslation();
@@ -28,14 +21,23 @@ function DashboardPlaceholder() {
 export default function App() {
   return (
     <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<LandingPlaceholder />} />
+      {/* Public routes with PublicLayout */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/search" element={<VendorSearchPage />} />
+        <Route path="/vendors/:vendorId" element={<VendorProfilePage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+      </Route>
+
+      {/* Auth routes (no layout wrapper) */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      {/* Protected routes */}
+
+      {/* Protected dashboard routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPlaceholder />} />
       </Route>
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

@@ -49,6 +49,10 @@ export default function RootLayout() {
             options={{ animation: 'slide_from_bottom' }}
           />
           <Stack.Screen name="(main)" options={{ animation: 'fade' }} />
+          <Stack.Screen
+            name="vendor/[id]"
+            options={{ animation: 'slide_from_right' }}
+          />
         </Stack>
       </View>
     </QueryClientProvider>

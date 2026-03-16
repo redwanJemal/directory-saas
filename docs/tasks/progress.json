@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-03-16T01:02:04.141452+00:00",
-  "current_task": "40-frontend-testing",
+  "last_updated": "2026-03-16T01:20:29.907786+00:00",
+  "current_task": null,
   "current_subtask": null,
   "tasks": {
     "01-project-scaffolding": {
@@ -563,6 +563,98 @@
       "started_at": "2026-03-16T01:02:04Z",
       "completed_at": "2026-03-16T02:20:00Z",
       "notes": "Vitest + Testing Library + MSW installed in all 3 apps. 66 total tests (22 per app): auth store (6), ProtectedRoute (2), Button (4), LoginPage (3), useTheme (2), useDebounce (2), DataTable (3). Test setup with matchMedia/localStorage mocks and MSW server lifecycle. Custom render util wraps with QueryClient + BrowserRouter. MSW handlers mock auth endpoints per app type. ESLint 9 flat config with react-hooks/react-refresh plugins. Prettier config. tsconfig.app.json excludes test files from build. All 3 apps: npm test passes (66 tests), npm run build succeeds (0 errors), npm run lint passes (0 errors, warnings only)."
+    },
+    "41-mobile-scaffolding": {
+      "title": "Mobile App Scaffolding — Expo, NativeWind, Theme, i18n",
+      "status": "pending",
+      "subtasks": {
+        "expo-setup": "pending",
+        "nativewind-theme": "pending",
+        "api-client": "pending",
+        "auth-store": "pending",
+        "i18n": "pending",
+        "navigation": "pending"
+      }
+    },
+    "42-mobile-auth": {
+      "title": "Mobile Auth — Login, Register, Protected Navigation",
+      "status": "pending",
+      "subtasks": {
+        "auth-screens": "pending",
+        "protected-navigation": "pending",
+        "tab-bar": "pending",
+        "profile-screen": "pending"
+      }
+    },
+    "43-mobile-search": {
+      "title": "Mobile Public Screens — Vendor Search, Vendor Profile, Categories",
+      "status": "pending",
+      "subtasks": {
+        "home-screen": "pending",
+        "search-screen": "pending",
+        "vendor-profile": "pending",
+        "categories": "pending",
+        "inquiry-form": "pending"
+      }
+    },
+    "44-mobile-dashboard": {
+      "title": "Mobile Wedding Dashboard — Overview, Stats, Quick Actions",
+      "status": "pending",
+      "subtasks": {
+        "wedding-setup": "pending",
+        "dashboard": "pending",
+        "bookings": "pending",
+        "booking-detail": "pending"
+      }
+    },
+    "45-mobile-planning": {
+      "title": "Mobile Planning Tools — Guest List, Budget, Checklist, Messages",
+      "status": "pending",
+      "subtasks": {
+        "checklist": "pending",
+        "guest-list": "pending",
+        "budget-tracker": "pending",
+        "messages": "pending"
+      }
+    },
+    "46-mobile-polish": {
+      "title": "Mobile Polish — Animations, Haptics, Notifications, Build Config",
+      "status": "pending",
+      "subtasks": {
+        "animations": "pending",
+        "haptics": "pending",
+        "notifications": "pending",
+        "offline-support": "pending",
+        "error-handling": "pending",
+        "build-config": "pending"
+      }
+    },
+    "47-production-deployment": {
+      "title": "Production Deployment — Coolify, Domain Routing, SSL",
+      "status": "pending",
+      "subtasks": {
+        "docker-compose": "pending",
+        "traefik-labels": "pending",
+        "nginx-configs": "pending",
+        "env-template": "pending",
+        "deploy-script": "pending",
+        "documentation": "pending"
+      }
+    },
+    "48-api-integration": {
+      "title": "API Integration Verification — No Demo Data, Real Endpoints",
+      "status": "pending",
+      "subtasks": {
+        "audit-admin": "pending",
+        "audit-provider": "pending",
+        "audit-web": "pending",
+        "audit-mobile": "pending",
+        "auth-flows": "pending",
+        "multi-tenancy": "pending",
+        "error-handling": "pending",
+        "build-validation": "pending",
+        "integration-checklist": "pending"
+      }
     }
   }
 }

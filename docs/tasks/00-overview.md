@@ -98,6 +98,24 @@
 | 39 | Shared Components | Consolidated data table, form components, hooks, error boundary, 404 |
 | 40 | Frontend Testing | Vitest + Testing Library + MSW, ESLint, Prettier, build validation |
 
+## Phase 12: Mobile App (Tasks 41–46)
+
+| # | Task | Description |
+|---|------|-------------|
+| 41 | Mobile Scaffolding | Expo 54, NativeWind 4, theme, i18n (en/am), Zustand, API client |
+| 42 | Mobile Auth | Login, register, forgot password, protected tabs, profile |
+| 43 | Mobile Search | Home dashboard, vendor search, vendor profile, inquiry, categories |
+| 44 | Mobile Dashboard | Wedding setup flow, countdown, stats, bookings, vendor tracking |
+| 45 | Mobile Planning | Checklist, guest list, budget tracker (charts), messaging |
+| 46 | Mobile Polish | Animations, haptics, push notifications, offline support, build config |
+
+## Phase 13: Deployment & Verification (Tasks 47–48)
+
+| # | Task | Description |
+|---|------|-------------|
+| 47 | Production Deployment | Coolify, Traefik labels, subdomain routing, SSL, deploy script |
+| 48 | API Integration Verification | Audit all apps for real API usage, no demo data, build validation |
+
 ---
 
 ## Task Dependencies
@@ -123,6 +141,12 @@
 37 → 38                             (Web pages — sequential)
 33, 36, 38 → 39                     (Shared components after app-specific)
 39 → 40                             (Testing after all components)
+
+41                                  (Mobile — parallel track, needs backend)
+41 → 42 → 43 → 44 → 45 → 46       (Mobile — sequential)
+
+40 → 47                             (Deployment after all apps built)
+46, 47 → 48                         (Integration verification — final task)
 ```
 
 ## Running Tasks

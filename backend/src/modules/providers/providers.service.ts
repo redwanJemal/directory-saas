@@ -541,7 +541,23 @@ export class ProvidersService {
       });
     }
 
-    return ServiceResult.ok(paginate(filtered, totalCount, { page, pageSize }));
+    const mapped = filtered.map((p: any) => ({
+      id: p.id,
+      name: p.displayName || p.tenant?.name || 'Unnamed',
+      slug: p.slug || p.tenant?.slug || p.id,
+      category: p.category?.displayName || p.category?.name || '',
+      location: [p.city, p.state, p.country].filter(Boolean).join(', '),
+      coverPhoto: p.coverImageUrl,
+      rating: Number(p.rating) || 0,
+      reviewCount: p.reviewCount || 0,
+      startingPrice: p.packages?.[0] ? Number(p.packages[0].price) : 0,
+      featured: p.isFeatured || false,
+      description: p.bio || '',
+      styles: Array.isArray(p.styles) ? p.styles : [],
+      languages: Array.isArray(p.languages) ? p.languages : [],
+    }));
+
+    return ServiceResult.ok(paginate(mapped, totalCount, { page, pageSize }));
   }
 
   async getPublicProfile(profileId: string): Promise<ServiceResult<unknown>> {
@@ -562,7 +578,46 @@ export class ProvidersService {
       return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Provider not found');
     }
 
-    return ServiceResult.ok(profile);
+    const p = profile as any;
+    return ServiceResult.ok({
+      id: p.id,
+      name: p.displayName || p.tenant?.name || 'Unnamed',
+      slug: p.slug || p.tenant?.slug || p.id,
+      category: p.category?.displayName || p.category?.name || '',
+      location: [p.city, p.state, p.country].filter(Boolean).join(', '),
+      coverPhoto: p.coverImageUrl,
+      avatar: null,
+      description: p.bio || '',
+      rating: Number(p.rating) || 0,
+      reviewCount: p.reviewCount || 0,
+      startingPrice: p.packages?.[0] ? Number(p.packages[0].price) : 0,
+      responseTime: '24h',
+      styles: Array.isArray(p.styles) ? p.styles : [],
+      languages: Array.isArray(p.languages) ? p.languages : [],
+      contactEmail: p.email || '',
+      contactPhone: p.phone || '',
+      website: p.website,
+      portfolio: (p.portfolioItems || []).map((item: any) => ({
+        id: item.id,
+        url: item.imageUrl,
+        title: item.title || '',
+        description: item.description || '',
+      })),
+      packages: (p.packages || []).map((pkg: any) => ({
+        id: pkg.id,
+        name: pkg.name,
+        price: Number(pkg.price),
+        description: pkg.description || '',
+        inclusions: Array.isArray(pkg.features) ? pkg.features : [],
+        popular: pkg.sortOrder === 0,
+      })),
+      reviews: [],
+      faqs: (p.faqs || []).map((faq: any) => ({
+        id: faq.id,
+        question: faq.question,
+        answer: faq.answer,
+      })),
+    });
   }
 
   // === Categories ===
@@ -579,10 +634,19 @@ export class ProvidersService {
       },
     });
 
-    // Return only top-level categories (with children nested)
+    // Return only top-level categories mapped to frontend format
     const topLevel = categories.filter((c: { parentId: string | null }) => !c.parentId);
 
-    return ServiceResult.ok(topLevel);
+    const mapped = topLevel.map((c: any) => ({
+      id: c.id,
+      name: c.displayName || c.name,
+      slug: c.name.toLowerCase().replace(/\s+/g, '-'),
+      icon: c.icon || '',
+      vendorCount: 0,
+      description: c.description || '',
+    }));
+
+    return ServiceResult.ok(mapped);
   }
 
   // === Helpers ===

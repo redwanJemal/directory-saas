@@ -18,6 +18,15 @@ import { HealthModule } from './modules/health/health.module';
 import { AuditModule } from './modules/audit/audit.module';
 import { SearchModule } from './modules/search/search.module';
 import { AiModule } from './modules/ai/ai.module';
+import { UsersModule } from './modules/users/users.module';
+import { TenantsModule } from './modules/tenants/tenants.module';
+import { ProvidersModule } from './modules/providers/providers.module';
+import { BookingsModule } from './modules/bookings/bookings.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { ConversationsModule } from './modules/conversations/conversations.module';
+import { WeddingsModule } from './modules/weddings/weddings.module';
+import { SettingsModule } from './modules/settings/settings.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -38,6 +47,15 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     AuditModule,
     SearchModule,
     AiModule,
+    UsersModule,
+    TenantsModule,
+    ProvidersModule,
+    BookingsModule,
+    ReviewsModule,
+    ConversationsModule,
+    WeddingsModule,
+    SettingsModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule implements NestModule {

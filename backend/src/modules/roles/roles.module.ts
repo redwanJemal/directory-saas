@@ -1,10 +1,11 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesController, UserRolesController } from './roles.controller';
+import { AdminRolesController } from './admin-roles.controller';
 import { RolesGuard } from '../../common/guards/roles.guard';
 
 @Module({
-  controllers: [RolesController, UserRolesController],
+  controllers: [AdminRolesController, RolesController, UserRolesController],
   providers: [RolesService, RolesGuard],
   exports: [RolesService, RolesGuard],
 })

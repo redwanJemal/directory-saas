@@ -3,6 +3,7 @@ import { AppConfigModule } from '../../config/app-config.module';
 import { JobService } from '../../common/services/job.service';
 import { EmailService } from '../../common/services/email.service';
 import { SearchService } from '../../common/services/search.service';
+import { QueueStatsController } from './queue-stats.controller';
 import { JobsDashboardController } from './jobs-dashboard.controller';
 import { JobsSchedulerService } from './jobs-scheduler.service';
 import {
@@ -17,7 +18,7 @@ import {
 @Global()
 @Module({
   imports: [AppConfigModule],
-  controllers: [JobsDashboardController],
+  controllers: [QueueStatsController, JobsDashboardController],
   providers: [
     JobService,
     EmailService,

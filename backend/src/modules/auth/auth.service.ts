@@ -6,7 +6,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { AppConfigService } from '../../config/app-config.service';
 import { ServiceResult } from '../../common/types';
 import { ErrorCodes } from '../../common/constants/error-codes';
-import { LoginDto, TenantLoginDto, RegisterDto, RefreshTokenDto } from './dto';
+import { LoginDto, TenantLoginDto, RegisterDto, RefreshTokenDto, ChangePasswordDto } from './dto';
 import { JwtPayload } from './jwt.strategy';
 
 const BCRYPT_ROUNDS = 12;
@@ -348,6 +348,94 @@ export class AuthService {
     }
 
     return ServiceResult.fail(ErrorCodes.UNAUTHORIZED, 'Invalid user type');
+  }
+
+  async changePassword(
+    userId: string,
+    userType: string,
+    dto: ChangePasswordDto,
+  ): Promise<ServiceResult<{ success: true }>> {
+    let user: { id: string; passwordHash: string } | null = null;
+
+    if (userType === 'admin') {
+      user = await this.prisma.adminUser.findUnique({
+        where: { id: userId },
+        select: { id: true, passwordHash: true },
+      });
+    } else if (userType === 'tenant') {
+      user = await this.prisma.tenantUser.findUnique({
+        where: { id: userId },
+        select: { id: true, passwordHash: true },
+      });
+    } else if (userType === 'client') {
+      user = await this.prisma.clientUser.findUnique({
+        where: { id: userId },
+        select: { id: true, passwordHash: true },
+      });
+    }
+
+    if (!user) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'User not found');
+    }
+
+    const passwordValid = await bcrypt.compare(dto.currentPassword, user.passwordHash);
+    if (!passwordValid) {
+      return ServiceResult.fail(ErrorCodes.INVALID_CREDENTIALS, 'Current password is incorrect');
+    }
+
+    const newHash = await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS);
+
+    if (userType === 'admin') {
+      await this.prisma.adminUser.update({
+        where: { id: userId },
+        data: { passwordHash: newHash },
+      });
+    } else if (userType === 'tenant') {
+      await this.prisma.tenantUser.update({
+        where: { id: userId },
+        data: { passwordHash: newHash },
+      });
+    } else if (userType === 'client') {
+      await this.prisma.clientUser.update({
+        where: { id: userId },
+        data: { passwordHash: newHash },
+      });
+    }
+
+    return ServiceResult.ok({ success: true });
+  }
+
+  async deleteAccount(
+    userId: string,
+    userType: string,
+  ): Promise<ServiceResult<{ success: true }>> {
+    const now = new Date();
+
+    if (userType === 'admin') {
+      await this.prisma.adminUser.update({
+        where: { id: userId },
+        data: { deletedAt: now, isActive: false },
+      });
+    } else if (userType === 'tenant') {
+      await this.prisma.tenantUser.update({
+        where: { id: userId },
+        data: { deletedAt: now, isActive: false },
+      });
+    } else if (userType === 'client') {
+      await this.prisma.clientUser.update({
+        where: { id: userId },
+        data: { deletedAt: now, isActive: false },
+      });
+    } else {
+      return ServiceResult.fail(ErrorCodes.UNAUTHORIZED, 'Invalid user type');
+    }
+
+    // Delete all refresh tokens for this user
+    await this.prisma.refreshToken.deleteMany({
+      where: { userId, userType },
+    });
+
+    return ServiceResult.ok({ success: true });
   }
 
   private async generateTokens(

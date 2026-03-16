@@ -2,6 +2,8 @@ import {
   Controller,
   Post,
   Get,
+  Patch,
+  Delete,
   Body,
   HttpCode,
   HttpStatus,
@@ -25,6 +27,8 @@ import {
   RegisterDto,
   RefreshTokenSchema,
   RefreshTokenDto,
+  ChangePasswordSchema,
+  ChangePasswordDto,
 } from './dto';
 
 @ApiTags('Auth')
@@ -126,6 +130,32 @@ export class AuthController {
   @Get('me')
   async me(@CurrentUser() user: JwtPayload) {
     const result = await this.authService.getMe(user.sub, user.userType);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  @Patch('change-password')
+  @HttpCode(HttpStatus.OK)
+  async changePassword(
+    @CurrentUser() user: JwtPayload,
+    @Body(new ZodValidationPipe(ChangePasswordSchema)) dto: ChangePasswordDto,
+  ) {
+    const result = await this.authService.changePassword(
+      user.sub,
+      user.userType,
+      dto,
+    );
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  @Delete('account')
+  @HttpCode(HttpStatus.OK)
+  async deleteAccount(@CurrentUser() user: JwtPayload) {
+    const result = await this.authService.deleteAccount(
+      user.sub,
+      user.userType,
+    );
     if (!result.success) throw result.toHttpException();
     return result.data;
   }

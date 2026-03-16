@@ -7,6 +7,7 @@ import {
   Put,
   Param,
   Body,
+  Query,
   HttpCode,
   HttpStatus,
   UseGuards,
@@ -27,6 +28,8 @@ import {
   AssignSubscriptionDto,
   SetOverridesSchema,
   SetOverridesDto,
+  ChangeSubscriptionPlanSchema,
+  ChangeSubscriptionPlanDto,
 } from './dto';
 
 // === Admin Plan Management ===
@@ -108,10 +111,63 @@ export class AdminTenantSubscriptionController {
   }
 }
 
+// === Admin Subscriptions List ===
+
+@Controller('admin/subscriptions')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('SUPER_ADMIN')
+export class AdminSubscriptionsListController {
+  constructor(private readonly subscriptionsService: SubscriptionsService) {}
+
+  @Get()
+  async list(
+    @Query('page') page?: string,
+    @Query('pageSize') pageSize?: string,
+    @Query('status') status?: string,
+  ) {
+    const pageNum = Math.max(1, parseInt(page || '1', 10) || 1);
+    const pageSizeNum = Math.min(100, Math.max(1, parseInt(pageSize || '20', 10) || 20));
+    const filters = status ? { status } : undefined;
+
+    const result = await this.subscriptionsService.listAllSubscriptions(
+      pageNum,
+      pageSizeNum,
+      filters,
+    );
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  @Patch(':id')
+  async changePlan(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(ChangeSubscriptionPlanSchema)) dto: ChangeSubscriptionPlanDto,
+  ) {
+    const result = await this.subscriptionsService.changeSubscriptionPlan(id, dto);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+}
+
 // === Public Plans ===
 
 @Controller('plans')
 export class PublicPlansController {
+  constructor(private readonly subscriptionsService: SubscriptionsService) {}
+
+  @Get()
+  @Public()
+  async listAvailable() {
+    const result = await this.subscriptionsService.listPlans(true);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+}
+
+// === Public Subscription Plans Alias ===
+
+@Controller('subscription-plans')
+export class PublicSubscriptionPlansAliasController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
   @Get()

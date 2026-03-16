@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { TenantCacheService } from '../../common/services/tenant-cache.service';
 import { ServiceResult } from '../../common/types';
+import { PaginatedResult, paginate } from '../../common/dto/pagination.dto';
 import { ErrorCodes } from '../../common/constants/error-codes';
-import { CreatePlanDto, UpdatePlanDto, AssignSubscriptionDto, SetOverridesDto } from './dto';
+import { CreatePlanDto, UpdatePlanDto, AssignSubscriptionDto, SetOverridesDto, ChangeSubscriptionPlanDto } from './dto';
 
 @Injectable()
 export class SubscriptionsService {
@@ -254,6 +255,77 @@ export class SubscriptionsService {
       features: subscription.plan.features,
       overrides: subscription.overrides,
     });
+  }
+
+  // === Admin Subscription List ===
+
+  async listAllSubscriptions(
+    page: number,
+    pageSize: number,
+    filters?: { status?: string },
+  ): Promise<ServiceResult<unknown>> {
+    const where: Record<string, unknown> = {};
+    if (filters?.status) {
+      where.status = filters.status;
+    }
+
+    const [rawItems, totalCount] = await Promise.all([
+      this.prisma.tenantSubscription.findMany({
+        where,
+        include: { tenant: { select: { id: true, name: true } }, plan: { select: { id: true, name: true, displayName: true } } },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.tenantSubscription.count({ where }),
+    ]);
+
+    const items = rawItems.map((s) => ({
+      id: s.id,
+      tenantId: s.tenantId,
+      tenant: s.tenant,
+      planId: s.planId,
+      plan: s.plan,
+      status: s.status.toLowerCase(),
+      startDate: s.startedAt?.toISOString() ?? null,
+      endDate: s.renewsAt?.toISOString() ?? null,
+      createdAt: s.createdAt.toISOString(),
+      updatedAt: s.updatedAt.toISOString(),
+    }));
+
+    return ServiceResult.ok(paginate(items, totalCount, { page, pageSize }));
+  }
+
+  async changeSubscriptionPlan(
+    subscriptionId: string,
+    dto: ChangeSubscriptionPlanDto,
+  ): Promise<ServiceResult<unknown>> {
+    const subscription = await this.prisma.tenantSubscription.findUnique({
+      where: { id: subscriptionId },
+    });
+    if (!subscription) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Subscription not found');
+    }
+
+    const plan = await this.prisma.subscriptionPlan.findUnique({
+      where: { id: dto.planId },
+    });
+    if (!plan) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Plan not found');
+    }
+    if (!plan.isActive) {
+      return ServiceResult.fail(ErrorCodes.CONFLICT, 'Cannot assign an inactive plan');
+    }
+
+    const updated = await this.prisma.tenantSubscription.update({
+      where: { id: subscriptionId },
+      data: { planId: dto.planId },
+      include: { tenant: true, plan: true },
+    });
+
+    await this.invalidateTenantCaches(subscription.tenantId);
+
+    return ServiceResult.ok(updated);
   }
 
   // === Cache invalidation ===

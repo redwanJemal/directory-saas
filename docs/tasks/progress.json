@@ -1,684 +1,288 @@
 {
-  "version": 1,
-  "last_updated": "2026-03-16T02:46:15.143686+00:00",
+  "version": 2,
+  "project": "Habesha Hub",
+  "last_updated": "2026-03-18T00:00:00Z",
   "current_task": null,
   "current_subtask": null,
   "tasks": {
-    "01-project-scaffolding": {
-      "title": "Project Scaffolding \u2014 NestJS Monorepo + Prisma + Docker",
-      "status": "completed",
+    "50-schema-seed-habesha": {
+      "title": "Schema & Seed — Habesha Hub Domain",
+      "status": "pending",
       "subtasks": {
-        "backend": "completed",
-        "frontend-web": "completed",
-        "frontend-provider": "completed",
-        "frontend-admin": "completed",
-        "docker": "completed",
-        "scripts": "completed"
+        "schema-updates": "pending",
+        "migration": "pending",
+        "seed-categories": "pending",
+        "seed-demo-businesses": "pending",
+        "update-dtos": "pending",
+        "tests": "pending"
       },
-      "started_at": "2026-03-15T13:18:38Z",
-      "completed_at": "2026-03-15T14:30:00Z",
-      "notes": "All scaffolding complete. Backend builds, tests pass (14/14). All 3 frontend apps build with Vite. Docker compose configured with postgres (pgvector), redis, minio, meilisearch, mailpit."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "02-database-schema": {
-      "title": "Database Schema & Prisma Setup",
-      "status": "completed",
+    "51-multi-category": {
+      "title": "Multi-Category Tagging",
+      "status": "pending",
       "subtasks": {
-        "schema": "completed",
-        "base-entities": "completed",
-        "migration": "completed",
-        "seed": "completed"
+        "category-assignment-api": "pending",
+        "search-by-category": "pending",
+        "category-tree-with-counts": "pending",
+        "tests": "pending"
       },
-      "started_at": "2026-03-15T13:27:17Z",
-      "completed_at": "2026-03-15T15:00:00Z",
-      "notes": "Full Prisma schema with 11 models (AdminUser, Tenant, TenantUser, ClientUser, Role, Permission, RolePermission, UserRole, RefreshToken, SubscriptionPlan, TenantSubscription, AuditLog), 4 enums, PostgreSQL extensions (uuid-ossp, pgvector, pg_trgm). Idempotent seed with admin user, 3 subscription plans, CRUD permissions for 5 resources, and demo tenant. Build passes, all 14 tests pass."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "03-configuration-management": {
-      "title": "Configuration & Environment Management",
-      "status": "completed",
+    "52-country-city": {
+      "title": "Country & City Support",
+      "status": "pending",
       "subtasks": {
-        "config-module": "completed",
-        "env-validation": "completed",
-        "env-files": "completed"
+        "location-constants": "pending",
+        "location-api": "pending",
+        "search-by-location": "pending",
+        "profile-location-validation": "pending",
+        "tests": "pending"
       },
-      "started_at": "2026-03-15T13:30:22Z",
-      "completed_at": "2026-03-15T14:34:00Z",
-      "notes": "Zod config schema with fail-fast validation, typed AppConfigService, AppConfigModule (global), .env.example with docs, .env.test for test overrides. 42 tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "04-exception-handling": {
-      "title": "Exception Handling & Error Response Format",
-      "status": "completed",
+    "53-business-verification": {
+      "title": "Business Verification System",
+      "status": "pending",
       "subtasks": {
-        "exception-filter": "completed",
-        "error-codes": "completed",
-        "validation-pipe": "completed",
-        "tests": "completed"
+        "schema": "pending",
+        "provider-api": "pending",
+        "admin-api": "pending",
+        "search-ranking": "pending",
+        "tests": "pending"
       },
-      "started_at": "2026-03-15T13:51:26Z",
-      "completed_at": "2026-03-15T14:52:00Z",
-      "notes": "ErrorCodes + ErrorCodeHttpStatus mapping, AppException extending HttpException, GlobalExceptionFilter (handles AppException/ZodError/HttpException/Prisma/unknown), ZodValidationPipe with field-level errors, ServiceResult.toHttpException(). 90 tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "05-request-response-envelope": {
-      "title": "Request/Response Envelope & API Conventions",
-      "status": "completed",
+    "54-whatsapp-contact": {
+      "title": "WhatsApp & Contact Integration",
+      "status": "pending",
       "subtasks": {
-        "interceptor": "completed",
-        "pagination": "completed",
-        "conventions-doc": "completed",
-        "tests": "completed"
+        "schema": "pending",
+        "contact-click-api": "pending",
+        "whatsapp-url-generation": "pending",
+        "provider-analytics": "pending",
+        "tests": "pending"
       },
-      "started_at": "2026-03-15T13:52:54Z",
-      "completed_at": "2026-03-15T14:55:00Z",
-      "notes": "TransformInterceptor wraps all responses in {success, data, timestamp, traceId} envelope. PaginatedResult class + paginate() utility for paginated responses with pagination metadata. Backend api-response.types.ts + frontend types already aligned. Registered globally in main.ts. 17 new tests (8 interceptor + 9 pagination), 107 total tests pass."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "06-logging-infrastructure": {
-      "title": "Logging Infrastructure \u2014 Structured JSON, Tracing",
-      "status": "completed",
+    "55-deals-promotions": {
+      "title": "Deals & Promotions Module",
+      "status": "pending",
       "subtasks": {
-        "logger-service": "completed",
-        "request-logging": "completed",
-        "correlation-id": "completed",
-        "tests": "completed"
+        "deals-crud": "pending",
+        "public-deals-api": "pending",
+        "expiry-job": "pending",
+        "search-integration": "pending",
+        "tests": "pending"
       },
-      "started_at": "2026-03-15T13:55:38Z",
-      "completed_at": "2026-03-15T15:02:00Z",
-      "notes": "Pino-based structured logger (JSON in prod, pretty in dev), RequestContext with AsyncLocalStorage, CorrelationIdMiddleware, RequestLoggingMiddleware. 148 tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "07-multi-tenancy-middleware": {
-      "title": "Multi-Tenancy Middleware \u2014 Tenant Resolution",
-      "status": "completed",
+    "56-branding-theme": {
+      "title": "Branding & Theme — Habesha Hub",
+      "status": "pending",
       "subtasks": {
-        "middleware": "completed",
-        "tenant-context": "completed",
-        "interceptor": "completed",
-        "tests": "completed"
+        "brand-identity": "pending",
+        "web-app": "pending",
+        "admin-app": "pending",
+        "provider-portal": "pending",
+        "docker-env": "pending"
       },
-      "started_at": "2026-03-15T14:02:27Z",
-      "completed_at": "2026-03-15T15:07:00Z",
-      "notes": "TenantResolutionMiddleware resolves from subdomain/X-Tenant-ID/X-Tenant-Slug/JWT (priority order). TenantCacheService with 30s TTL (in-memory, swap to Redis in task 14). TenantScopeInterceptor auto-injects tenantId on write ops. CurrentTenant decorator. Skips admin/auth/health/docs routes. 190 total tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "08-postgresql-rls": {
-      "title": "PostgreSQL Row-Level Security Policies",
-      "status": "completed",
+    "57-web-homepage-search": {
+      "title": "Web App — Homepage & Search",
+      "status": "pending",
       "subtasks": {
-        "rls-sql": "completed",
-        "prisma-extension": "completed",
-        "migration": "completed",
-        "tests": "completed"
+        "homepage-hero": "pending",
+        "category-grid": "pending",
+        "featured-businesses": "pending",
+        "deals-section": "pending",
+        "search-page": "pending",
+        "search-bar": "pending"
       },
-      "started_at": "2026-03-15T14:07:34Z",
-      "completed_at": "2026-03-15T15:20:00Z",
-      "notes": "RLS enabled on 6 tenant-scoped tables (tenant_users, roles, role_permissions, user_roles, audit_logs, tenant_subscriptions) with FORCE ROW LEVEL SECURITY. Policies use app.current_tenant_id session variable for tenant isolation and app.bypass_rls for admin bypass. Prisma extension (withRLS/withRLSBypass) wraps queries in transactions with SET LOCAL. PrismaService exposes .rls (auto from RequestContext), .rlsBypass (admin), and .forTenant(id) methods. 25 new tests (215 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "09-authentication-system": {
-      "title": "Authentication \u2014 JWT + Refresh + 3 User Types",
-      "status": "completed",
+    "58-web-business-profile": {
+      "title": "Web App — Business Profile Page",
+      "status": "pending",
       "subtasks": {
-        "auth-module": "completed",
-        "jwt-strategy": "completed",
-        "refresh-tokens": "completed",
-        "admin-auth": "completed",
-        "tenant-auth": "completed",
-        "client-auth": "completed",
-        "tests": "completed"
+        "profile-page": "pending",
+        "whatsapp-cta": "pending",
+        "review-submission": "pending",
+        "share-social": "pending",
+        "related-businesses": "pending"
       },
-      "started_at": "2026-03-15T14:21:25Z",
-      "completed_at": "2026-03-15T15:30:00Z",
-      "notes": "Full auth system with 3 login flows (admin, tenant, client), client registration, JWT access tokens (15m) + refresh token rotation (7d, SHA-256 hashed, max 5 per user). @Public() decorator skips auth, @CurrentUser() extracts JWT payload. GET /me returns user profile with permissions for tenant users. JwtAuthGuard with TOKEN_EXPIRED vs UNAUTHORIZED distinction. 246 total tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "10-rbac-permissions": {
-      "title": "RBAC & Permissions System",
-      "status": "completed",
+    "59-web-browse-discovery": {
+      "title": "Web App — Browse & Discovery",
+      "status": "pending",
       "subtasks": {
-        "roles-module": "completed",
-        "permission-guard": "completed",
-        "decorators": "completed",
-        "caching": "completed",
-        "seed": "completed",
-        "tests": "completed"
+        "category-page": "pending",
+        "city-page": "pending",
+        "deals-page": "pending",
+        "recently-added": "pending",
+        "navigation": "pending"
       },
-      "started_at": "2026-03-15T14:28:58Z",
-      "completed_at": "2026-03-15T15:37:00Z",
-      "notes": "Full RBAC system: @Roles() and @RequirePermission() decorators, RolesGuard with 30s in-memory permission cache, roles CRUD module with tenant scoping, manage wildcard permission, default system roles (OWNER/ADMIN/MANAGER/MEMBER) seeded per tenant, 20 permissions across 6 resources. 291 total tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "11-subscription-plan-limits": {
-      "title": "Subscription & Plan Limit Enforcement",
-      "status": "completed",
+    "60-admin-moderation": {
+      "title": "Admin — Business Moderation",
+      "status": "pending",
       "subtasks": {
-        "plans-module": "completed",
-        "plan-guard": "completed",
-        "usage-tracking": "completed",
-        "tests": "completed"
+        "verification-queue": "pending",
+        "business-management": "pending",
+        "review-moderation": "pending",
+        "dashboard-updates": "pending"
       },
-      "started_at": "2026-03-15T14:37:59Z",
-      "completed_at": "2026-03-15T16:00:00Z",
-      "notes": "Full subscriptions module: Admin CRUD for plans, tenant subscription management, per-tenant overrides. PlanLimitGuard with @PlanLimit() decorator enforces resource limits (users, storage). FeatureGateGuard with @FeatureGate() decorator enforces feature access. Usage counts cached with 60s TTL. Admin bypass for both guards. Seed data updated to match spec (Starter free/3 users, Professional $49/25 users, Enterprise $199/unlimited). 341 total tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "12-query-parameters-filtering": {
-      "title": "Query Parameters \u2014 Filters, Sorting, Pagination, Includes",
-      "status": "completed",
+    "61-provider-customization": {
+      "title": "Provider Portal — Habesha Customization",
+      "status": "pending",
       "subtasks": {
-        "query-dto": "completed",
-        "filter-parser": "completed",
-        "array-filters": "completed",
-        "sorting": "completed",
-        "pagination": "completed",
-        "includes": "completed",
-        "prisma-builder": "completed",
-        "tests": "completed"
+        "profile-setup": "pending",
+        "deals-manager": "pending",
+        "contact-analytics": "pending",
+        "dashboard": "pending",
+        "whatsapp-setup": "pending"
       },
-      "started_at": "2026-03-15T14:48:25Z",
-      "completed_at": "2026-03-15T16:35:00Z",
-      "notes": "QueryParameters DTO with types/interfaces, QueryParametersPipe (bracket-notation filter parsing, sort, pagination, includes with allowlists), buildPrismaQuery helper (maps all operators to Prisma where/orderBy/skip/take/include with auto soft-delete filter). 63 new tests (404 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "13-rate-limiting": {
-      "title": "Rate Limiting \u2014 Redis Sliding Window",
-      "status": "completed",
+    "62-i18n-amharic-arabic": {
+      "title": "i18n — Amharic & Arabic",
+      "status": "pending",
       "subtasks": {
-        "throttler-module": "completed",
-        "per-tenant": "completed",
-        "per-endpoint": "completed",
-        "headers": "completed",
-        "tests": "completed"
+        "amharic-translations": "pending",
+        "arabic-translations": "pending",
+        "rtl-support": "pending",
+        "language-switcher": "pending",
+        "provider-admin-translations": "pending"
       },
-      "started_at": "2026-03-15T15:36:27Z",
-      "completed_at": "2026-03-15T16:43:00Z",
-      "notes": "Redis sliding window rate limiting using ioredis sorted sets. RedisService (connection manager), RateLimitService (sliding window check with sorted sets), ThrottlerGuard (global APP_GUARD with multi-tier rate limiting), @Throttle() and @SkipThrottle() decorators. Tiers: per-IP (100/60s), auth endpoints (10/60s), upload endpoints (20/60s), per-tenant (1000/60s), per-user (300/60s). X-RateLimit-Limit/Remaining/Reset headers on all responses, Retry-After on 429. Fail-open on Redis errors. X-Forwarded-For proxy support. 27 new tests (431 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "14-caching-layer": {
-      "title": "Caching Layer \u2014 Redis, Tenant-Aware",
-      "status": "completed",
+    "63-community-events": {
+      "title": "Community Events Module",
+      "status": "pending",
       "subtasks": {
-        "cache-service": "completed",
-        "tenant-keys": "completed",
-        "invalidation": "completed",
-        "decorator": "completed",
-        "tests": "completed"
+        "backend": "pending",
+        "frontend": "pending"
       },
-      "started_at": "2026-03-15T15:43:25Z",
-      "completed_at": "2026-03-15T16:48:00Z",
-      "notes": "CacheService with tenant-aware keys (saas:{tenantId}:{namespace}:{key}), default 5min TTL, pattern-based invalidation via SCAN, getOrSet cache-aside pattern. @Cacheable and @CacheEvict decorators with custom keyGenerator support. Platform cache via _platform tenantId. All 452 tests pass, build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "15-file-storage": {
-      "title": "File Storage \u2014 MinIO/S3, Tenant-Scoped",
-      "status": "completed",
+    "64-job-board": {
+      "title": "Job Board Module",
+      "status": "pending",
       "subtasks": {
-        "storage-service": "completed",
-        "upload-endpoint": "completed",
-        "presigned-urls": "completed",
-        "tenant-buckets": "completed",
-        "tests": "completed"
+        "backend": "pending",
+        "frontend": "pending"
       },
-      "started_at": "2026-03-15T15:48:47Z",
-      "completed_at": "2026-03-15T16:55:00Z",
-      "notes": "StorageService with S3Client (MinIO-compatible, forcePathStyle), tenant-scoped keys ({tenantId}/{folder}/{uuid}-{name}), presigned read/upload URLs (1h default), auto bucket creation on init. UploadsModule with controller (POST upload, POST presigned, GET presigned/:key, DELETE :key), service with file validation (10MB max, MIME type allowlist, extension-MIME matching), tenant isolation (key prefix check). 29 new tests (481 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "16-background-jobs": {
-      "title": "Background Jobs \u2014 BullMQ + Redis",
-      "status": "completed",
+    "65-telegram-mini-app": {
+      "title": "Telegram Mini App",
+      "status": "pending",
       "subtasks": {
-        "bull-module": "completed",
-        "job-processor": "completed",
-        "retry-policy": "completed",
-        "dead-letter": "completed",
-        "dashboard": "completed",
-        "tests": "completed"
+        "bot-setup": "pending",
+        "mini-app": "pending",
+        "channel-posting": "pending"
       },
-      "started_at": "2026-03-15T15:54:44Z",
-      "completed_at": "2026-03-15T17:05:00Z",
-      "notes": "BullMQ with Redis backend. 6 named queues (email, notification, export, cleanup, indexing, ai) + dead-letter queue. JobService for adding immediate/delayed/recurring jobs. BaseProcessor with worker lifecycle, retry tracking, and automatic DLQ routing on final failure. Per-queue retry policies (email: 5 retries, AI: 2 retries, others: 3) with exponential backoff. Scheduled jobs: cleanup-refresh-tokens (daily 2 AM), cleanup-expired-uploads (daily 3 AM). Bull Board dashboard at /api/v1/admin/queues (admin-only). 47 new tests (528 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "17-event-system": {
-      "title": "Domain Event System \u2014 Async Handlers",
-      "status": "completed",
+    "66-seo-social": {
+      "title": "SEO & Social Sharing",
+      "status": "pending",
       "subtasks": {
-        "event-bus": "completed",
-        "event-handler": "completed",
-        "event-store": "completed",
-        "tests": "completed"
+        "meta-tags": "pending",
+        "structured-data": "pending",
+        "sitemap": "pending",
+        "social-cards": "pending"
       },
-      "started_at": "2026-03-15T16:03:15Z",
-      "completed_at": "2026-03-15T17:15:00Z",
-      "notes": "EventEmitter2-based event bus (wildcard, dot-delimited). 14 typed domain events (tenant/user/auth/entity/subscription/role) with DomainEvent base class carrying traceId/tenantId/userId from RequestContext. EventStoreService persists events to domain_events table. EventHandlersService with @OnEvent(async:true) handlers for all events. Prisma migration for domain_events table. 53 new tests (581 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "18-email-notifications": {
-      "title": "Email & Notification Service",
-      "status": "completed",
+    "67-analytics-dashboard": {
+      "title": "Analytics & Growth Dashboard",
+      "status": "pending",
       "subtasks": {
-        "email-service": "completed",
-        "templates": "completed",
-        "in-app": "completed",
-        "tests": "completed"
+        "provider-analytics": "pending",
+        "admin-metrics": "pending"
       },
-      "started_at": "2026-03-15T16:15:16Z",
-      "completed_at": "2026-03-15T17:25:00Z",
-      "notes": "EmailService with nodemailer SMTP + BullMQ queue integration (send, sendBulk, sendDirect, renderTemplate). 4 HTML email templates (welcome, password-reset, tenant-invite, plan-upgrade) with variable substitution. Notification model in Prisma schema with userId/userType/type/readAt. NotificationsModule with full CRUD: list (paginated, filterable by read/unread/type), markRead, markAllRead, getUnreadCount \u2014 all scoped to userId+userType. EmailProcessor updated to use EmailService.sendDirect. NotificationProcessor creates in-app notifications via Prisma. Push notification stub included. 22 new tests (603 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "19-security-hardening": {
-      "title": "Security Hardening \u2014 Helmet, CORS, Sanitization",
-      "status": "completed",
+    "68-payment-integration": {
+      "title": "Payment Integration",
+      "status": "pending",
       "subtasks": {
-        "helmet": "completed",
-        "cors": "completed",
-        "sanitization": "completed",
-        "csrf": "completed",
-        "tests": "completed"
+        "stripe-integration": "pending",
+        "checkout-flow": "pending",
+        "webhook-handler": "pending",
+        "subscription-management": "pending"
       },
-      "started_at": "2026-03-15T16:24:57Z",
-      "completed_at": "2026-03-15T17:30:00Z",
-      "notes": "Helmet with production CSP, HSTS (1yr, includeSubDomains). CORS with explicit origin allowlist, methods, allowed/exposed headers, 86400s maxAge. SanitizePipe strips all HTML tags from string inputs (global pipe). SecurityHeadersMiddleware adds X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy. Request body size limited to 1MB. ESLint rule bans $queryRawUnsafe/$executeRawUnsafe. 17 new tests (620 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "20-health-checks": {
-      "title": "Health Checks & Readiness Probes",
-      "status": "completed",
+    "69-multi-country-deployment": {
+      "title": "Multi-Country Deployment",
+      "status": "pending",
       "subtasks": {
-        "liveness": "completed",
-        "readiness": "completed",
-        "dependency-checks": "completed",
-        "tests": "completed"
+        "country-routing": "pending",
+        "country-landing-pages": "pending",
+        "deployment": "pending"
       },
-      "started_at": "2026-03-15T16:30:42Z",
-      "completed_at": "2026-03-15T17:35:00Z",
-      "notes": "@nestjs/terminus health module. GET /api/v1/health (liveness, always 200). GET /api/v1/health/ready (readiness: PostgreSQL, Redis, MinIO, Meilisearch, disk, memory heap checks). Custom HealthIndicators for each dependency. @Public() decorator skips auth. Middleware already skips health paths. 15 new tests (635 total), build clean."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     },
-    "21-audit-logging": {
-      "title": "Audit Logging \u2014 Entity Change Tracking",
-      "status": "completed",
+    "70-mobile-app": {
+      "title": "Mobile App — Expo",
+      "status": "pending",
       "subtasks": {
-        "audit-module": "completed",
-        "interceptor": "completed",
-        "query-api": "completed",
-        "tests": "completed"
+        "home-screen": "pending",
+        "search": "pending",
+        "business-profile": "pending",
+        "saved-businesses": "pending",
+        "push-notifications": "pending"
       },
-      "started_at": "2026-03-15T16:36:27Z",
-      "completed_at": "2026-03-15T18:50:00Z",
-      "notes": "AuditService with immutable log() and findAll() methods, sensitive data masking (passwordHash, twoFactorSecret, tokenHash, etc.). AuditInterceptor auto-captures POST/PATCH/PUT/DELETE with entity/entityId/newData/metadata. @Audited() decorator for selective auditing. Tenant-scoped GET /api/v1/tenants/:tenantId/audit-logs and admin GET /api/v1/admin/audit-logs with filtering (entity, action, userId, dateRange) and sorting. 33 new tests (668 total), build clean."
-    },
-    "22-search-infrastructure": {
-      "title": "Full-Text & Vector Search",
-      "status": "completed",
-      "subtasks": {
-        "meilisearch": "completed",
-        "pgvector": "completed",
-        "indexing": "completed",
-        "search-api": "completed",
-        "tests": "completed"
-      },
-      "started_at": "2026-03-15T19:13:25Z",
-      "completed_at": "2026-03-15T20:25:00Z",
-      "notes": "Meilisearch SearchService (create index, index/remove documents, search with tenant isolation via filterable tenantId). VectorSearchService with pgvector raw SQL (store/remove embeddings, cosine similarity search, HNSW index). Embedding model in Prisma schema with unique constraint on [tenantId, entity, entityId]. SearchIndexSyncService listens to entity.created/updated/deleted events, queues BullMQ indexing jobs. IndexingProcessor updated to use SearchService for index/reindex/remove operations. SearchModule with unified GET /api/v1/search endpoint (fulltext/semantic/hybrid modes). SearchFacadeService orchestrates Meilisearch + pgvector. 33 new tests (701 total), build clean."
-    },
-    "23-ai-module": {
-      "title": "AI Module \u2014 Vercel AI SDK, Tools, Streaming",
-      "status": "completed",
-      "subtasks": {
-        "ai-service": "completed",
-        "tool-system": "completed",
-        "streaming": "completed",
-        "prompts": "completed",
-        "tests": "completed"
-      },
-      "started_at": "2026-03-15T19:24:57Z",
-      "completed_at": "2026-03-15T21:10:00Z",
-      "notes": "Vercel AI SDK v6 with configurable provider (Anthropic/OpenAI) via AiProviderFactory. SSE streaming chat endpoint at POST /api/v1/ai/chat. 4 AI tools: searchProviders (Meilisearch integration), estimateBudget (weighted allocation), checkAvailability (stub), createPlan (structured output). AiConversation Prisma model for conversation memory. Conversation CRUD endpoints. Feature-gated to ai-planner (Professional+ plans). Stricter rate limit (10 req/min). AI SDK types isolated via dynamic require to avoid TypeScript OOM. SWC builder enabled for NestJS. 28 new tests (729 total), build clean."
-    },
-    "24-testing-infrastructure": {
-      "title": "Testing \u2014 Jest Unit + E2E + Factories",
-      "status": "completed",
-      "subtasks": {
-        "jest-config": "completed",
-        "test-db": "completed",
-        "factories": "completed",
-        "e2e-setup": "completed",
-        "coverage": "completed"
-      },
-      "started_at": "2026-03-15T20:11:02Z",
-      "completed_at": "2026-03-15T21:17:00Z",
-      "notes": "jest.config.ts with moduleNameMapper (@common, @modules, @config), coverage thresholds (70/75/80/80), coverage exclusions (modules, main, DTOs, index). E2E config with 30s timeout. Test DB setup with TRUNCATE CASCADE for all 16 tables. 7 entity factories (Tenant, TenantUser, ClientUser, AdminUser, Role, Permission, SubscriptionPlan) with plain object + DB variants. Test helpers: auth (getAdminToken/getTenantToken/getClientToken), request (authenticatedRequest/tenantRequest), assertion (expectSuccessResponse/expectPaginatedResponse/expectErrorResponse/expectValidUuid/expectTimestamps). E2E harness with health check, auth flow, protected routes, token refresh, and response envelope tests. test:e2e:watch script added. 729 unit tests pass, build clean."
-    },
-    "25-coding-standards-validator": {
-      "title": "Coding Standards Validator Script",
-      "status": "completed",
-      "subtasks": {
-        "validator-script": "completed",
-        "rules": "completed"
-      },
-      "started_at": "2026-03-15T20:17:59Z",
-      "completed_at": "2026-03-15T21:30:00Z",
-      "notes": "scripts/validate-standards.sh checks all 10 categories: file naming (kebab-case), module structure, DTO pattern (Zod/no class-validator), service pattern (ServiceResult/no throws), controller pattern (@ApiTags/@HttpCode), database schema (@@map/@map/timestamps), test coverage (spec files), circular dependencies, security ($queryRawUnsafe), environment (no hardcoded secrets). Color-coded output with pass/fail/warn. Exit 0 if no failures, exit 1 if any. Integrated with task-runner.sh. 13 passes, 0 failures, 13 advisory warnings on current codebase."
-    },
-    "26-docker-compose": {
-      "title": "Docker Compose \u2014 Dev + Coolify Production",
-      "status": "completed",
-      "subtasks": {
-        "dev-compose": "completed",
-        "coolify-compose": "completed",
-        "dockerfiles": "completed",
-        "health-checks": "completed"
-      },
-      "started_at": "2026-03-15T20:22:02Z",
-      "completed_at": "2026-03-15T21:25:00Z",
-      "notes": "Dev docker-compose.yml with 5 infrastructure services (postgres/pgvector, redis, minio, meilisearch, mailpit) all with health checks. Coolify docker-compose.coolify.yml with full stack: api + 3 frontend SPAs + infrastructure, internal+coolify networks, service_healthy depends_on. Multi-stage Dockerfiles: Dockerfile.api (node:22-alpine build+prod, prisma generate), Dockerfile.web/provider/admin (node:22-alpine build + nginx:alpine serve). Nginx SPA config with try_files fallback, gzip, asset caching, security headers. All compose configs validate, all Dockerfiles pass syntax check."
-    },
-    "27-documentation": {
-      "title": "Documentation & CLAUDE.md",
-      "status": "completed",
-      "subtasks": {
-        "claude-md": "completed",
-        "api-conventions": "completed",
-        "architecture-guide": "completed",
-        "onboarding": "completed"
-      },
-      "started_at": "2026-03-15T21:43:11Z",
-      "completed_at": "2026-03-15T22:00:00Z",
-      "notes": "Comprehensive CLAUDE.md with full project context, patterns, module guide, commands. API conventions doc with response envelope, query params, error codes, rate limiting, auth details. Architecture guide with system diagram, multi-tenancy strategy, auth flow, request lifecycle, module communication, deployment. Getting started guide with step-by-step setup, verification checklist, troubleshooting."
-    },
-    "28-frontend-shared-foundation": {
-      "title": "Frontend Shared Foundation \u2014 shadcn/ui, OKLch Theming, Utilities",
-      "status": "completed",
-      "subtasks": {
-        "dependencies": "completed",
-        "ui-components": "completed",
-        "theme-system": "completed",
-        "branding": "completed",
-        "utils": "completed"
-      },
-      "started_at": "2026-03-15T23:11:49Z",
-      "completed_at": "2026-03-16T00:00:00Z",
-      "notes": "All 3 apps (web, admin, provider-portal) have: shadcn/ui with 29 components (Radix + CVA), OKLch theme system with --brand-hue CSS variable (light/dark modes), Tailwind CSS 4 @theme mapping, cn() utility, branding config with applyBrandHue(), useTheme() hook with localStorage persistence and system detection, ThemeToggle dropdown component, Sonner toaster. Path aliases @/* configured in tsconfig + vite. All 3 apps build with 0 errors."
-    },
-    "29-frontend-i18n": {
-      "title": "Frontend i18n \u2014 Internationalization with i18next",
-      "status": "completed",
-      "subtasks": {
-        "i18n-setup": "completed",
-        "en-translations": "completed",
-        "am-translations": "completed",
-        "language-switcher": "completed"
-      },
-      "started_at": "2026-03-15T23:21:20Z",
-      "completed_at": "2026-03-16T00:15:00Z",
-      "notes": "i18next + react-i18next + browser language detector installed in all 3 apps. English and Amharic translation files with comprehensive coverage. LanguageSwitcher component with globe icon dropdown. Language persists to localStorage with app-specific keys. All 3 apps build with 0 errors."
-    },
-    "30-frontend-auth": {
-      "title": "Frontend Auth \u2014 Zustand Store, Login Pages, Protected Routes",
-      "status": "completed",
-      "subtasks": {
-        "auth-store": "completed",
-        "api-interceptors": "completed",
-        "login-pages": "completed",
-        "protected-route": "completed",
-        "register-page": "completed"
-      },
-      "started_at": "2026-03-15T23:29:52Z",
-      "completed_at": "2026-03-16T01:00:00Z",
-      "notes": "All 3 apps have: auth-types.ts, auth-schemas.ts (Zod), Zustand auth-store.ts with localStorage persistence (app-specific keys), api.ts with 401 token refresh interceptor + request queue, login-page.tsx (admin: email/password, provider: tenantSlug/email/password, web: email/password + register link), protected-route.tsx with /auth/me verification on mount. Web app has register-page.tsx with password confirmation. All App.tsx updated with auth routing, all main.tsx initialized with initializeApiAuth. All 3 apps build with 0 errors."
-    },
-    "31-admin-layout": {
-      "title": "Admin App \u2014 Layout, Sidebar, Header, Dashboard",
-      "status": "completed",
-      "subtasks": {
-        "dashboard-layout": "completed",
-        "sidebar": "completed",
-        "header": "completed",
-        "routing": "completed",
-        "dashboard-page": "completed",
-        "placeholder-pages": "completed"
-      },
-      "started_at": "2026-03-15T23:36:39Z",
-      "completed_at": "2026-03-16T00:00:00Z",
-      "notes": "DashboardLayout with collapsible sidebar (persists to localStorage), header with mobile Sheet drawer, user menu, language/theme toggles. 8 routes: dashboard, tenants, users, roles, subscriptions, audit-logs, jobs, settings. All i18n'd. Build passes with 0 errors."
-    },
-    "32-admin-tenants": {
-      "title": "Admin App \u2014 Tenants Management with Data Table",
-      "status": "completed",
-      "subtasks": {
-        "data-table": "completed",
-        "tenants-page": "completed",
-        "create-dialog": "completed",
-        "edit-dialog": "completed",
-        "view-sheet": "completed",
-        "query-hooks": "completed"
-      },
-      "started_at": "2026-03-15T23:39:52Z",
-      "completed_at": "2026-03-16T12:00:00Z",
-      "notes": "Reusable DataTable with server-side sorting/pagination/filtering. Tenants page with search (debounced 300ms), status filter, sortable columns. Create/Edit dialogs with Zod validation, auto-slug generation. View sheet with tenant details. Suspend dialog with AlertDialog + reason. StatusBadge using theme CSS variables. All strings i18n'd (en + am). Build passes with 0 errors."
-    },
-    "33-admin-pages": {
-      "title": "Admin App \u2014 Users, Roles, Subscriptions, Audit, Jobs, Settings",
-      "status": "completed",
-      "subtasks": {
-        "users-page": "completed",
-        "roles-page": "completed",
-        "subscriptions-page": "completed",
-        "audit-logs-page": "completed",
-        "jobs-page": "completed",
-        "settings-page": "completed"
-      },
-      "started_at": "2026-03-15T23:44:35Z",
-      "completed_at": "2026-03-16T12:00:00Z",
-      "notes": "All 6 admin pages implemented. Users (data table, type filter, search, view sheet), Roles (CRUD with permissions grid, create/edit/delete), Subscriptions (data table, status filter, view sheet, change plan), Audit Logs (date range/action/resource filters, auto-refresh, view dialog with JSON diff), Jobs (6 queue stats cards, auto-refresh 5s, Bull Board link), Settings (tabbed: platform settings, system health, environment info). date-fns for formatting. All i18n. Build 0 errors."
-    },
-    "34-provider-layout": {
-      "title": "Provider Portal \u2014 Layout, Navigation, Dashboard",
-      "status": "completed",
-      "subtasks": {
-        "dashboard-layout": "completed",
-        "sidebar": "completed",
-        "header": "completed",
-        "routing": "completed",
-        "dashboard-page": "completed",
-        "placeholder-pages": "completed"
-      },
-      "started_at": "2026-03-15T23:55:50Z",
-      "completed_at": "2026-03-16T12:00:00Z",
-      "notes": "Tenant context store with localStorage persistence. API client sends X-Tenant-ID header. Auth store integrates with tenant store on login/logout. Collapsible sidebar with 10 provider nav items, tooltips when collapsed, localStorage persistence. Header with mobile Sheet drawer, LanguageSwitcher, ThemeToggle, UserMenu showing tenant name. Dashboard with 4 stat cards, recent bookings/reviews, quick actions. 9 placeholder pages. All strings i18n (en + am). Build passes 0 errors."
-    },
-    "35-provider-profile": {
-      "title": "Provider Portal \u2014 Profile & Portfolio Management",
-      "status": "completed",
-      "subtasks": {
-        "profile-page": "completed",
-        "packages-tab": "completed",
-        "faqs-tab": "completed",
-        "availability-tab": "completed",
-        "portfolio-page": "completed"
-      },
-      "started_at": "2026-03-16T00:01:01Z",
-      "completed_at": "2026-03-16T01:15:00Z",
-      "notes": "Profile page with 4 tabs (General Info, Packages, FAQs, Availability). Portfolio page with drag-drop upload, grid, reorder. All using TanStack Query, Zod validation, dnd-kit, i18n. Build passes with 0 errors."
-    },
-    "36-provider-pages": {
-      "title": "Provider Portal \u2014 Bookings, Reviews, Team, Messages, Calendar",
-      "status": "completed",
-      "subtasks": {
-        "bookings-page": "completed",
-        "reviews-page": "completed",
-        "team-page": "completed",
-        "messages-page": "completed",
-        "calendar-page": "completed",
-        "analytics-page": "completed",
-        "settings-page": "completed"
-      },
-      "started_at": "2026-03-16T00:12:01Z",
-      "completed_at": "2026-03-16T02:30:00Z",
-      "notes": "All 7 provider pages implemented. Bookings: data table with status tabs, detail sheet, send quote dialog, status update dialog. Reviews: rating summary card with distribution bars, review cards with star display, respond dialog. Team: data table, invite/change role/remove dialogs. Messages: split panel with conversation list and message thread, polling every 5s. Calendar: month grid with booking events, click date for details, block/unblock dates. Analytics: stat cards with trends, line/bar charts with recharts, conversion funnel. Settings: notification toggles, business hours grid, account settings with password change and delete. Data table components copied from admin. All strings i18n (en + am). Build passes with 0 errors."
-    },
-    "37-web-public": {
-      "title": "Web App \u2014 Public Layout, Landing Page, Vendor Search",
-      "status": "completed",
-      "subtasks": {
-        "public-layout": "completed",
-        "landing-page": "completed",
-        "vendor-search": "completed",
-        "vendor-profile": "completed",
-        "categories-page": "completed"
-      },
-      "started_at": "2026-03-16T00:27:39Z",
-      "completed_at": "2026-03-16T01:45:00Z",
-      "notes": "Public layout (header/footer), landing page (hero search, featured vendors, how it works, categories, testimonials, CTA), vendor search with filters/sort/pagination, vendor profile with tabs (About, Portfolio, Packages, Reviews, FAQ), categories page, inquiry form dialog. All strings i18n (en+am). Build passes with 0 errors, 729 backend tests pass."
-    },
-    "38-web-dashboard": {
-      "title": "Web App \u2014 Client Dashboard, Wedding Planner Tools",
-      "status": "completed",
-      "subtasks": {
-        "dashboard-layout": "completed",
-        "dashboard-page": "completed",
-        "wedding-page": "completed",
-        "guest-list-page": "completed",
-        "budget-page": "completed",
-        "checklist-page": "completed",
-        "vendors-page": "completed",
-        "messages-page": "completed"
-      },
-      "started_at": "2026-03-16T00:38:53Z",
-      "completed_at": "2026-03-16T01:45:00Z",
-      "notes": "Dashboard layout with collapsible sidebar, header with mobile menu and back-to-search link. Dashboard page with wedding countdown, stat cards, upcoming tasks, recent messages. Wedding page with tabbed form (details, events, collaborators). Guest list with RSVP summary, data table, add/import dialogs. Budget with summary, category cards, pie/bar charts, add item dialog. Checklist with progress bar, filter tabs, month-grouped timeline. My Vendors grid with booking status. Messages with conversation list + thread. Settings with account, notifications, wedding website tabs. All i18n (en/am), all Zod validation, TanStack Query throughout. Build passes with 0 errors."
-    },
-    "39-frontend-shared-components": {
-      "title": "Frontend Shared Components \u2014 Data Table, Forms, Hooks",
-      "status": "completed",
-      "subtasks": {
-        "data-table": "completed",
-        "form-components": "completed",
-        "shared-hooks": "completed",
-        "error-boundary": "completed",
-        "not-found-page": "completed"
-      },
-      "started_at": "2026-03-16T00:52:50Z",
-      "completed_at": "2026-03-16T02:15:00Z",
-      "notes": "Enhanced data-table with row selection, skeleton loading, custom empty state, column visibility toggle, bulk actions toolbar. Created 10 form components (FormField, FormSection, SearchInput, DatePicker, FileUpload, ConfirmDialog, EmptyState, LoadingSpinner, PageHeader, StatCard). Created 5 shared hooks (useDebounce, usePagination, useQueryParams, useMediaQuery, useLocalStorage). Added ErrorBoundary and NotFoundPage to all 3 apps. Fixed pre-existing unused import in provider-portal calendar-page. All 3 apps build with 0 errors."
-    },
-    "40-frontend-testing": {
-      "title": "Frontend Testing & Build Validation",
-      "status": "completed",
-      "subtasks": {
-        "vitest-setup": "completed",
-        "test-utilities": "completed",
-        "msw-mocks": "completed",
-        "component-tests": "completed",
-        "eslint-prettier": "completed",
-        "build-validation": "completed",
-        "claude-md-update": "completed"
-      },
-      "started_at": "2026-03-16T01:02:04Z",
-      "completed_at": "2026-03-16T02:20:00Z",
-      "notes": "Vitest + Testing Library + MSW installed in all 3 apps. 66 total tests (22 per app): auth store (6), ProtectedRoute (2), Button (4), LoginPage (3), useTheme (2), useDebounce (2), DataTable (3). Test setup with matchMedia/localStorage mocks and MSW server lifecycle. Custom render util wraps with QueryClient + BrowserRouter. MSW handlers mock auth endpoints per app type. ESLint 9 flat config with react-hooks/react-refresh plugins. Prettier config. tsconfig.app.json excludes test files from build. All 3 apps: npm test passes (66 tests), npm run build succeeds (0 errors), npm run lint passes (0 errors, warnings only)."
-    },
-    "41-mobile-scaffolding": {
-      "title": "Mobile App Scaffolding \u2014 Expo, NativeWind, Theme, i18n",
-      "status": "completed",
-      "subtasks": {
-        "expo-setup": "completed",
-        "nativewind-theme": "completed",
-        "api-client": "completed",
-        "auth-store": "completed",
-        "i18n": "completed",
-        "navigation": "completed"
-      },
-      "started_at": "2026-03-16T01:37:54Z",
-      "completed_at": "2026-03-16T01:50:00Z",
-      "notes": "Expo 54 app scaffolded with NativeWind 4 theming (brand/surface/content/semantic colors), i18next with en/am translations, Axios API client with token refresh + request queuing, Zustand auth store with SecureStore (web fallback), Expo Router with auth/main navigation groups, tab navigator (Home/Search/Profile). TypeScript compiles clean. All dependencies install successfully."
-    },
-    "42-mobile-auth": {
-      "title": "Mobile Auth \u2014 Login, Register, Protected Navigation",
-      "status": "completed",
-      "subtasks": {
-        "auth-screens": "completed",
-        "protected-navigation": "completed",
-        "tab-bar": "completed",
-        "profile-screen": "completed"
-      },
-      "started_at": "2026-03-16T01:45:53Z",
-      "completed_at": "2026-03-16T04:30:00Z",
-      "notes": "Full auth flow: login, register, forgot-password with Zod validation + react-hook-form. Reusable Input/Button components with haptic feedback. 5-tab navigation (Home, Search, Bookings, Planner, Profile) with auth guard redirect. Profile screen with avatar, language switcher (en/am), notifications toggle, logout with confirmation. Animated transitions (fade/slide_from_bottom). All text via t(), all colors via NativeWind theme. TypeScript compiles with 0 errors."
-    },
-    "43-mobile-search": {
-      "title": "Mobile Public Screens \u2014 Vendor Search, Vendor Profile, Categories",
-      "status": "completed",
-      "subtasks": {
-        "home-screen": "completed",
-        "search-screen": "completed",
-        "vendor-profile": "completed",
-        "categories": "completed",
-        "inquiry-form": "completed"
-      },
-      "started_at": "2026-03-16T01:51:25Z",
-      "completed_at": "2026-03-16T06:30:00Z",
-      "notes": "Full vendor discovery: Home screen with API-driven categories (horizontal scroll with icons), featured vendors carousel (compact VendorCard), search bar, quick stats. Search screen with debounced input (300ms), filter bottom sheet (category, price range, rating, sort), active filter chips, infinite scroll via useInfiniteQuery. Vendor profile with hero image, info header, tabbed content (About, Portfolio, Packages, Reviews, FAQ), star breakdown chart, inquiry bottom sheet with haptic feedback. Reusable components: VendorCard (full/compact), Skeleton/VendorCardSkeleton, EmptyState, FilterBottomSheet, InquiryBottomSheet. TanStack Query hooks for search, vendors, categories. All text via t(), all colors from NativeWind theme. TypeScript compiles with 0 errors."
-    },
-    "44-mobile-dashboard": {
-      "title": "Mobile Wedding Dashboard \u2014 Overview, Stats, Quick Actions",
-      "status": "completed",
-      "subtasks": {
-        "wedding-setup": "completed",
-        "dashboard": "completed",
-        "bookings": "completed",
-        "booking-detail": "completed"
-      },
-      "started_at": "2026-03-16T02:00:22Z",
-      "completed_at": "2026-03-16T08:30:00Z",
-      "notes": "Wedding API hooks (useWedding, useWeddingStats, useCreateWedding), booking API hooks (useBookings, useBooking, useAcceptQuote, useDeclineQuote). Multi-step wedding setup flow with 5 steps (date, partner, guests, venue, style) with animated transitions and haptic feedback. Dashboard with countdown card (LinearGradient), 2x2 stats grid, quick actions, my vendors section. Bookings tab with status filter tabs (All/Inquiry/Quoted/Booked/Completed), booking cards with vendor thumbnail and status badge. Booking detail screen with status timeline, vendor info, details section, accept/decline quote actions with confirmation alerts and haptic feedback. Reusable components: CountdownCard, StatCard, BookingCard, StatusBadge, StatusTimeline. All text i18n (en+am). All colors from NativeWind theme. TypeScript compiles with 0 errors."
-    },
-    "45-mobile-planning": {
-      "title": "Mobile Planning Tools \u2014 Guest List, Budget, Checklist, Messages",
-      "status": "completed",
-      "subtasks": {
-        "checklist": "completed",
-        "guest-list": "completed",
-        "budget-tracker": "completed",
-        "messages": "completed"
-      },
-      "started_at": "2026-03-16T02:09:54Z",
-      "completed_at": "2026-03-16T10:30:00Z",
-      "notes": "Planner tab with 4-segment control (Checklist, Guests, Budget, Messages). Checklist: progress bar, filter tabs (all/overdue/upcoming/completed), task cards with checkbox toggle and swipe-to-complete gesture (Reanimated), haptic feedback, add task bottom sheet. Guest list: RSVP summary cards (attending/declined/pending), search, guest cards with status badges, swipe-to-delete with confirmation alert and heavy haptic, add guest bottom sheet with Zod validation. Budget: total/spent/remaining header with progress bar, category breakdown with color legend, expandable category cards with line items, add expense bottom sheet. Messages: conversation list with vendor avatars, unread badges, relative timestamps. Chat screen with message bubbles (sent/received), auto-scroll, 10s polling, keyboard avoiding view, send with haptic. API hooks for all 4 features (TanStack Query). All text via t(), all colors from NativeWind theme. TypeScript compiles with 0 errors."
-    },
-    "46-mobile-polish": {
-      "title": "Mobile Polish \u2014 Animations, Haptics, Notifications, Build Config",
-      "status": "completed",
-      "subtasks": {
-        "animations": "completed",
-        "haptics": "completed",
-        "notifications": "completed",
-        "offline-support": "completed",
-        "error-handling": "completed",
-        "build-config": "completed"
-      },
-      "started_at": "2026-03-16T02:20:57Z",
-      "completed_at": "2026-03-16T02:35:00Z",
-      "notes": "Animation system with staggered fade-in, spring configs, screen transitions. Haptics standardized via lib/haptics.ts. Push notifications with deep linking. Offline support via TanStack Query persistence + AsyncStorage + offline banner. Global error boundary + API error handler. app.config.ts replaces app.json for dynamic config. EAS build profiles for dev/preview/production. Button press animation with scale-down spring. Skeleton shimmer effect via LinearGradient. Animated tab bar icons with bounce. TypeScript compiles with 0 errors."
-    },
-    "47-production-deployment": {
-      "title": "Production Deployment \u2014 Coolify, Domain Routing, SSL",
-      "status": "completed",
-      "subtasks": {
-        "docker-compose": "completed",
-        "traefik-labels": "completed",
-        "nginx-configs": "completed",
-        "env-template": "completed",
-        "deploy-script": "completed",
-        "documentation": "completed"
-      },
-      "started_at": "2026-03-16T02:29:15Z",
-      "completed_at": "2026-03-16T03:33:00Z",
-      "notes": "Full production deployment setup. docker-compose.coolify.yml rewritten with Traefik labels for subdomain routing (api/app/admin/s3 + wildcard for provider portals), health checks on all services, Redis memory limits, Meilisearch memory config. Per-app nginx configs (web.conf, admin.conf, provider.conf) with gzip, security headers, SPA fallback, asset caching, health endpoint. Dockerfiles updated with VITE_* build args and curl-based healthcheck. .env.production.example with all required variables. deploy.sh script (build/deploy/migrate/seed/status/logs/stop). Comprehensive docs/deployment.md with DNS, SSL, troubleshooting, production checklist. 729 tests pass, build clean."
-    },
-    "48-api-integration": {
-      "title": "API Integration Verification \u2014 No Demo Data, Real Endpoints",
-      "status": "completed",
-      "subtasks": {
-        "audit-admin": "completed",
-        "audit-provider": "completed",
-        "audit-web": "completed",
-        "audit-mobile": "completed",
-        "auth-flows": "completed",
-        "multi-tenancy": "completed",
-        "error-handling": "completed",
-        "build-validation": "completed",
-        "integration-checklist": "completed"
-      },
-      "started_at": "2026-03-16T02:32:47Z",
-      "completed_at": "2026-03-16T03:30:00Z",
-      "notes": "Audited all 4 apps. Fixed: hardcoded colors in admin (jobs, settings, users), hardcoded English text (settings health status, data-table toolbar defaults), added i18n keys. Provider: replaced placeholder dashboard stats with real API hook, fixed Zod validation messages. Web: replaced hardcoded featured vendors with API call, removed fake vendor counts from fallback categories, added error states to checklist/guests/budget/dashboard/search pages. Mobile: created centralized colors.ts, fixed gradient to use theme colors, fixed hardcoded English in chat timestamps. All auth flows verified (admin/tenant/client), multi-tenancy headers confirmed, query parameter bracket notation compliant. All 5 builds pass with 0 errors. Integration checklist created at docs/integration-checklist.md."
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     }
   }
 }

@@ -107,7 +107,7 @@ get_task_status() {
 show_status() {
     echo ""
     echo "═══════════════════════════════════════════════════════════════"
-    echo "  Directory SaaS — Task Progress"
+    echo "  Habesha Hub — Task Progress"
     echo "═══════════════════════════════════════════════════════════════"
     echo ""
 
@@ -211,7 +211,7 @@ for k, v in subs.items():
 
     # Build the full prompt
     cat <<PROMPT_EOF
-You are implementing task "$task_title" for the Directory SaaS boilerplate project.
+You are implementing task "$task_title" for the Habesha Hub project (Ethiopian Business Directory for the Middle East).
 
 ## PROJECT CONTEXT
 

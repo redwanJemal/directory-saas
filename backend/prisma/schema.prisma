@@ -363,8 +363,9 @@ model ProviderProfile {
   reviewCount   Int      @default(0) @map("review_count")
   whatsapp      String?
   instagram     String?
-  tiktok        String?
-  isVerified    Boolean   @default(false) @map("is_verified")
+  tiktok          String?
+  whatsappMessage String?   @map("whatsapp_message")
+  isVerified      Boolean   @default(false) @map("is_verified")
   verifiedAt    DateTime? @map("verified_at") @db.Timestamptz
   isFeatured    Boolean   @default(false) @map("is_featured")
   coverImageUrl String?   @map("cover_image_url")
@@ -383,6 +384,7 @@ model ProviderProfile {
   categories            ProviderCategory[]
   deals                 Deal[]
   verificationRequests  VerificationRequest[]
+  contactClicks         ContactClick[]
 
   @@index([city, country])
   @@index([isVerified, isFeatured])
@@ -646,6 +648,23 @@ model Inquiry {
   @@index([tenantId, status])
   @@index([clientId])
   @@map("inquiries")
+}
+
+// === CONTACT CLICKS ===
+
+model ContactClick {
+  id                String   @id @default(uuid()) @db.Uuid
+  providerProfileId String   @map("provider_profile_id") @db.Uuid
+  type              String   // whatsapp, phone, email, website, instagram
+  clientUserId      String?  @map("client_user_id") @db.Uuid
+  ipAddress         String?  @map("ip_address")
+  userAgent         String?  @map("user_agent")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  providerProfile ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([providerProfileId, type, createdAt])
+  @@map("contact_clicks")
 }
 
 // === USER SETTINGS ===

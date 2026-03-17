@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-17T23:28:17.897707+00:00",
-  "current_task": "53-business-verification",
+  "last_updated": "2026-03-17T23:35:35.820352+00:00",
+  "current_task": "54-whatsapp-contact",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -63,17 +63,17 @@
     },
     "54-whatsapp-contact": {
       "title": "WhatsApp & Contact Integration",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "schema": "pending",
-        "contact-click-api": "pending",
-        "whatsapp-url-generation": "pending",
-        "provider-analytics": "pending",
-        "tests": "pending"
+        "schema": "completed",
+        "contact-click-api": "completed",
+        "whatsapp-url-generation": "completed",
+        "provider-analytics": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-17T23:35:35Z",
+      "completed_at": "2026-03-18T00:43:00Z",
+      "notes": "Added ContactClick model to Prisma schema with whatsappMessage field on ProviderProfile. Created ContactClickService with WhatsApp URL generation (international format), contact URL formatting for all types (whatsapp/phone/email/website/instagram), click recording, and analytics (by type, daily, admin aggregate). Public endpoint POST /providers/:id/contact-click (rate-limited 10/min). Provider dashboard endpoints GET /providers/me/contact-stats and /contact-stats/daily. Admin endpoint GET /admin/analytics/contacts. Dashboard stats now include contact click counts. 33 new tests (service + DTO validation). Build passes, 844 tests pass."
     },
     "55-deals-promotions": {
       "title": "Deals & Promotions Module",

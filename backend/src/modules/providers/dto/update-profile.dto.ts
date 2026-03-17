@@ -20,6 +20,7 @@ export const UpdateProfileSchema = z.object({
   whatsapp: z.string().max(50).optional().nullable(),
   instagram: z.string().max(100).optional().nullable(),
   tiktok: z.string().max(100).optional().nullable(),
+  whatsappMessage: z.string().max(500).optional().nullable(),
   latitude: z.number().min(-90).max(90).optional().nullable(),
   longitude: z.number().min(-180).max(180).optional().nullable(),
   coverImageUrl: z.string().url().optional().nullable(),

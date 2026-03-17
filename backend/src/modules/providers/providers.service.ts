@@ -448,24 +448,43 @@ export class ProvidersService {
         totalPackages: 0,
         portfolioItems: 0,
         profileCompleteness: 0,
+        contactClicks: { total: 0, byType: {} },
       });
     }
 
-    const [packageCount, portfolioCount, bookingCount, pendingBookingCount] =
-      await Promise.all([
-        this.prisma.providerPackage.count({
-          where: { providerProfileId: profile.id },
-        }),
-        this.prisma.portfolioItem.count({
-          where: { providerProfileId: profile.id },
-        }),
-        this.prisma.booking
-          .count({ where: { tenantId } })
-          .catch(() => 0),
-        this.prisma.booking
-          .count({ where: { tenantId, status: 'PENDING' } })
-          .catch(() => 0),
-      ]);
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const [
+      packageCount,
+      portfolioCount,
+      bookingCount,
+      pendingBookingCount,
+      contactClicks,
+    ] = await Promise.all([
+      this.prisma.providerPackage.count({
+        where: { providerProfileId: profile.id },
+      }),
+      this.prisma.portfolioItem.count({
+        where: { providerProfileId: profile.id },
+      }),
+      this.prisma.booking
+        .count({ where: { tenantId } })
+        .catch(() => 0),
+      this.prisma.booking
+        .count({ where: { tenantId, status: 'PENDING' } })
+        .catch(() => 0),
+      this.prisma.contactClick
+        .groupBy({
+          by: ['type'],
+          where: {
+            providerProfileId: profile.id,
+            createdAt: { gte: thirtyDaysAgo },
+          },
+          _count: { id: true },
+        })
+        .catch(() => [] as { type: string; _count: { id: number } }[]),
+    ]);
 
     // Calculate profile completeness
     const fields = [
@@ -479,6 +498,15 @@ export class ProvidersService {
     const filledFields = fields.filter(Boolean).length;
     const profileCompleteness = Math.round((filledFields / fields.length) * 100);
 
+    const clicksByType: Record<string, number> = {};
+    for (const click of contactClicks) {
+      clicksByType[click.type] = click._count.id;
+    }
+    const totalClicks = Object.values(clicksByType).reduce(
+      (sum, c) => sum + c,
+      0,
+    );
+
     return ServiceResult.ok({
       totalBookings: bookingCount,
       pendingBookings: pendingBookingCount,
@@ -487,6 +515,10 @@ export class ProvidersService {
       totalPackages: packageCount,
       portfolioItems: portfolioCount,
       profileCompleteness,
+      contactClicks: {
+        total: totalClicks,
+        byType: clicksByType,
+      },
     });
   }
 
@@ -677,6 +709,9 @@ export class ProvidersService {
       contactEmail: p.email || '',
       contactPhone: p.phone || '',
       whatsapp: p.whatsapp || '',
+      whatsappUrl: p.whatsapp
+        ? this.generateWhatsAppUrl(p.whatsapp, p.whatsappMessage)
+        : null,
       instagram: p.instagram || '',
       tiktok: p.tiktok || '',
       website: p.website,
@@ -856,6 +891,20 @@ export class ProvidersService {
       }
     }
     return [...new Set(ids)];
+  }
+
+  private generateWhatsAppUrl(
+    whatsappNumber: string,
+    customMessage?: string | null,
+  ): string {
+    const defaultMessage =
+      "Hi! I found your business on Habesha Hub. I'd like to inquire about your services.";
+    let cleaned = whatsappNumber.replace(/[^+\d]/g, '');
+    if (cleaned.startsWith('00')) cleaned = '+' + cleaned.slice(2);
+    if (!cleaned.startsWith('+')) cleaned = '+' + cleaned;
+    const numberWithoutPlus = cleaned.replace('+', '');
+    const message = customMessage || defaultMessage;
+    return `https://wa.me/${numberWithoutPlus}?text=${encodeURIComponent(message)}`;
   }
 
   private async ensureProfile(tenantId: string) {

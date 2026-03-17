@@ -8,3 +8,4 @@ export { BlockDateSchema, type BlockDateDto } from './availability-block.dto';
 export { SetCategoriesSchema, type SetCategoriesDto } from './set-categories.dto';
 export { SubmitVerificationSchema, type SubmitVerificationDto } from './submit-verification.dto';
 export { ReviewVerificationSchema, type ReviewVerificationDto } from './review-verification.dto';
+export { RecordContactClickSchema, type RecordContactClickDto, CONTACT_CLICK_TYPES, type ContactClickType } from './contact-click.dto';

@@ -24,9 +24,9 @@ import { ProvidersModule } from './modules/providers/providers.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { ConversationsModule } from './modules/conversations/conversations.module';
-import { WeddingsModule } from './modules/weddings/weddings.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { LocationsModule } from './modules/locations/locations.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -53,9 +53,9 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     BookingsModule,
     ReviewsModule,
     ConversationsModule,
-    WeddingsModule,
     SettingsModule,
     AnalyticsModule,
+    LocationsModule,
   ],
 })
 export class AppModule implements NestModule {

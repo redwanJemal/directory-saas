@@ -5,6 +5,12 @@ import { ServiceResult } from '../../common/types';
 import { PaginatedResult, paginate } from '../../common/dto/pagination.dto';
 import { ErrorCodes } from '../../common/constants/error-codes';
 import {
+  getCountryByCode,
+  isValidCity,
+  SUPPORTED_COUNTRY_CODES,
+  CITIES,
+} from '../../common/constants/locations';
+import {
   UpdateProfileDto,
   CreatePackageDto,
   UpdatePackageDto,
@@ -51,6 +57,27 @@ export class ProvidersService {
     tenantId: string,
     dto: UpdateProfileDto,
   ): Promise<ServiceResult<unknown>> {
+    // Validate country code if provided
+    if (dto.country) {
+      if (!getCountryByCode(dto.country)) {
+        return ServiceResult.fail(
+          ErrorCodes.VALIDATION_ERROR,
+          `Unsupported country code '${dto.country}'. Supported: ${SUPPORTED_COUNTRY_CODES.join(', ')}`,
+        );
+      }
+    }
+
+    // Validate city against country if both provided
+    if (dto.city && dto.country) {
+      if (!isValidCity(dto.country, dto.city)) {
+        const validCities = (CITIES[dto.country] ?? []).map((c) => c.name).join(', ');
+        return ServiceResult.fail(
+          ErrorCodes.VALIDATION_ERROR,
+          `City '${dto.city}' is not valid for country '${dto.country}'. Valid cities: ${validCities}`,
+        );
+      }
+    }
+
     const profile = await this.ensureProfile(tenantId);
 
     const { metadata, socialLinks, galleryUrls, businessHours, ...rest } = dto;
@@ -509,11 +536,11 @@ export class ProvidersService {
     }
 
     if (filters.city) {
-      where.city = { contains: filters.city, mode: 'insensitive' };
+      where.city = { equals: filters.city, mode: 'insensitive' };
     }
 
     if (filters.country) {
-      where.country = { contains: filters.country, mode: 'insensitive' };
+      where.country = { equals: filters.country, mode: 'insensitive' };
     }
 
     if (filters.minRating) {

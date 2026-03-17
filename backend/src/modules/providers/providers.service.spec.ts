@@ -327,6 +327,142 @@ describe('ProvidersService', () => {
     });
   });
 
+  // === Search by Location ===
+
+  describe('searchProviders — location filters', () => {
+    const buildSearchMocks = () => {
+      prisma.providerProfile.findMany.mockResolvedValue([]);
+      prisma.providerProfile.count.mockResolvedValue(0);
+    };
+
+    it('should filter by country code', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({ country: 'AE' });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.country).toEqual({
+        equals: 'AE',
+        mode: 'insensitive',
+      });
+    });
+
+    it('should filter by city name', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({ city: 'Dubai' });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.city).toEqual({
+        equals: 'Dubai',
+        mode: 'insensitive',
+      });
+    });
+
+    it('should filter by both country and city', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({ country: 'AE', city: 'Dubai' });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.country).toEqual({
+        equals: 'AE',
+        mode: 'insensitive',
+      });
+      expect(findManyCall.where.city).toEqual({
+        equals: 'Dubai',
+        mode: 'insensitive',
+      });
+    });
+
+    it('should combine location with category filters', async () => {
+      prisma.category.findMany.mockResolvedValueOnce([
+        { id: 'cat-2', slug: 'restaurant', children: [] },
+      ]);
+      buildSearchMocks();
+
+      await service.searchProviders({
+        country: 'AE',
+        city: 'Dubai',
+        category: 'restaurant',
+      });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.country).toBeDefined();
+      expect(findManyCall.where.city).toBeDefined();
+      expect(findManyCall.where.categories).toBeDefined();
+    });
+  });
+
+  // === Profile Location Validation ===
+
+  describe('updateProfile — location validation', () => {
+    it('should reject invalid country code', async () => {
+      const result = await service.updateProfile(tenantId, {
+        country: 'XX',
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error?.code).toBe('VALIDATION_ERROR');
+      expect(result.error?.message).toContain('XX');
+    });
+
+    it('should reject invalid city for valid country', async () => {
+      const result = await service.updateProfile(tenantId, {
+        country: 'AE',
+        city: 'Riyadh',
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error?.code).toBe('VALIDATION_ERROR');
+      expect(result.error?.message).toContain('Riyadh');
+    });
+
+    it('should accept valid country and city', async () => {
+      prisma.providerProfile.findUnique.mockResolvedValue(mockProfile);
+      prisma.providerProfile.update.mockResolvedValue({
+        ...mockProfile,
+        country: 'AE',
+        city: 'Dubai',
+      });
+
+      const result = await service.updateProfile(tenantId, {
+        country: 'AE',
+        city: 'Dubai',
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it('should accept valid country without city', async () => {
+      prisma.providerProfile.findUnique.mockResolvedValue(mockProfile);
+      prisma.providerProfile.update.mockResolvedValue({
+        ...mockProfile,
+        country: 'SA',
+      });
+
+      const result = await service.updateProfile(tenantId, {
+        country: 'SA',
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it('should allow city update without country (no cross-validation)', async () => {
+      prisma.providerProfile.findUnique.mockResolvedValue(mockProfile);
+      prisma.providerProfile.update.mockResolvedValue({
+        ...mockProfile,
+        city: 'Dubai',
+      });
+
+      const result = await service.updateProfile(tenantId, {
+        city: 'Dubai',
+      });
+
+      expect(result.success).toBe(true);
+    });
+  });
+
   // === Category Tree with Counts ===
 
   describe('listCategories', () => {

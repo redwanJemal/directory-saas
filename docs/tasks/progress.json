@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-17T23:14:45.193730+00:00",
-  "current_task": "51-multi-category",
+  "last_updated": "2026-03-17T23:20:58.183655+00:00",
+  "current_task": "52-country-city",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -31,21 +31,21 @@
       },
       "started_at": "2026-03-17T23:14:45Z",
       "completed_at": "2026-03-18T00:20:00Z",
-      "notes": "Added GET/PUT /providers/me/categories for multi-category assignment (1-5 categories, replace strategy). Search supports comma-separated category slugs and categoryIds with parent→child inclusion. Category tree supports withCount param. 16 unit tests for DTO validation, category assignment, search filtering, and category tree. Build passes, 745 tests pass."
+      "notes": "Added GET/PUT /providers/me/categories for multi-category assignment (1-5 categories, replace strategy). Search supports comma-separated category slugs and categoryIds with parent\u2192child inclusion. Category tree supports withCount param. 16 unit tests for DTO validation, category assignment, search filtering, and category tree. Build passes, 745 tests pass."
     },
     "52-country-city": {
       "title": "Country & City Support",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "location-constants": "pending",
-        "location-api": "pending",
-        "search-by-location": "pending",
-        "profile-location-validation": "pending",
-        "tests": "pending"
+        "location-constants": "completed",
+        "location-api": "completed",
+        "search-by-location": "completed",
+        "profile-location-validation": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-17T23:20:58Z",
+      "completed_at": "2026-03-18T00:28:00Z",
+      "notes": "Added location constants (6 countries, 26 cities with EN/AM/AR translations). Created LocationsModule with public GET /locations/countries and GET /locations/countries/:code/cities endpoints. Updated search to use exact matching for country/city. Added country/city validation to provider profile updates. 781 tests pass, build succeeds."
     },
     "53-business-verification": {
       "title": "Business Verification System",

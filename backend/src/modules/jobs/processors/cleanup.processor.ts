@@ -42,6 +42,9 @@ export class CleanupProcessor
       case 'cleanup-expired-uploads':
         await this.cleanupExpiredUploads();
         break;
+      case 'expire-deals':
+        await this.expireDeals();
+        break;
       default:
         this.logger.warn(`Unknown cleanup job name: ${job.name}`);
     }
@@ -57,5 +60,16 @@ export class CleanupProcessor
   private async cleanupExpiredUploads(): Promise<void> {
     // Placeholder: will clean up expired presigned URL metadata
     this.logger.log('Expired uploads cleanup completed');
+  }
+
+  private async expireDeals(): Promise<void> {
+    const result = await this.prisma.deal.updateMany({
+      where: {
+        isActive: true,
+        expiresAt: { lt: new Date() },
+      },
+      data: { isActive: false },
+    });
+    this.logger.log(`Expired ${result.count} deals`);
   }
 }

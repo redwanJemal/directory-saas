@@ -30,5 +30,14 @@ export class JobsSchedulerService implements OnModuleInit {
       '0 3 * * *',
     );
     this.logger.log('Scheduled: cleanup-expired-uploads (daily at 3 AM)');
+
+    // Expire deals daily at midnight
+    await this.jobService.addRecurring(
+      QUEUES.CLEANUP,
+      'expire-deals',
+      {},
+      '0 0 * * *',
+    );
+    this.logger.log('Scheduled: expire-deals (daily at midnight)');
   }
 }

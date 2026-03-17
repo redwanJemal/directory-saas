@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-17T23:35:35.820352+00:00",
-  "current_task": "54-whatsapp-contact",
+  "last_updated": "2026-03-17T23:43:16.894480+00:00",
+  "current_task": "55-deals-promotions",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -77,17 +77,17 @@
     },
     "55-deals-promotions": {
       "title": "Deals & Promotions Module",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "deals-crud": "pending",
-        "public-deals-api": "pending",
-        "expiry-job": "pending",
-        "search-integration": "pending",
-        "tests": "pending"
+        "deals-crud": "completed",
+        "public-deals-api": "completed",
+        "expiry-job": "completed",
+        "search-integration": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-17T23:43:16Z",
+      "completed_at": "2026-03-18T00:55:00Z",
+      "notes": "Created DealsModule with full CRUD for providers (GET/POST/PATCH/DELETE /providers/me/deals), public endpoints (GET /deals, GET /deals/featured, GET /deals/:id) with filtering by country/city/category. Added expire-deals BullMQ recurring job (daily at midnight) to cleanup processor. Search integration: hasDeals=true filter and activeDeals count in provider search results. 33 new tests (service + DTO validation). Build passes, 877 tests pass."
     },
     "56-branding-theme": {
       "title": "Branding & Theme \u2014 Habesha Hub",

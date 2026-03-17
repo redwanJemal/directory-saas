@@ -531,6 +531,7 @@ export class ProvidersService {
     city?: string;
     country?: string;
     verified?: boolean;
+    hasDeals?: boolean;
     minRating?: number;
     minPrice?: number;
     maxPrice?: number;
@@ -584,6 +585,18 @@ export class ProvidersService {
       where.isVerified = filters.verified;
     }
 
+    if (filters.hasDeals) {
+      where.deals = {
+        some: {
+          isActive: true,
+          OR: [
+            { expiresAt: null },
+            { expiresAt: { gt: new Date() } },
+          ],
+        },
+      };
+    }
+
     // Determine ordering — verified businesses rank higher by default
     let orderBy: Prisma.ProviderProfileOrderByWithRelationInput[] = [
       { isVerified: 'desc' },
@@ -611,6 +624,19 @@ export class ProvidersService {
             take: 1,
           },
           categories: { include: { category: true } },
+          _count: {
+            select: {
+              deals: {
+                where: {
+                  isActive: true,
+                  OR: [
+                    { expiresAt: null },
+                    { expiresAt: { gt: new Date() } },
+                  ],
+                },
+              },
+            },
+          },
         },
         skip: (page - 1) * pageSize,
         take: pageSize,
@@ -652,6 +678,7 @@ export class ProvidersService {
       verified: p.isVerified || false,
       description: p.bio || '',
       whatsapp: p.whatsapp || '',
+      activeDeals: p._count?.deals ?? 0,
     }));
 
     return ServiceResult.ok(paginate(mapped, totalCount, { page, pageSize }));

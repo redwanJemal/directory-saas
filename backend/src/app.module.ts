@@ -27,6 +27,7 @@ import { ConversationsModule } from './modules/conversations/conversations.modul
 import { SettingsModule } from './modules/settings/settings.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { LocationsModule } from './modules/locations/locations.module';
+import { DealsModule } from './modules/deals/deals.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -56,6 +57,7 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     SettingsModule,
     AnalyticsModule,
     LocationsModule,
+    DealsModule,
   ],
 })
 export class AppModule implements NestModule {

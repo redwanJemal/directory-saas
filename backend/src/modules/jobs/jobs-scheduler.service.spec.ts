@@ -46,9 +46,20 @@ describe('JobsSchedulerService', () => {
       );
     });
 
-    it('should register exactly 2 scheduled jobs', async () => {
+    it('should register expire-deals recurring job', async () => {
       await scheduler.onModuleInit();
-      expect(jobService.addRecurring).toHaveBeenCalledTimes(2);
+
+      expect(jobService.addRecurring).toHaveBeenCalledWith(
+        QUEUES.CLEANUP,
+        'expire-deals',
+        {},
+        '0 0 * * *',
+      );
+    });
+
+    it('should register exactly 3 scheduled jobs', async () => {
+      await scheduler.onModuleInit();
+      expect(jobService.addRecurring).toHaveBeenCalledTimes(3);
     });
   });
 });

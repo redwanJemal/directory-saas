@@ -6,3 +6,5 @@ export { UpdateAvailabilitySchema, type UpdateAvailabilityDto } from './update-a
 export { ReorderSchema, type ReorderDto } from './reorder.dto';
 export { BlockDateSchema, type BlockDateDto } from './availability-block.dto';
 export { SetCategoriesSchema, type SetCategoriesDto } from './set-categories.dto';
+export { SubmitVerificationSchema, type SubmitVerificationDto } from './submit-verification.dto';
+export { ReviewVerificationSchema, type ReviewVerificationDto } from './review-verification.dto';

@@ -13,6 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProvidersService } from './providers.service';
+import { VerificationService } from './verification.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentTenant } from '../../common/decorators/current-tenant.decorator';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
@@ -37,12 +38,17 @@ import {
   ReorderDto,
   SetCategoriesSchema,
   SetCategoriesDto,
+  SubmitVerificationSchema,
+  SubmitVerificationDto,
 } from './dto';
 
 @Controller('providers')
 @UseGuards(JwtAuthGuard)
 export class ProvidersController {
-  constructor(private readonly providersService: ProvidersService) {}
+  constructor(
+    private readonly providersService: ProvidersService,
+    private readonly verificationService: VerificationService,
+  ) {}
 
   // === Profile ===
 
@@ -254,6 +260,26 @@ export class ProvidersController {
     @Body(new ZodValidationPipe(UpdateAvailabilitySchema)) dto: UpdateAvailabilityDto,
   ) {
     const result = await this.providersService.updateAvailability(tenantId, dto);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  // === Verification ===
+
+  @Post('me/verification')
+  @HttpCode(HttpStatus.CREATED)
+  async submitVerification(
+    @CurrentTenant() tenantId: string,
+    @Body(new ZodValidationPipe(SubmitVerificationSchema)) dto: SubmitVerificationDto,
+  ) {
+    const result = await this.verificationService.submitVerification(tenantId, dto);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  @Get('me/verification')
+  async getVerificationStatus(@CurrentTenant() tenantId: string) {
+    const result = await this.verificationService.getVerificationStatus(tenantId);
     if (!result.success) throw result.toHttpException();
     return result.data;
   }

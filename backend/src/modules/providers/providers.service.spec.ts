@@ -463,6 +463,66 @@ describe('ProvidersService', () => {
     });
   });
 
+  // === Verification Filter & Search Ranking ===
+
+  describe('searchProviders — verification filter and ranking', () => {
+    const buildSearchMocks = () => {
+      prisma.providerProfile.findMany.mockResolvedValue([]);
+      prisma.providerProfile.count.mockResolvedValue(0);
+    };
+
+    it('should filter by verified=true', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({ verified: true });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.isVerified).toBe(true);
+    });
+
+    it('should filter by verified=false', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({ verified: false });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.isVerified).toBe(false);
+    });
+
+    it('should not filter by verified when undefined', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({});
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.where.isVerified).toBeUndefined();
+    });
+
+    it('should rank verified businesses first by default', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({});
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.orderBy).toEqual([
+        { isVerified: 'desc' },
+        { rating: 'desc' },
+      ]);
+    });
+
+    it('should keep verified-first ranking when custom sort is specified', async () => {
+      buildSearchMocks();
+
+      await service.searchProviders({ sort: '-createdAt' });
+
+      const findManyCall = prisma.providerProfile.findMany.mock.calls[0][0];
+      expect(findManyCall.orderBy).toEqual([
+        { isVerified: 'desc' },
+        { createdAt: 'desc' },
+      ]);
+    });
+  });
+
   // === Category Tree with Counts ===
 
   describe('listCategories', () => {

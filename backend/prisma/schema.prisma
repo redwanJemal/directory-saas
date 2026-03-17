@@ -375,17 +375,38 @@ model ProviderProfile {
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz
 
-  tenant         Tenant                 @relation(fields: [tenantId], references: [id])
-  packages       ProviderPackage[]
-  faqs           ProviderFaq[]
-  portfolioItems PortfolioItem[]
-  availability   ProviderAvailability[]
-  categories     ProviderCategory[]
-  deals          Deal[]
+  tenant                Tenant                 @relation(fields: [tenantId], references: [id])
+  packages              ProviderPackage[]
+  faqs                  ProviderFaq[]
+  portfolioItems        PortfolioItem[]
+  availability          ProviderAvailability[]
+  categories            ProviderCategory[]
+  deals                 Deal[]
+  verificationRequests  VerificationRequest[]
 
   @@index([city, country])
   @@index([isVerified, isFeatured])
   @@map("provider_profiles")
+}
+
+model VerificationRequest {
+  id                String    @id @default(uuid()) @db.Uuid
+  providerProfileId String    @map("provider_profile_id") @db.Uuid
+  status            String    @default("pending") // pending, approved, rejected
+  tradeLicenseUrl   String?   @map("trade_license_url")
+  documentUrls      Json      @default("[]") @map("document_urls")
+  notes             String?
+  adminNotes        String?   @map("admin_notes")
+  reviewedBy        String?   @map("reviewed_by") @db.Uuid
+  reviewedAt        DateTime? @map("reviewed_at") @db.Timestamptz
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  providerProfile ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([providerProfileId])
+  @@index([status])
+  @@map("verification_requests")
 }
 
 model ProviderPackage {

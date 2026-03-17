@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-17T23:20:58.183655+00:00",
-  "current_task": "52-country-city",
+  "last_updated": "2026-03-17T23:28:17.897707+00:00",
+  "current_task": "53-business-verification",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -49,17 +49,17 @@
     },
     "53-business-verification": {
       "title": "Business Verification System",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "schema": "pending",
-        "provider-api": "pending",
-        "admin-api": "pending",
-        "search-ranking": "pending",
-        "tests": "pending"
+        "schema": "completed",
+        "provider-api": "completed",
+        "admin-api": "completed",
+        "search-ranking": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-17T23:28:17Z",
+      "completed_at": "2026-03-18T00:35:00Z",
+      "notes": "Added VerificationRequest model to Prisma schema. Created VerificationService with submit/status/list/review flows. Provider endpoints: POST/GET /providers/me/verification. Admin endpoints: GET /admin/verifications, PATCH /admin/verifications/:id (approve/reject). Approved requests set isVerified=true and verifiedAt on ProviderProfile. Search ranks verified businesses first (isVerified desc) and supports ?verified=true filter. 30 new tests (service + DTO validation). Build passes, 811 tests pass."
     },
     "54-whatsapp-contact": {
       "title": "WhatsApp & Contact Integration",

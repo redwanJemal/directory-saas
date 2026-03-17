@@ -498,6 +498,7 @@ export class ProvidersService {
     categoryId?: string;
     city?: string;
     country?: string;
+    verified?: boolean;
     minRating?: number;
     minPrice?: number;
     maxPrice?: number;
@@ -547,13 +548,23 @@ export class ProvidersService {
       where.rating = { gte: filters.minRating };
     }
 
-    // Determine ordering
-    let orderBy: Prisma.ProviderProfileOrderByWithRelationInput = { rating: 'desc' };
+    if (filters.verified !== undefined) {
+      where.isVerified = filters.verified;
+    }
+
+    // Determine ordering — verified businesses rank higher by default
+    let orderBy: Prisma.ProviderProfileOrderByWithRelationInput[] = [
+      { isVerified: 'desc' },
+      { rating: 'desc' },
+    ];
     if (filters.sort) {
       const desc = filters.sort.startsWith('-');
       const field = desc ? filters.sort.slice(1) : filters.sort;
       if (['rating', 'reviewCount', 'createdAt'].includes(field)) {
-        orderBy = { [field]: desc ? 'desc' : 'asc' };
+        orderBy = [
+          { isVerified: 'desc' },
+          { [field]: desc ? 'desc' : 'asc' },
+        ];
       }
     }
 

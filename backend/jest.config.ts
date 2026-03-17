@@ -16,6 +16,8 @@ const config: Config = {
   ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
+  detectOpenHandles: true,
+  forceExit: true,
   moduleNameMapper: {
     '^@common/(.*)$': '<rootDir>/common/$1',
     '^@modules/(.*)$': '<rootDir>/modules/$1',

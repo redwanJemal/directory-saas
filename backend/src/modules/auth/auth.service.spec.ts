@@ -6,6 +6,17 @@ import { AuthService } from './auth.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AppConfigService } from '../../config/app-config.service';
 
+jest.mock('bcrypt', () => ({
+  ...jest.requireActual('bcrypt'),
+  compare: jest.fn(),
+  hash: jest.fn(),
+}));
+
+jest.mock('crypto', () => ({
+  ...jest.requireActual('crypto'),
+  randomBytes: jest.fn().mockReturnValue(Buffer.from('a'.repeat(32))),
+}));
+
 // Factory helpers
 const makeAdminUser = (overrides: Partial<Record<string, unknown>> = {}) => ({
   id: 'admin-uuid-1',
@@ -151,7 +162,7 @@ describe('AuthService', () => {
     it('should return tokens for valid credentials', async () => {
       const admin = makeAdminUser();
       prisma.adminUser.findUnique.mockResolvedValue(admin);
-      jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
       const result = await service.adminLogin({ email: 'admin@test.com', password: 'password123' });
 
@@ -167,7 +178,7 @@ describe('AuthService', () => {
 
     it('should return INVALID_CREDENTIALS for wrong password', async () => {
       prisma.adminUser.findUnique.mockResolvedValue(makeAdminUser());
-      jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
       const result = await service.adminLogin({ email: 'admin@test.com', password: 'wrongpass' });
 
@@ -200,7 +211,7 @@ describe('AuthService', () => {
       const user = makeTenantUser();
       prisma.tenant.findUnique.mockResolvedValue(tenant);
       prisma.tenantUser.findUnique.mockResolvedValue(user);
-      jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
       const result = await service.tenantLogin({
         email: 'user@tenant.com',
@@ -242,7 +253,7 @@ describe('AuthService', () => {
   describe('clientLogin', () => {
     it('should return tokens for valid credentials', async () => {
       prisma.clientUser.findUnique.mockResolvedValue(makeClientUser());
-      jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
       const result = await service.clientLogin({ email: 'client@test.com', password: 'password123' });
 
@@ -257,7 +268,7 @@ describe('AuthService', () => {
       prisma.clientUser.findUnique.mockResolvedValue(null);
       const newUser = makeClientUser();
       prisma.clientUser.create.mockResolvedValue(newUser);
-      jest.spyOn(bcrypt, 'hash').mockImplementation(async () => 'hashed');
+      (bcrypt.hash as jest.Mock).mockResolvedValue('hashed');
 
       const result = await service.clientRegister({
         email: 'new@test.com',
@@ -396,7 +407,7 @@ describe('AuthService', () => {
     it('should delete oldest tokens when max exceeded', async () => {
       const admin = makeAdminUser();
       prisma.adminUser.findUnique.mockResolvedValue(admin);
-      jest.spyOn(bcrypt, 'compare').mockImplementation(async () => true);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
       // Simulate 5 existing tokens
       const existingTokens = Array.from({ length: 5 }, (_, i) => ({

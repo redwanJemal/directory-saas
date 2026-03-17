@@ -24,6 +24,7 @@ model AdminUser {
   lastLoginAt      DateTime? @map("last_login_at") @db.Timestamptz
   createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt        DateTime? @map("deleted_at") @db.Timestamptz
 
   @@map("admin_users")
 }
@@ -93,7 +94,6 @@ model ClientUser {
   updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt     DateTime? @map("deleted_at") @db.Timestamptz
 
-  wedding  Wedding?
   bookings Booking[]
   reviews  Review[]
 
@@ -343,24 +343,6 @@ enum InquiryStatus {
   CLOSED
 }
 
-enum GuestRsvpStatus {
-  PENDING
-  ACCEPTED
-  DECLINED
-  MAYBE
-}
-
-enum ChecklistTaskStatus {
-  TODO
-  IN_PROGRESS
-  DONE
-}
-
-enum CollaboratorRole {
-  EDITOR
-  VIEWER
-}
-
 // === PROVIDER PROFILES ===
 
 model ProviderProfile {
@@ -592,140 +574,6 @@ model Inquiry {
   @@index([tenantId, status])
   @@index([clientId])
   @@map("inquiries")
-}
-
-// === WEDDING PLANNING ===
-
-model Wedding {
-  id            String    @id @default(uuid()) @db.Uuid
-  clientId      String    @unique @map("client_id") @db.Uuid
-  title         String
-  brideName     String?   @map("bride_name")
-  groomName     String?   @map("groom_name")
-  weddingDate   DateTime? @map("wedding_date") @db.Date
-  venue         String?
-  city          String?
-  country       String?
-  budget        Decimal?  @db.Decimal(12, 2)
-  currency      String    @default("ETB")
-  guestCount    Int?      @map("guest_count")
-  status        String    @default("planning")
-  coverImageUrl String?   @map("cover_image_url")
-  metadata      Json?
-  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz
-
-  client        ClientUser            @relation(fields: [clientId], references: [id])
-  events        WeddingEvent[]
-  guests        Guest[]
-  budgetItems   BudgetItem[]
-  checklist     ChecklistTask[]
-  collaborators WeddingCollaborator[]
-
-  @@index([weddingDate])
-  @@map("weddings")
-}
-
-model WeddingEvent {
-  id          String    @id @default(uuid()) @db.Uuid
-  weddingId   String    @map("wedding_id") @db.Uuid
-  name        String
-  description String?
-  eventDate   DateTime? @map("event_date") @db.Timestamptz
-  startTime   String?   @map("start_time")
-  endTime     String?   @map("end_time")
-  venue       String?
-  address     String?
-  sortOrder   Int       @default(0) @map("sort_order")
-  metadata    Json?
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
-
-  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-
-  @@index([weddingId])
-  @@map("wedding_events")
-}
-
-model Guest {
-  id           String          @id @default(uuid()) @db.Uuid
-  weddingId    String          @map("wedding_id") @db.Uuid
-  firstName    String          @map("first_name")
-  lastName     String          @map("last_name")
-  email        String?
-  phone        String?
-  rsvpStatus   GuestRsvpStatus @default(PENDING) @map("rsvp_status")
-  plusOnes     Int             @default(0) @map("plus_ones")
-  tableNumber  String?         @map("table_number")
-  dietaryNotes String?         @map("dietary_notes")
-  group        String?
-  metadata     Json?
-  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz
-
-  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-
-  @@index([weddingId])
-  @@index([weddingId, rsvpStatus])
-  @@map("guests")
-}
-
-model BudgetItem {
-  id            String    @id @default(uuid()) @db.Uuid
-  weddingId     String    @map("wedding_id") @db.Uuid
-  category      String
-  description   String
-  estimatedCost Decimal   @map("estimated_cost") @db.Decimal(12, 2)
-  actualCost    Decimal?  @map("actual_cost") @db.Decimal(12, 2)
-  isPaid        Boolean   @default(false) @map("is_paid")
-  paidDate      DateTime? @map("paid_date") @db.Date
-  vendor        String?
-  notes         String?
-  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz
-
-  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-
-  @@index([weddingId])
-  @@index([weddingId, category])
-  @@map("budget_items")
-}
-
-model ChecklistTask {
-  id          String              @id @default(uuid()) @db.Uuid
-  weddingId   String              @map("wedding_id") @db.Uuid
-  title       String
-  description String?
-  category    String?
-  dueDate     DateTime?           @map("due_date") @db.Date
-  status      ChecklistTaskStatus @default(TODO)
-  sortOrder   Int                 @default(0) @map("sort_order")
-  assignedTo  String?             @map("assigned_to")
-  completedAt DateTime?           @map("completed_at") @db.Timestamptz
-  createdAt   DateTime            @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime            @updatedAt @map("updated_at") @db.Timestamptz
-
-  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-
-  @@index([weddingId, status])
-  @@index([weddingId, dueDate])
-  @@map("checklist_tasks")
-}
-
-model WeddingCollaborator {
-  id        String           @id @default(uuid()) @db.Uuid
-  weddingId String           @map("wedding_id") @db.Uuid
-  userId    String           @map("user_id") @db.Uuid
-  userType  String           @map("user_type")
-  role      CollaboratorRole @default(VIEWER)
-  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz
-
-  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-
-  @@unique([weddingId, userId])
-  @@index([userId, userType])
-  @@map("wedding_collaborators")
 }
 
 // === USER SETTINGS ===

@@ -1,24 +1,24 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T00:00:00Z",
-  "current_task": null,
+  "last_updated": "2026-03-17T23:03:33.652850+00:00",
+  "current_task": "50-schema-seed-habesha",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
-      "title": "Schema & Seed — Habesha Hub Domain",
-      "status": "pending",
+      "title": "Schema & Seed \u2014 Habesha Hub Domain",
+      "status": "completed",
       "subtasks": {
-        "schema-updates": "pending",
-        "migration": "pending",
-        "seed-categories": "pending",
-        "seed-demo-businesses": "pending",
-        "update-dtos": "pending",
-        "tests": "pending"
+        "schema-updates": "completed",
+        "migration": "completed",
+        "seed-categories": "completed",
+        "seed-demo-businesses": "completed",
+        "update-dtos": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-17T23:03:33Z",
+      "completed_at": "2026-03-18T00:15:00Z",
+      "notes": "Added whatsapp/instagram/tiktok/verifiedAt/businessHours to ProviderProfile, ProviderCategory join table, Deal model, icon/color on Category. Seeded 7 parent + 32 child Ethiopian business categories and 5 demo businesses across UAE cities. Updated DTOs and service to return categories, deals, country, city, whatsapp in search and profile responses. Build passes with 0 errors, 729 tests pass."
     },
     "51-multi-category": {
       "title": "Multi-Category Tagging",
@@ -90,7 +90,7 @@
       "notes": ""
     },
     "56-branding-theme": {
-      "title": "Branding & Theme — Habesha Hub",
+      "title": "Branding & Theme \u2014 Habesha Hub",
       "status": "pending",
       "subtasks": {
         "brand-identity": "pending",
@@ -104,7 +104,7 @@
       "notes": ""
     },
     "57-web-homepage-search": {
-      "title": "Web App — Homepage & Search",
+      "title": "Web App \u2014 Homepage & Search",
       "status": "pending",
       "subtasks": {
         "homepage-hero": "pending",
@@ -119,7 +119,7 @@
       "notes": ""
     },
     "58-web-business-profile": {
-      "title": "Web App — Business Profile Page",
+      "title": "Web App \u2014 Business Profile Page",
       "status": "pending",
       "subtasks": {
         "profile-page": "pending",
@@ -133,7 +133,7 @@
       "notes": ""
     },
     "59-web-browse-discovery": {
-      "title": "Web App — Browse & Discovery",
+      "title": "Web App \u2014 Browse & Discovery",
       "status": "pending",
       "subtasks": {
         "category-page": "pending",
@@ -147,7 +147,7 @@
       "notes": ""
     },
     "60-admin-moderation": {
-      "title": "Admin — Business Moderation",
+      "title": "Admin \u2014 Business Moderation",
       "status": "pending",
       "subtasks": {
         "verification-queue": "pending",
@@ -160,7 +160,7 @@
       "notes": ""
     },
     "61-provider-customization": {
-      "title": "Provider Portal — Habesha Customization",
+      "title": "Provider Portal \u2014 Habesha Customization",
       "status": "pending",
       "subtasks": {
         "profile-setup": "pending",
@@ -174,7 +174,7 @@
       "notes": ""
     },
     "62-i18n-amharic-arabic": {
-      "title": "i18n — Amharic & Arabic",
+      "title": "i18n \u2014 Amharic & Arabic",
       "status": "pending",
       "subtasks": {
         "amharic-translations": "pending",
@@ -271,7 +271,7 @@
       "notes": ""
     },
     "70-mobile-app": {
-      "title": "Mobile App — Expo",
+      "title": "Mobile App \u2014 Expo",
       "status": "pending",
       "subtasks": {
         "home-screen": "pending",

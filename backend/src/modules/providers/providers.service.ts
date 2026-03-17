@@ -22,24 +22,24 @@ export class ProvidersService {
 
   // === Profile ===
 
+  private readonly profileIncludes = {
+    packages: { orderBy: { sortOrder: 'asc' } as const },
+    faqs: { orderBy: { sortOrder: 'asc' } as const },
+    portfolioItems: { orderBy: { sortOrder: 'asc' } as const },
+    categories: { include: { category: true } },
+    deals: { where: { isActive: true }, orderBy: { createdAt: 'desc' } as const },
+  };
+
   async getProfile(tenantId: string): Promise<ServiceResult<unknown>> {
     let profile = await this.prisma.providerProfile.findUnique({
       where: { tenantId },
-      include: {
-        packages: { orderBy: { sortOrder: 'asc' } },
-        faqs: { orderBy: { sortOrder: 'asc' } },
-        portfolioItems: { orderBy: { sortOrder: 'asc' } },
-      },
+      include: this.profileIncludes,
     });
 
     if (!profile) {
       profile = await this.prisma.providerProfile.create({
         data: { tenantId },
-        include: {
-          packages: { orderBy: { sortOrder: 'asc' } },
-          faqs: { orderBy: { sortOrder: 'asc' } },
-          portfolioItems: { orderBy: { sortOrder: 'asc' } },
-        },
+        include: this.profileIncludes,
       });
     }
 
@@ -52,7 +52,7 @@ export class ProvidersService {
   ): Promise<ServiceResult<unknown>> {
     const profile = await this.ensureProfile(tenantId);
 
-    const { metadata, socialLinks, galleryUrls, ...rest } = dto;
+    const { metadata, socialLinks, galleryUrls, businessHours, ...rest } = dto;
     const updated = await this.prisma.providerProfile.update({
       where: { id: profile.id },
       data: {
@@ -60,6 +60,7 @@ export class ProvidersService {
         ...(metadata !== undefined && { metadata: metadata === null ? Prisma.JsonNull : metadata as Prisma.InputJsonValue }),
         ...(socialLinks !== undefined && { socialLinks: socialLinks as Prisma.InputJsonValue }),
         ...(galleryUrls !== undefined && { galleryUrls: galleryUrls as Prisma.InputJsonValue }),
+        ...(businessHours !== undefined && { businessHours: businessHours as Prisma.InputJsonValue }),
       },
     });
 
@@ -489,6 +490,14 @@ export class ProvidersService {
       ];
     }
 
+    if (filters.category) {
+      where.categories = {
+        some: {
+          category: { slug: filters.category },
+        },
+      };
+    }
+
     if (filters.city) {
       where.city = { contains: filters.city, mode: 'insensitive' };
     }
@@ -521,6 +530,7 @@ export class ProvidersService {
             orderBy: { price: 'asc' },
             take: 1,
           },
+          categories: { include: { category: true } },
         },
         skip: (page - 1) * pageSize,
         take: pageSize,
@@ -545,16 +555,23 @@ export class ProvidersService {
       id: p.id,
       name: p.displayName || p.tenant?.name || 'Unnamed',
       slug: p.slug || p.tenant?.slug || p.id,
-      category: p.category?.displayName || p.category?.name || '',
+      categories: (p.categories || []).map((pc: any) => ({
+        id: pc.category.id,
+        name: pc.category.name,
+        slug: pc.category.slug,
+        isPrimary: pc.isPrimary,
+      })),
+      country: p.country || '',
+      city: p.city || '',
       location: [p.city, p.state, p.country].filter(Boolean).join(', '),
       coverPhoto: p.coverImageUrl,
       rating: Number(p.rating) || 0,
       reviewCount: p.reviewCount || 0,
       startingPrice: p.packages?.[0] ? Number(p.packages[0].price) : 0,
       featured: p.isFeatured || false,
+      verified: p.isVerified || false,
       description: p.bio || '',
-      styles: Array.isArray(p.styles) ? p.styles : [],
-      languages: Array.isArray(p.languages) ? p.languages : [],
+      whatsapp: p.whatsapp || '',
     }));
 
     return ServiceResult.ok(paginate(mapped, totalCount, { page, pageSize }));
@@ -571,6 +588,11 @@ export class ProvidersService {
         },
         faqs: { orderBy: { sortOrder: 'asc' } },
         portfolioItems: { orderBy: { sortOrder: 'asc' } },
+        categories: { include: { category: true } },
+        deals: {
+          where: { isActive: true },
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
@@ -583,7 +605,14 @@ export class ProvidersService {
       id: p.id,
       name: p.displayName || p.tenant?.name || 'Unnamed',
       slug: p.slug || p.tenant?.slug || p.id,
-      category: p.category?.displayName || p.category?.name || '',
+      categories: (p.categories || []).map((pc: any) => ({
+        id: pc.category.id,
+        name: pc.category.name,
+        slug: pc.category.slug,
+        isPrimary: pc.isPrimary,
+      })),
+      country: p.country || '',
+      city: p.city || '',
       location: [p.city, p.state, p.country].filter(Boolean).join(', '),
       coverPhoto: p.coverImageUrl,
       avatar: null,
@@ -592,11 +621,14 @@ export class ProvidersService {
       reviewCount: p.reviewCount || 0,
       startingPrice: p.packages?.[0] ? Number(p.packages[0].price) : 0,
       responseTime: '24h',
-      styles: Array.isArray(p.styles) ? p.styles : [],
-      languages: Array.isArray(p.languages) ? p.languages : [],
+      verified: p.isVerified || false,
       contactEmail: p.email || '',
       contactPhone: p.phone || '',
+      whatsapp: p.whatsapp || '',
+      instagram: p.instagram || '',
+      tiktok: p.tiktok || '',
       website: p.website,
+      businessHours: p.businessHours || {},
       portfolio: (p.portfolioItems || []).map((item: any) => ({
         id: item.id,
         url: item.imageUrl,
@@ -611,6 +643,17 @@ export class ProvidersService {
         inclusions: Array.isArray(pkg.features) ? pkg.features : [],
         popular: pkg.sortOrder === 0,
       })),
+      deals: (p.deals || []).map((deal: any) => ({
+        id: deal.id,
+        title: deal.title,
+        description: deal.description || '',
+        discountPercent: deal.discountPercent,
+        originalPrice: deal.originalPrice ? Number(deal.originalPrice) : null,
+        dealPrice: deal.dealPrice ? Number(deal.dealPrice) : null,
+        imageUrl: deal.imageUrl,
+        startsAt: deal.startsAt,
+        expiresAt: deal.expiresAt,
+      })),
       reviews: [],
       faqs: (p.faqs || []).map((faq: any) => ({
         id: faq.id,
@@ -624,26 +667,35 @@ export class ProvidersService {
 
   async listCategories(): Promise<ServiceResult<unknown>> {
     const categories = await this.prisma.category.findMany({
-      where: { isActive: true },
+      where: { isActive: true, parentId: null },
       orderBy: { sortOrder: 'asc' },
       include: {
         children: {
           where: { isActive: true },
           orderBy: { sortOrder: 'asc' },
+          include: {
+            _count: { select: { providers: true } },
+          },
         },
+        _count: { select: { providers: true } },
       },
     });
 
-    // Return only top-level categories mapped to frontend format
-    const topLevel = categories.filter((c: { parentId: string | null }) => !c.parentId);
-
-    const mapped = topLevel.map((c: any) => ({
+    const mapped = categories.map((c: any) => ({
       id: c.id,
-      name: c.displayName || c.name,
-      slug: c.name.toLowerCase().replace(/\s+/g, '-'),
+      name: c.name,
+      slug: c.slug,
       icon: c.icon || '',
-      vendorCount: 0,
+      color: c.color || '',
+      vendorCount: c._count.providers,
       description: c.description || '',
+      children: (c.children || []).map((child: any) => ({
+        id: child.id,
+        name: child.name,
+        slug: child.slug,
+        icon: child.icon || '',
+        vendorCount: child._count.providers,
+      })),
     }));
 
     return ServiceResult.ok(mapped);

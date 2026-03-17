@@ -361,20 +361,27 @@ model ProviderProfile {
   longitude     Decimal? @db.Decimal(10, 7)
   rating        Decimal  @default(0) @db.Decimal(3, 2)
   reviewCount   Int      @default(0) @map("review_count")
-  isVerified    Boolean  @default(false) @map("is_verified")
-  isFeatured    Boolean  @default(false) @map("is_featured")
-  coverImageUrl String?  @map("cover_image_url")
-  galleryUrls   Json     @default("[]") @map("gallery_urls")
-  socialLinks   Json     @default("{}") @map("social_links")
+  whatsapp      String?
+  instagram     String?
+  tiktok        String?
+  isVerified    Boolean   @default(false) @map("is_verified")
+  verifiedAt    DateTime? @map("verified_at") @db.Timestamptz
+  isFeatured    Boolean   @default(false) @map("is_featured")
+  coverImageUrl String?   @map("cover_image_url")
+  galleryUrls   Json      @default("[]") @map("gallery_urls")
+  socialLinks   Json      @default("{}") @map("social_links")
+  businessHours Json      @default("{}") @map("business_hours")
   metadata      Json?
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz
 
   tenant         Tenant                 @relation(fields: [tenantId], references: [id])
   packages       ProviderPackage[]
   faqs           ProviderFaq[]
   portfolioItems PortfolioItem[]
   availability   ProviderAvailability[]
+  categories     ProviderCategory[]
+  deals          Deal[]
 
   @@index([city, country])
   @@index([isVerified, isFeatured])
@@ -456,6 +463,8 @@ model Category {
   name        String
   slug        String   @unique
   description String?
+  icon        String?
+  color       String?
   iconUrl     String?  @map("icon_url")
   parentId    String?  @map("parent_id") @db.Uuid
   sortOrder   Int      @default(0) @map("sort_order")
@@ -463,11 +472,53 @@ model Category {
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
-  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryTree")
+  parent    Category?          @relation("CategoryTree", fields: [parentId], references: [id])
+  children  Category[]         @relation("CategoryTree")
+  providers ProviderCategory[]
 
   @@index([parentId])
   @@map("categories")
+}
+
+// === PROVIDER CATEGORIES (many-to-many) ===
+
+model ProviderCategory {
+  id                String   @id @default(uuid()) @db.Uuid
+  providerProfileId String   @map("provider_profile_id") @db.Uuid
+  categoryId        String   @map("category_id") @db.Uuid
+  isPrimary         Boolean  @default(false) @map("is_primary")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  providerProfile ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+  category        Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([providerProfileId, categoryId])
+  @@index([categoryId])
+  @@map("provider_categories")
+}
+
+// === DEALS ===
+
+model Deal {
+  id                String    @id @default(uuid()) @db.Uuid
+  providerProfileId String    @map("provider_profile_id") @db.Uuid
+  title             String
+  description       String?
+  discountPercent   Int?      @map("discount_percent")
+  originalPrice     Decimal?  @map("original_price") @db.Decimal(12, 2)
+  dealPrice         Decimal?  @map("deal_price") @db.Decimal(12, 2)
+  imageUrl          String?   @map("image_url")
+  isActive          Boolean   @default(true) @map("is_active")
+  startsAt          DateTime? @map("starts_at") @db.Timestamptz
+  expiresAt         DateTime? @map("expires_at") @db.Timestamptz
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  providerProfile ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([providerProfileId])
+  @@index([isActive, expiresAt])
+  @@map("deals")
 }
 
 // === BOOKINGS ===

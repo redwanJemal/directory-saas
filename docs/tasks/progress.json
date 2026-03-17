@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-17T23:03:33.652850+00:00",
-  "current_task": "50-schema-seed-habesha",
+  "last_updated": "2026-03-17T23:14:45.193730+00:00",
+  "current_task": "51-multi-category",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -22,16 +22,16 @@
     },
     "51-multi-category": {
       "title": "Multi-Category Tagging",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "category-assignment-api": "pending",
-        "search-by-category": "pending",
-        "category-tree-with-counts": "pending",
-        "tests": "pending"
+        "category-assignment-api": "completed",
+        "search-by-category": "completed",
+        "category-tree-with-counts": "completed",
+        "tests": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-17T23:14:45Z",
+      "completed_at": "2026-03-18T00:20:00Z",
+      "notes": "Added GET/PUT /providers/me/categories for multi-category assignment (1-5 categories, replace strategy). Search supports comma-separated category slugs and categoryIds with parent→child inclusion. Category tree supports withCount param. 16 unit tests for DTO validation, category assignment, search filtering, and category tree. Build passes, 745 tests pass."
     },
     "52-country-city": {
       "title": "Country & City Support",

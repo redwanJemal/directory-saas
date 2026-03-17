@@ -18,6 +18,7 @@ export class SearchProvidersController {
   async searchProviders(
     @Query('q') q?: string,
     @Query('category') category?: string,
+    @Query('categoryId') categoryId?: string,
     @Query('city') city?: string,
     @Query('country') country?: string,
     @Query('minRating') minRating?: string,
@@ -30,6 +31,7 @@ export class SearchProvidersController {
     const result = await this.providersService.searchProviders({
       q,
       category,
+      categoryId,
       city,
       country,
       minRating: minRating ? parseFloat(minRating) : undefined,
@@ -67,8 +69,10 @@ export class CategoriesController {
 
   @Get()
   @Public()
-  async listCategories() {
-    const result = await this.providersService.listCategories();
+  async listCategories(@Query('withCount') withCount?: string) {
+    const result = await this.providersService.listCategories({
+      withCount: withCount !== 'false',
+    });
     if (!result.success) throw result.toHttpException();
     return result.data;
   }

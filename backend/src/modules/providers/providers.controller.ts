@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Put,
   Post,
   Patch,
   Delete,
@@ -34,6 +35,8 @@ import {
   UpdateAvailabilityDto,
   ReorderSchema,
   ReorderDto,
+  SetCategoriesSchema,
+  SetCategoriesDto,
 } from './dto';
 
 @Controller('providers')
@@ -56,6 +59,25 @@ export class ProvidersController {
     @Body(new ZodValidationPipe(UpdateProfileSchema)) dto: UpdateProfileDto,
   ) {
     const result = await this.providersService.updateProfile(tenantId, dto);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  // === Categories ===
+
+  @Get('me/categories')
+  async getCategories(@CurrentTenant() tenantId: string) {
+    const result = await this.providersService.getCategories(tenantId);
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
+
+  @Put('me/categories')
+  async setCategories(
+    @CurrentTenant() tenantId: string,
+    @Body(new ZodValidationPipe(SetCategoriesSchema)) dto: SetCategoriesDto,
+  ) {
+    const result = await this.providersService.setCategories(tenantId, dto);
     if (!result.success) throw result.toHttpException();
     return result.data;
   }

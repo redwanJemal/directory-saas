@@ -14,6 +14,7 @@ import {
   UpdatePortfolioItemDto,
   UpdateAvailabilityDto,
   ReorderDto,
+  SetCategoriesDto,
 } from './dto';
 
 @Injectable()
@@ -467,6 +468,7 @@ export class ProvidersService {
   async searchProviders(filters: {
     q?: string;
     category?: string;
+    categoryId?: string;
     city?: string;
     country?: string;
     minRating?: number;
@@ -491,10 +493,18 @@ export class ProvidersService {
     }
 
     if (filters.category) {
+      const slugs = filters.category.split(',').map((s) => s.trim()).filter(Boolean);
+      // Resolve parent categories to include their children
+      const allCategoryIds = await this.resolveCategorySlugs(slugs);
+      if (allCategoryIds.length > 0) {
+        where.categories = {
+          some: { categoryId: { in: allCategoryIds } },
+        };
+      }
+    } else if (filters.categoryId) {
+      const ids = filters.categoryId.split(',').map((s) => s.trim()).filter(Boolean);
       where.categories = {
-        some: {
-          category: { slug: filters.category },
-        },
+        some: { categoryId: { in: ids } },
       };
     }
 
@@ -605,12 +615,16 @@ export class ProvidersService {
       id: p.id,
       name: p.displayName || p.tenant?.name || 'Unnamed',
       slug: p.slug || p.tenant?.slug || p.id,
-      categories: (p.categories || []).map((pc: any) => ({
-        id: pc.category.id,
-        name: pc.category.name,
-        slug: pc.category.slug,
-        isPrimary: pc.isPrimary,
-      })),
+      categories: (p.categories || [])
+        .sort((a: any, b: any) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0))
+        .map((pc: any) => ({
+          id: pc.category.id,
+          name: pc.category.name,
+          slug: pc.category.slug,
+          icon: pc.category.icon || '',
+          color: pc.category.color || '',
+          isPrimary: pc.isPrimary,
+        })),
       country: p.country || '',
       city: p.city || '',
       location: [p.city, p.state, p.country].filter(Boolean).join(', '),
@@ -665,7 +679,71 @@ export class ProvidersService {
 
   // === Categories ===
 
-  async listCategories(): Promise<ServiceResult<unknown>> {
+  async getCategories(tenantId: string): Promise<ServiceResult<unknown>> {
+    const profile = await this.ensureProfile(tenantId);
+
+    const providerCategories = await this.prisma.providerCategory.findMany({
+      where: { providerProfileId: profile.id },
+      include: { category: true },
+      orderBy: { isPrimary: 'desc' },
+    });
+
+    return ServiceResult.ok(
+      providerCategories.map((pc: any) => ({
+        id: pc.category.id,
+        name: pc.category.name,
+        slug: pc.category.slug,
+        icon: pc.category.icon || '',
+        color: pc.category.color || '',
+        isPrimary: pc.isPrimary,
+      })),
+    );
+  }
+
+  async setCategories(
+    tenantId: string,
+    dto: SetCategoriesDto,
+  ): Promise<ServiceResult<unknown>> {
+    const profile = await this.ensureProfile(tenantId);
+
+    // Validate all category IDs exist
+    const categories = await this.prisma.category.findMany({
+      where: { id: { in: dto.categoryIds }, isActive: true },
+    });
+
+    if (categories.length !== dto.categoryIds.length) {
+      const foundIds = new Set(categories.map((c) => c.id));
+      const missing = dto.categoryIds.filter((id) => !foundIds.has(id));
+      return ServiceResult.fail(
+        ErrorCodes.VALIDATION_ERROR,
+        `Categories not found: ${missing.join(', ')}`,
+      );
+    }
+
+    // Replace all categories in a transaction
+    await this.prisma.$transaction([
+      this.prisma.providerCategory.deleteMany({
+        where: { providerProfileId: profile.id },
+      }),
+      ...dto.categoryIds.map((categoryId) =>
+        this.prisma.providerCategory.create({
+          data: {
+            providerProfileId: profile.id,
+            categoryId,
+            isPrimary: categoryId === dto.primaryCategoryId,
+          },
+        }),
+      ),
+    ]);
+
+    return this.getCategories(tenantId);
+  }
+
+  async listCategories(options?: {
+    withCount?: boolean;
+  }): Promise<ServiceResult<unknown>> {
+    const withCount = options?.withCount ?? true;
+
     const categories = await this.prisma.category.findMany({
       where: { isActive: true, parentId: null },
       orderBy: { sortOrder: 'asc' },
@@ -673,11 +751,13 @@ export class ProvidersService {
         children: {
           where: { isActive: true },
           orderBy: { sortOrder: 'asc' },
-          include: {
-            _count: { select: { providers: true } },
-          },
+          ...(withCount && {
+            include: { _count: { select: { providers: true } } },
+          }),
         },
-        _count: { select: { providers: true } },
+        ...(withCount && {
+          _count: { select: { providers: true } },
+        }),
       },
     });
 
@@ -687,21 +767,58 @@ export class ProvidersService {
       slug: c.slug,
       icon: c.icon || '',
       color: c.color || '',
-      vendorCount: c._count.providers,
+      vendorCount: withCount ? (c._count?.providers ?? 0) : undefined,
       description: c.description || '',
       children: (c.children || []).map((child: any) => ({
         id: child.id,
         name: child.name,
         slug: child.slug,
         icon: child.icon || '',
-        vendorCount: child._count.providers,
+        vendorCount: withCount ? (child._count?.providers ?? 0) : undefined,
       })),
     }));
 
     return ServiceResult.ok(mapped);
   }
 
+  async getCategoryBySlug(slug: string): Promise<ServiceResult<unknown>> {
+    const category = await this.prisma.category.findUnique({
+      where: { slug },
+      include: {
+        children: { where: { isActive: true }, select: { id: true } },
+      },
+    });
+
+    if (!category) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, `Category '${slug}' not found`);
+    }
+
+    return ServiceResult.ok(category);
+  }
+
   // === Helpers ===
+
+  /**
+   * Resolves category slugs to IDs, including children of parent categories.
+   */
+  private async resolveCategorySlugs(slugs: string[]): Promise<string[]> {
+    const categories = await this.prisma.category.findMany({
+      where: { slug: { in: slugs }, isActive: true },
+      include: {
+        children: { where: { isActive: true }, select: { id: true } },
+      },
+    });
+
+    const ids: string[] = [];
+    for (const cat of categories) {
+      ids.push(cat.id);
+      // If it's a parent category, include all children
+      if (cat.children.length > 0) {
+        ids.push(...cat.children.map((c) => c.id));
+      }
+    }
+    return [...new Set(ids)];
+  }
 
   private async ensureProfile(tenantId: string) {
     let profile = await this.prisma.providerProfile.findUnique({

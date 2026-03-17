@@ -5,3 +5,4 @@ export { CreatePortfolioItemSchema, UpdatePortfolioItemSchema, type CreatePortfo
 export { UpdateAvailabilitySchema, type UpdateAvailabilityDto } from './update-availability.dto';
 export { ReorderSchema, type ReorderDto } from './reorder.dto';
 export { BlockDateSchema, type BlockDateDto } from './availability-block.dto';
+export { SetCategoriesSchema, type SetCategoriesDto } from './set-categories.dto';

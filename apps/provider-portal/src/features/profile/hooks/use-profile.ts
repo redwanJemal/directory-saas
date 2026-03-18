@@ -1,6 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import type { ProviderProfile, Package, FAQ, AvailabilityDate } from '../types';
+import type {
+  ProviderProfile,
+  ProviderCategory,
+  CategoryOption,
+  Package,
+  FAQ,
+  AvailabilityDate,
+  Country,
+  City,
+} from '../types';
+import type { ApiResponse } from '@/lib/types';
 
 // Profile
 export function useProfileQuery() {
@@ -21,6 +31,71 @@ export function useUpdateProfileMutation() {
       return response.data.data;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['provider-profile'] }),
+  });
+}
+
+// Categories
+export function useProviderCategoriesQuery() {
+  return useQuery({
+    queryKey: ['provider-categories'],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<ProviderCategory[]>>('/providers/me/categories');
+      return response.data.data;
+    },
+  });
+}
+
+export function useUpdateCategoriesMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { categoryIds: string[]; primaryCategoryId: string }) => {
+      const response = await api.put<ApiResponse<ProviderCategory[]>>(
+        '/providers/me/categories',
+        data,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['provider-categories'] });
+      queryClient.invalidateQueries({ queryKey: ['provider-profile'] });
+    },
+  });
+}
+
+export function useCategoryTreeQuery() {
+  return useQuery({
+    queryKey: ['category-tree'],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<CategoryOption[]>>('/categories');
+      return response.data.data;
+    },
+    staleTime: 10 * 60 * 1000,
+  });
+}
+
+// Locations
+export function useCountriesQuery() {
+  return useQuery({
+    queryKey: ['countries'],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<Country[]>>('/locations/countries');
+      return response.data.data;
+    },
+    staleTime: 30 * 60 * 1000,
+  });
+}
+
+export function useCitiesQuery(countryCode: string | undefined) {
+  return useQuery({
+    queryKey: ['cities', countryCode],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<City[]>>(
+        `/locations/countries/${countryCode}/cities`,
+      );
+      return response.data.data;
+    },
+    enabled: !!countryCode,
+    staleTime: 30 * 60 * 1000,
   });
 }
 

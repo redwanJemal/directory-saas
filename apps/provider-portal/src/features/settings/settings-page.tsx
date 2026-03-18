@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { NotificationSettings } from './components/notification-settings';
 import { BusinessHours } from './components/business-hours';
+import { WhatsAppSetup } from './components/whatsapp-setup';
 import { AccountSettings } from './components/account-settings';
 
 export function SettingsPage() {
@@ -21,6 +22,9 @@ export function SettingsPage() {
           <TabsTrigger value="business-hours">
             {t('settings.businessHours')}
           </TabsTrigger>
+          <TabsTrigger value="whatsapp">
+            {t('settings.whatsapp')}
+          </TabsTrigger>
           <TabsTrigger value="account">
             {t('settings.account')}
           </TabsTrigger>
@@ -32,6 +36,10 @@ export function SettingsPage() {
 
         <TabsContent value="business-hours" className="mt-6">
           <BusinessHours />
+        </TabsContent>
+
+        <TabsContent value="whatsapp" className="mt-6">
+          <WhatsAppSetup />
         </TabsContent>
 
         <TabsContent value="account" className="mt-6">

@@ -7,11 +7,15 @@ export const profileSchema = z.object({
   location: z.string().max(200).optional(),
   city: z.string().max(100).optional(),
   state: z.string().max(100).optional(),
+  country: z.string().max(100).optional(),
   styles: z.array(z.string()).optional(),
   languages: z.array(z.string()).optional(),
   phone: z.string().max(20).optional(),
   email: z.string().email().optional().or(z.literal('')),
   website: z.string().url().optional().or(z.literal('')),
+  whatsapp: z.string().max(50).optional().or(z.literal('')),
+  instagram: z.string().max(100).optional().or(z.literal('')),
+  tiktok: z.string().max(100).optional().or(z.literal('')),
 });
 
 export const packageSchema = z.object({

@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T00:39:22.359223+00:00",
-  "current_task": "60-admin-moderation",
+  "last_updated": "2026-03-18T00:54:07.267073+00:00",
+  "current_task": "61-provider-customization",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -161,17 +161,17 @@
     },
     "61-provider-customization": {
       "title": "Provider Portal \u2014 Habesha Customization",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "profile-setup": "pending",
-        "deals-manager": "pending",
-        "contact-analytics": "pending",
-        "dashboard": "pending",
-        "whatsapp-setup": "pending"
+        "profile-setup": "completed",
+        "deals-manager": "completed",
+        "contact-analytics": "completed",
+        "dashboard": "completed",
+        "whatsapp-setup": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T00:54:07Z",
+      "completed_at": "2026-03-18T02:30:00Z",
+      "notes": "Customized provider portal for Habesha Hub: multi-category selector (searchable, max 5, primary marking) with API integration to /providers/me/categories; country/city cascading picker using /locations API; WhatsApp/Instagram/TikTok social media inputs; deals manager page with full CRUD (create/edit/delete dialogs, status badges, pagination); dashboard customized with contact analytics chart (30-day stacked bar by WhatsApp/phone/email), weekly trend with arrow, most popular contact method insight, stats cards (Profile Views, Contact Clicks, Reviews, Active Deals), quick actions (Edit Profile, Add Deal, View Listing); WhatsApp setup tab in settings with greeting message editor and live preview of chat link. All i18n keys added to en.json and am.json. Vite build passes, backend build passes, 877 tests pass."
     },
     "62-i18n-amharic-arabic": {
       "title": "i18n \u2014 Amharic & Arabic",

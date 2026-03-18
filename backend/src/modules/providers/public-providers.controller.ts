@@ -63,6 +63,20 @@ export class PublicProvidersController {
     if (!result.success) throw result.toHttpException();
     return result.data;
   }
+
+  @Get(':vendorId/related')
+  @Public()
+  async getRelatedProviders(
+    @Param('vendorId') vendorId: string,
+    @Query('limit') limit?: string,
+  ) {
+    const result = await this.providersService.getRelatedProviders(
+      vendorId,
+      limit ? Math.min(parseInt(limit, 10), 8) : 4,
+    );
+    if (!result.success) throw result.toHttpException();
+    return result.data;
+  }
 }
 
 // === Public Categories ===

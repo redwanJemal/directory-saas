@@ -64,6 +64,7 @@ export interface VendorProfile {
   responseTime: string;
   verified: boolean;
   whatsapp: string | null;
+  whatsappUrl: string | null;
   styles: string[];
   languages: string[];
   contactEmail: string;
@@ -76,7 +77,42 @@ export interface VendorProfile {
   packages: VendorPackage[];
   reviews: VendorReview[];
   faqs: VendorFaq[];
-  deals: Deal[];
+  deals: VendorDeal[];
+}
+
+export interface VendorDeal {
+  id: string;
+  title: string;
+  description: string;
+  discountPercent: number | null;
+  originalPrice: number | null;
+  dealPrice: number | null;
+  imageUrl: string | null;
+  startsAt: string | null;
+  expiresAt: string | null;
+}
+
+export interface ReviewSummary {
+  average: number;
+  total: number;
+  distribution: Record<number, number>;
+}
+
+export interface RelatedBusiness {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  categories: CategoryBadge[];
+  location: string;
+  country: string;
+  city: string;
+  coverPhoto: string | null;
+  rating: number;
+  reviewCount: number;
+  startingPrice: number;
+  verified: boolean;
+  whatsapp: string | null;
 }
 
 export interface PortfolioImage {

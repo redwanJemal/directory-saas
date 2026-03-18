@@ -934,6 +934,93 @@ export class ProvidersService {
     return `https://wa.me/${numberWithoutPlus}?text=${encodeURIComponent(message)}`;
   }
 
+  async getRelatedProviders(
+    providerId: string,
+    limit: number,
+  ): Promise<ServiceResult<unknown>> {
+    const profile = await this.prisma.providerProfile.findUnique({
+      where: { id: providerId },
+      include: {
+        categories: { select: { categoryId: true } },
+      },
+    });
+
+    if (!profile) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Provider not found');
+    }
+
+    const categoryIds = (profile as any).categories.map((c: any) => c.categoryId);
+
+    // Find providers in same categories + same city, excluding current
+    const related = await this.prisma.providerProfile.findMany({
+      where: {
+        id: { not: providerId },
+        categories: categoryIds.length > 0
+          ? { some: { categoryId: { in: categoryIds } } }
+          : undefined,
+        ...(profile.city ? { city: profile.city } : {}),
+      },
+      include: {
+        tenant: { select: { id: true, name: true, slug: true } },
+        categories: { include: { category: true } },
+        packages: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+          take: 1,
+        },
+      },
+      orderBy: { rating: 'desc' },
+      take: limit,
+    });
+
+    // If not enough results from same city, fetch more from same categories
+    if (related.length < limit && categoryIds.length > 0) {
+      const existingIds = related.map((r) => r.id);
+      const more = await this.prisma.providerProfile.findMany({
+        where: {
+          id: { notIn: [providerId, ...existingIds] },
+          categories: { some: { categoryId: { in: categoryIds } } },
+        },
+        include: {
+          tenant: { select: { id: true, name: true, slug: true } },
+          categories: { include: { category: true } },
+          packages: {
+            where: { isActive: true },
+            orderBy: { sortOrder: 'asc' },
+            take: 1,
+          },
+        },
+        orderBy: { rating: 'desc' },
+        take: limit - related.length,
+      });
+      related.push(...more);
+    }
+
+    return ServiceResult.ok(
+      related.map((p: any) => ({
+        id: p.id,
+        name: p.displayName || p.tenant?.name || 'Unnamed',
+        slug: p.slug || p.tenant?.slug || p.id,
+        category: p.categories?.[0]?.category?.name || '',
+        categories: (p.categories || []).map((pc: any) => ({
+          id: pc.category.id,
+          name: pc.category.name,
+          slug: pc.category.slug,
+          isPrimary: pc.isPrimary,
+        })),
+        location: [p.city, p.country].filter(Boolean).join(', '),
+        country: p.country || '',
+        city: p.city || '',
+        coverPhoto: p.coverImageUrl,
+        rating: Number(p.rating) || 0,
+        reviewCount: p.reviewCount || 0,
+        startingPrice: p.packages?.[0] ? Number(p.packages[0].price) : 0,
+        verified: p.isVerified || false,
+        whatsapp: p.whatsapp || null,
+      })),
+    );
+  }
+
   private async ensureProfile(tenantId: string) {
     let profile = await this.prisma.providerProfile.findUnique({
       where: { tenantId },

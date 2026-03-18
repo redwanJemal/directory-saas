@@ -25,6 +25,7 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/search" element={<VendorSearchPage />} />
           <Route path="/vendors/:vendorId" element={<VendorProfilePage />} />
+          <Route path="/business/:vendorId" element={<VendorProfilePage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/categories/:slug" element={<CategoriesPage />} />
           <Route path="/deals" element={<DealsPage />} />

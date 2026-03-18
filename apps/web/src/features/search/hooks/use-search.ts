@@ -1,9 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import type {
   SearchParams,
   VendorSearchResult,
   VendorProfile,
+  VendorReview,
+  ReviewSummary,
+  RelatedBusiness,
   Category,
   Country,
   City,
@@ -98,6 +101,71 @@ export function useFeaturedDeals() {
       return response.data.data;
     },
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useProviderReviews(providerId: string, page = 1) {
+  return useQuery({
+    queryKey: ['provider-reviews', providerId, page],
+    queryFn: async () => {
+      const response = await api.get<ApiPagedResponse<VendorReview>>(
+        `/providers/${providerId}/reviews?page=${page}&pageSize=10`,
+      );
+      return response.data;
+    },
+    enabled: !!providerId,
+  });
+}
+
+export function useReviewSummary(providerId: string) {
+  return useQuery({
+    queryKey: ['review-summary', providerId],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<ReviewSummary>>(
+        `/providers/${providerId}/reviews/summary`,
+      );
+      return response.data.data;
+    },
+    enabled: !!providerId,
+  });
+}
+
+export function useSubmitReview(providerId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { rating: number; title?: string; comment?: string }) => {
+      const response = await api.post(`/providers/${providerId}/reviews`, {
+        ...data,
+        providerId,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['provider-reviews', providerId] });
+      queryClient.invalidateQueries({ queryKey: ['review-summary', providerId] });
+      queryClient.invalidateQueries({ queryKey: ['vendor-profile', providerId] });
+    },
+  });
+}
+
+export function useRelatedBusinesses(providerId: string) {
+  return useQuery({
+    queryKey: ['related-businesses', providerId],
+    queryFn: async () => {
+      const response = await api.get<ApiResponse<RelatedBusiness[]>>(
+        `/providers/${providerId}/related?limit=4`,
+      );
+      return response.data.data;
+    },
+    enabled: !!providerId,
+  });
+}
+
+export function useRecordContactClick() {
+  return useMutation({
+    mutationFn: async ({ providerId, type }: { providerId: string; type: string }) => {
+      await api.post(`/providers/${providerId}/contact-click`, { type });
+    },
   });
 }
 

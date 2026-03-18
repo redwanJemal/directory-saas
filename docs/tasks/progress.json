@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T00:03:23.507573+00:00",
-  "current_task": "57-web-homepage-search",
+  "last_updated": "2026-03-18T01:30:00.000000+00:00",
+  "current_task": "59-web-browse-discovery",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -120,17 +120,17 @@
     },
     "58-web-business-profile": {
       "title": "Web App \u2014 Business Profile Page",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "profile-page": "pending",
-        "whatsapp-cta": "pending",
-        "review-submission": "pending",
-        "share-social": "pending",
-        "related-businesses": "pending"
+        "profile-page": "completed",
+        "whatsapp-cta": "completed",
+        "review-submission": "completed",
+        "share-social": "completed",
+        "related-businesses": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T00:16:24Z",
+      "completed_at": "2026-03-18T01:30:00Z",
+      "notes": "Full business profile page with hero, verified badge, category badges, contact bar (WhatsApp/Phone/Email/Website/Instagram), about section, packages, gallery with lightbox, business hours with Open Now indicator, reviews with rating distribution + client review submission, FAQs accordion, active deals, related businesses, floating WhatsApp CTA, share (copy link/WhatsApp/Telegram). Added /business/:slug route. Backend: client review submission endpoint, public reviews list, review summary, related businesses endpoint. All i18n keys in en.json + am.json. Build passes, 877 tests pass."
     },
     "59-web-browse-discovery": {
       "title": "Web App \u2014 Browse & Discovery",

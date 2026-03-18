@@ -14,7 +14,8 @@
     "collapse": "Collapse",
     "cities": "Cities",
     "new": "New",
-    "events": "Events"
+    "events": "Events",
+    "jobs": "Jobs"
   },
   "common": {
     "appName": "Habesha Hub",
@@ -356,5 +357,28 @@
     "rsvpSuccess": "RSVP updated!",
     "loginToRsvp": "Login to RSVP",
     "eventFull": "Event Full"
+  },
+  "jobs": {
+    "pageTitle": "Job Board",
+    "pageSubtitle": "Find job opportunities from Ethiopian businesses across the Gulf",
+    "noJobs": "No job postings right now. Check back soon!",
+    "allTypes": "All Job Types",
+    "type_full-time": "Full Time",
+    "type_part-time": "Part Time",
+    "type_freelance": "Freelance",
+    "searchPlaceholder": "Search jobs...",
+    "upTo": "Up to",
+    "apply": "Apply",
+    "applyTo": "Apply to {{title}}",
+    "applicantName": "Full Name",
+    "phone": "Phone",
+    "email": "Email",
+    "message": "Cover Message",
+    "messagePlaceholder": "Tell the employer why you're a great fit...",
+    "submitApplication": "Submit Application",
+    "applicationSent": "Application submitted successfully!",
+    "latestJobs": "Latest Jobs",
+    "latestJobsSubtitle": "New job opportunities from Ethiopian businesses",
+    "viewAllJobs": "View All Jobs"
   }
 }

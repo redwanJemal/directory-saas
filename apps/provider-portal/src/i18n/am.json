@@ -12,7 +12,8 @@
     "analytics": "ትንተና",
     "settings": "ቅንብሮች",
     "collapse": "አሳንስ",
-    "events": "ዝግጅቶች"
+    "events": "ዝግጅቶች",
+    "jobs": "ስራዎች"
   },
   "common": {
     "appName": "ሃበሻ ሁብ ንግድ",
@@ -382,5 +383,32 @@
     "eventDeleted": "ዝግጅት በተሳካ ሁኔታ ተሰርዟል",
     "deleteEventTitle": "ዝግጅት ሰርዝ",
     "deleteEventConfirm": "ይህን ዝግጅት ለመሰረዝ እርግጠኛ ነዎት? ይህ ድርጊት ሊቀለበስ አይችልም።"
+  },
+  "jobs": {
+    "title": "የስራ ማስታወቂያዎች",
+    "createJob": "ስራ አስተዋውቅ",
+    "editJob": "ስራ አርትዕ",
+    "jobTitle": "የስራ ርዕስ",
+    "jobType": "የስራ ዓይነት",
+    "type_full-time": "ሙሉ ጊዜ",
+    "type_part-time": "ትርፍ ጊዜ",
+    "type_freelance": "ፍሪላንስ",
+    "salaryMin": "ዝቅተኛ ደመወዝ",
+    "salaryMax": "ከፍተኛ ደመወዝ",
+    "currency": "ምንዛሬ",
+    "expiresAt": "ያበቃል",
+    "expired": "ያለቀ",
+    "upTo": "እስከ",
+    "applicationCount": "{{count}} ማመልከቻዎች",
+    "viewApplications": "ማመልከቻዎች",
+    "applicationsFor": "ለ {{title}} ማመልከቻዎች",
+    "noApplications": "ገና ምንም ማመልከቻዎች የሉም።",
+    "resume": "ሲቪ",
+    "empty": "ገና የስራ ማስታወቂያዎች የሉም። ብቃት ያላቸውን ተመልካቾች ለማግኘት የመጀመሪያ ስራዎን ያስተዋውቁ።",
+    "jobCreated": "ስራ በተሳካ ሁኔታ ተለጥፏል",
+    "jobUpdated": "ስራ በተሳካ ሁኔታ ተዘምኗል",
+    "jobDeleted": "ስራ በተሳካ ሁኔታ ተሰርዟል",
+    "deleteJobTitle": "የስራ ማስታወቂያ ሰርዝ",
+    "deleteJobConfirm": "ይህን የስራ ማስታወቂያ ለመሰረዝ እርግጠኛ ነዎት? ይህ ድርጊት ሊቀለበስ አይችልም።"
   }
 }

@@ -14,7 +14,8 @@
     "collapse": "አሳንስ",
     "cities": "ከተማዎች",
     "new": "አዲስ",
-    "events": "ዝግጅቶች"
+    "events": "ዝግጅቶች",
+    "jobs": "ስራዎች"
   },
   "common": {
     "appName": "ሃበሻ ሁብ",
@@ -356,5 +357,28 @@
     "rsvpSuccess": "ምዝገባ ተሳክቷል!",
     "loginToRsvp": "ለመመዝገብ ይግቡ",
     "eventFull": "ዝግጅቱ ሞልቷል"
+  },
+  "jobs": {
+    "pageTitle": "የስራ ሰሌዳ",
+    "pageSubtitle": "በባህረ ሰላጤው ካሉ ኢትዮጵያዊ ንግዶች የስራ ዕድሎችን ያግኙ",
+    "noJobs": "አሁን ምንም የስራ ማስታወቂያዎች የሉም። በቅርብ ይመልከቱ!",
+    "allTypes": "ሁሉም የስራ ዓይነቶች",
+    "type_full-time": "ሙሉ ጊዜ",
+    "type_part-time": "ትርፍ ጊዜ",
+    "type_freelance": "ፍሪላንስ",
+    "searchPlaceholder": "ስራዎችን ይፈልጉ...",
+    "upTo": "እስከ",
+    "apply": "አመልክት",
+    "applyTo": "ለ {{title}} አመልክት",
+    "applicantName": "ሙሉ ስም",
+    "phone": "ስልክ",
+    "email": "ኢሜል",
+    "message": "የሽፋን መልዕክት",
+    "messagePlaceholder": "ለምን ጥሩ ተስማሚ እንደሆኑ ለአሰሪው ይንገሩ...",
+    "submitApplication": "ማመልከቻ አስገባ",
+    "applicationSent": "ማመልከቻ በተሳካ ሁኔታ ቀርቧል!",
+    "latestJobs": "የቅርብ ስራዎች",
+    "latestJobsSubtitle": "ከኢትዮጵያዊ ንግዶች አዲስ የስራ ዕድሎች",
+    "viewAllJobs": "ሁሉንም ስራዎች ይመልከቱ"
   }
 }

@@ -384,6 +384,7 @@ model ProviderProfile {
   categories            ProviderCategory[]
   deals                 Deal[]
   communityEvents       CommunityEvent[]
+  jobPostings           JobPosting[]
   verificationRequests  VerificationRequest[]
   contactClicks         ContactClick[]
 
@@ -710,6 +711,50 @@ model ContactClick {
 
   @@index([providerProfileId, type, createdAt])
   @@map("contact_clicks")
+}
+
+// === JOB BOARD ===
+
+model JobPosting {
+  id                String    @id @default(uuid()) @db.Uuid
+  providerProfileId String    @map("provider_profile_id") @db.Uuid
+  title             String
+  description       String?
+  type              String    @default("full-time") // full-time | part-time | freelance
+  salaryMin         Decimal?  @map("salary_min") @db.Decimal(12, 2)
+  salaryMax         Decimal?  @map("salary_max") @db.Decimal(12, 2)
+  salaryCurrency    String    @default("AED") @map("salary_currency")
+  city              String?
+  country           String?
+  isActive          Boolean   @default(true) @map("is_active")
+  expiresAt         DateTime? @map("expires_at") @db.Timestamptz
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  providerProfile ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+  applications    JobApplication[]
+
+  @@index([providerProfileId])
+  @@index([isActive, expiresAt])
+  @@index([city, country])
+  @@index([type, isActive])
+  @@map("job_postings")
+}
+
+model JobApplication {
+  id            String   @id @default(uuid()) @db.Uuid
+  jobPostingId  String   @map("job_posting_id") @db.Uuid
+  applicantName String   @map("applicant_name")
+  phone         String?
+  email         String?
+  message       String?
+  resumeUrl     String?  @map("resume_url")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  jobPosting JobPosting @relation(fields: [jobPostingId], references: [id], onDelete: Cascade)
+
+  @@index([jobPostingId])
+  @@map("job_applications")
 }
 
 // === USER SETTINGS ===

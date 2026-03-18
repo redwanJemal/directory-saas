@@ -28,6 +28,7 @@ export function PublicHeader() {
     { label: t('nav.categories'), href: '/categories' },
     { label: t('nav.deals'), href: '/deals' },
     { label: t('nav.events'), href: '/events' },
+    { label: t('nav.jobs'), href: '/jobs' },
     { label: t('nav.cities'), href: '/cities' },
     { label: t('browse.recentlyAdded'), href: '/new' },
   ];

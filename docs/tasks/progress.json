@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T01:18:47.965326+00:00",
-  "current_task": "63-community-events",
+  "last_updated": "2026-03-18T01:32:52.948343+00:00",
+  "current_task": "64-job-board",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -200,14 +200,14 @@
     },
     "64-job-board": {
       "title": "Job Board Module",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "backend": "pending",
-        "frontend": "pending"
+        "backend": "completed",
+        "frontend": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T01:32:52Z",
+      "completed_at": "2026-03-18T02:45:00Z",
+      "notes": "Added JobPosting and JobApplication Prisma models. Backend: job-board module with provider CRUD (list/create/update/delete jobs, view applications) and public endpoints (list/filter/search jobs, apply, latest jobs, provider jobs). Frontend: provider-portal jobs page with create/edit/delete dialogs + applications viewer. Web app jobs page with filters (country, city, type, search) and apply dialog. Navigation added to both apps. i18n for en + am. Build passes, 912 tests pass."
     },
     "65-telegram-mini-app": {
       "title": "Telegram Mini App",

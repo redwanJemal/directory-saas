@@ -12,7 +12,8 @@
     "analytics": "Analytics",
     "settings": "Settings",
     "collapse": "Collapse",
-    "events": "Events"
+    "events": "Events",
+    "jobs": "Jobs"
   },
   "common": {
     "appName": "Habesha Hub Business",
@@ -382,5 +383,32 @@
     "eventDeleted": "Event deleted successfully",
     "deleteEventTitle": "Delete Event",
     "deleteEventConfirm": "Are you sure you want to delete this event? This action cannot be undone."
+  },
+  "jobs": {
+    "title": "Job Postings",
+    "createJob": "Post Job",
+    "editJob": "Edit Job",
+    "jobTitle": "Job Title",
+    "jobType": "Job Type",
+    "type_full-time": "Full Time",
+    "type_part-time": "Part Time",
+    "type_freelance": "Freelance",
+    "salaryMin": "Min Salary",
+    "salaryMax": "Max Salary",
+    "currency": "Currency",
+    "expiresAt": "Expires At",
+    "expired": "Expired",
+    "upTo": "Up to",
+    "applicationCount": "{{count}} applications",
+    "viewApplications": "Applications",
+    "applicationsFor": "Applications for {{title}}",
+    "noApplications": "No applications yet.",
+    "resume": "Resume",
+    "empty": "No job postings yet. Post your first job to find talented candidates.",
+    "jobCreated": "Job posted successfully",
+    "jobUpdated": "Job updated successfully",
+    "jobDeleted": "Job deleted successfully",
+    "deleteJobTitle": "Delete Job Posting",
+    "deleteJobConfirm": "Are you sure you want to delete this job posting? This action cannot be undone."
   }
 }

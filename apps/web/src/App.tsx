@@ -10,6 +10,7 @@ import { VendorProfilePage } from '@/features/search/vendor-profile-page';
 import { CategoriesPage } from '@/features/categories/categories-page';
 import { DealsPage } from '@/features/deals/deals-page';
 import { EventsPage } from '@/features/events/events-page';
+import { JobsPage } from '@/features/jobs/jobs-page';
 import { CityPage } from '@/features/browse/city-page';
 import { CitiesPage } from '@/features/browse/cities-page';
 import { RecentlyAddedPage } from '@/features/browse/recently-added-page';
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/categories/:slug" element={<CategoriesPage />} />
           <Route path="/deals" element={<DealsPage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/jobs" element={<JobsPage />} />
           <Route path="/city/:country/:city" element={<CityPage />} />
           <Route path="/cities" element={<CitiesPage />} />
           <Route path="/new" element={<RecentlyAddedPage />} />

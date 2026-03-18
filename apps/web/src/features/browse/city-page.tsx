@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
 import {
   MapPin,
   Building2,
@@ -86,6 +87,11 @@ export function CityPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Seo
+        title={t('seo.cityTitle', { city: cityDisplay, country: countryName })}
+        description={t('seo.cityDescription', { city: cityDisplay, country: countryName })}
+        canonicalPath={`/city/${country}/${city}`}
+      />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">

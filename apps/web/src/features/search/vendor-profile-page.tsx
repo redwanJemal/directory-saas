@@ -1,6 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
+import { BusinessStructuredData, BreadcrumbStructuredData } from '@/lib/structured-data';
 import {
   Star,
   MapPin,
@@ -63,8 +65,29 @@ export function VendorProfilePage() {
     );
   }
 
+  const seoDescription = vendor.description
+    ? vendor.description.slice(0, 160)
+    : t('seo.businessDescription', { name: vendor.name, location: vendor.location });
+
   return (
     <div>
+      <Seo
+        title={vendor.name}
+        description={seoDescription}
+        canonicalPath={`/business/${vendorId}`}
+        ogType="business.business"
+        ogImage={vendor.coverPhoto}
+        ogImageAlt={vendor.name}
+      />
+      <BusinessStructuredData vendor={vendor} vendorId={vendorId!} />
+      <BreadcrumbStructuredData
+        items={[
+          { name: t('nav.home'), url: '/' },
+          { name: vendor.categories[0]?.name || t('nav.categories'), url: `/categories/${vendor.categories[0]?.slug || ''}` },
+          { name: vendor.name, url: `/business/${vendorId}` },
+        ]}
+      />
+
       {/* Hero */}
       <HeroSection vendor={vendor} />
 

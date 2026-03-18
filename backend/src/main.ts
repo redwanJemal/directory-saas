@@ -19,8 +19,10 @@ async function bootstrap() {
   const logger = app.get(AppLoggerService);
   app.useLogger(logger);
 
-  // Global prefix
-  app.setGlobalPrefix(config.apiPrefix);
+  // Global prefix (exclude SEO routes like sitemap.xml and robots.txt)
+  app.setGlobalPrefix(config.apiPrefix, {
+    exclude: ['sitemap.xml', 'robots.txt'],
+  });
 
   // Request size limits
   app.use(express.json({ limit: '1mb' }));

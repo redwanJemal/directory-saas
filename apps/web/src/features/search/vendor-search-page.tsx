@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
 import { SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -72,6 +73,11 @@ export function VendorSearchPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      <Seo
+        title={t('seo.searchTitle')}
+        description={t('seo.searchDescription')}
+        canonicalPath="/search"
+      />
       <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('search.title')}</h1>
 
       <div className="flex gap-6">

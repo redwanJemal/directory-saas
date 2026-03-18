@@ -31,6 +31,7 @@ import { DealsModule } from './modules/deals/deals.module';
 import { CommunityEventsModule } from './modules/community-events/community-events.module';
 import { JobBoardModule } from './modules/job-board/job-board.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
+import { SitemapModule } from './modules/sitemap/sitemap.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -64,6 +65,7 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     CommunityEventsModule,
     JobBoardModule,
     TelegramModule,
+    SitemapModule,
   ],
 })
 export class AppModule implements NestModule {

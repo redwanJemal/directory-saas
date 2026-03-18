@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow dashboard/auth pages
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://enathager.com/sitemap.xml

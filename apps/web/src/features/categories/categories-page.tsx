@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
 import {
   UtensilsCrossed,
   Scissors,
@@ -59,6 +60,11 @@ function CategoriesIndex({ categories, isLoading }: { categories: Category[]; is
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Seo
+        title={t('seo.categoriesTitle')}
+        description={t('seo.categoriesDescription')}
+        canonicalPath="/categories"
+      />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">
@@ -143,6 +149,11 @@ function CategoryDetailView({ category }: { category: Category }) {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Seo
+        title={category.name}
+        description={t('seo.categoryDescription', { category: category.name })}
+        canonicalPath={`/categories/${category.slug}`}
+      />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">

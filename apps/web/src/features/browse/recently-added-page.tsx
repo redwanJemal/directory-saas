@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
 import { Sparkles, ChevronRight, Home } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -23,6 +24,11 @@ export function RecentlyAddedPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Seo
+        title={t('seo.recentlyAddedTitle')}
+        description={t('seo.recentlyAddedDescription')}
+        canonicalPath="/new"
+      />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">

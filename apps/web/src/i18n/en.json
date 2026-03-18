@@ -380,5 +380,31 @@
     "latestJobs": "Latest Jobs",
     "latestJobsSubtitle": "New job opportunities from Ethiopian businesses",
     "viewAllJobs": "View All Jobs"
+  },
+  "seo": {
+    "homeTitle": "Find Ethiopian Businesses Near You",
+    "homeDescription": "Discover trusted Ethiopian-owned businesses across the Middle East. Restaurants, beauty, services, and more in UAE, Saudi Arabia, Kuwait, Qatar, Bahrain, and Oman.",
+    "searchTitle": "Search Ethiopian Businesses",
+    "searchDescription": "Search and compare Ethiopian-owned businesses. Read reviews, view portfolios, and connect directly.",
+    "searchWithQuery": "Search results for \"{{query}}\"",
+    "categoriesTitle": "Browse Categories",
+    "categoriesDescription": "Browse Ethiopian businesses by category — Food & Drink, Beauty, Services, Automotive, Health, Shopping, and Community.",
+    "categoryTitle": "{{category}} — Ethiopian Businesses",
+    "categoryDescription": "Find trusted Ethiopian {{category}} businesses across the Middle East. Compare, read reviews, and connect.",
+    "vendorTitle": "{{name}} — {{category}} in {{city}}",
+    "vendorDescription": "{{name}} in {{city}}, {{country}}. {{rating}} stars from {{reviewCount}} reviews. View packages, portfolio, and contact directly.",
+    "dealsTitle": "Deals & Promotions",
+    "dealsDescription": "Discover special offers and promotions from Ethiopian businesses across the Middle East.",
+    "eventsTitle": "Community Events",
+    "eventsDescription": "Discover upcoming events from Ethiopian businesses and community organizations across the Gulf.",
+    "jobsTitle": "Job Board",
+    "jobsDescription": "Find job opportunities from Ethiopian businesses across the Gulf. Full-time, part-time, and freelance.",
+    "citiesTitle": "Browse by City",
+    "citiesDescription": "Find Ethiopian businesses in cities across the Middle East — Dubai, Riyadh, Kuwait City, Doha, and more.",
+    "cityTitle": "Ethiopian Businesses in {{city}}",
+    "cityDescription": "Discover trusted Ethiopian-owned businesses in {{city}}, {{country}}. Restaurants, services, beauty, and more.",
+    "recentlyAddedTitle": "Recently Added Businesses",
+    "recentlyAddedDescription": "Discover newly listed Ethiopian businesses across the Middle East.",
+    "businessDescription": "{{name}} — Ethiopian business in {{location}}. View details, reviews, packages, and contact directly on Habesha Hub."
   }
 }

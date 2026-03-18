@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
 import {
   Calendar,
   MapPin,
@@ -67,6 +68,11 @@ export function EventsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Seo
+        title={t('seo.eventsTitle')}
+        description={t('seo.eventsDescription')}
+        canonicalPath="/events"
+      />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground transition-colors">

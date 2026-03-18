@@ -380,5 +380,31 @@
     "latestJobs": "የቅርብ ስራዎች",
     "latestJobsSubtitle": "ከኢትዮጵያዊ ንግዶች አዲስ የስራ ዕድሎች",
     "viewAllJobs": "ሁሉንም ስራዎች ይመልከቱ"
+  },
+  "seo": {
+    "homeTitle": "በአቅራቢያዎ ኢትዮጵያዊ ንግዶችን ያግኙ",
+    "homeDescription": "በመካከለኛው ምስራቅ ታማኝ የኢትዮጵያ ንግዶችን ያግኙ። ምግብ ቤቶች፣ ውበት፣ አገልግሎቶች እና ሌሎችም በዩኤኢ፣ ሳዑዲ አረቢያ፣ ኩዌት፣ ቃታር፣ ባህሬን እና ኦማን።",
+    "searchTitle": "ኢትዮጵያዊ ንግዶችን ይፈልጉ",
+    "searchDescription": "የኢትዮጵያ ንግዶችን ይፈልጉ እና ያወዳድሩ። ግምገማዎችን ያንብቡ፣ ስራዎችን ይመልከቱ እና በቀጥታ ይገናኙ።",
+    "searchWithQuery": "ለ\"{{query}}\" የፍለጋ ውጤቶች",
+    "categoriesTitle": "በምድብ ያስሱ",
+    "categoriesDescription": "የኢትዮጵያ ንግዶችን በምድብ ያስሱ — ምግብ እና መጠጥ፣ ውበት፣ አገልግሎቶች፣ መኪና፣ ጤና፣ ግብይት እና ማህበረሰብ።",
+    "categoryTitle": "{{category}} — ኢትዮጵያዊ ንግዶች",
+    "categoryDescription": "በመካከለኛው ምስራቅ ታማኝ የኢትዮጵያ {{category}} ንግዶችን ያግኙ።",
+    "vendorTitle": "{{name}} — በ{{city}} {{category}}",
+    "vendorDescription": "{{name}} በ{{city}}፣ {{country}}። ከ{{reviewCount}} ግምገማዎች {{rating}} ኮከቦች።",
+    "dealsTitle": "ቅናሾች እና ማስተዋወቂያዎች",
+    "dealsDescription": "በመካከለኛው ምስራቅ ከኢትዮጵያ ንግዶች ልዩ ቅናሾችን ያግኙ።",
+    "eventsTitle": "የማህበረሰብ ዝግጅቶች",
+    "eventsDescription": "ከኢትዮጵያ ንግዶች እና ማህበረሰብ ድርጅቶች መጪ ዝግጅቶችን ያግኙ።",
+    "jobsTitle": "የስራ ቦርድ",
+    "jobsDescription": "በባህረ ሰላጤ ከኢትዮጵያ ንግዶች የስራ ዕድሎችን ያግኙ።",
+    "citiesTitle": "በከተማ ያስሱ",
+    "citiesDescription": "በመካከለኛው ምስራቅ ከተሞች ኢትዮጵያዊ ንግዶችን ያግኙ — ዱባይ፣ ሪያድ፣ ኩዌት ሲቲ፣ ዶሃ እና ሌሎችም።",
+    "cityTitle": "በ{{city}} ኢትዮጵያዊ ንግዶች",
+    "cityDescription": "በ{{city}}፣ {{country}} ታማኝ የኢትዮጵያ ንግዶችን ያግኙ።",
+    "recentlyAddedTitle": "በቅርቡ የተጨመሩ ንግዶች",
+    "recentlyAddedDescription": "በመካከለኛው ምስራቅ አዲስ የተዘረዘሩ የኢትዮጵያ ንግዶችን ያግኙ።",
+    "businessDescription": "{{name}} — በ{{location}} ኢትዮጵያዊ ንግድ። ዝርዝሮችን፣ ግምገማዎችን፣ ፓኬጆችን ይመልከቱ።"
   }
 }

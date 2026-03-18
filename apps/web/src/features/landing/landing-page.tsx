@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Seo } from '@/lib/seo';
+import { WebsiteStructuredData } from '@/lib/structured-data';
 import {
   Search,
   Star,
@@ -62,8 +64,16 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export function LandingPage() {
+  const { t } = useTranslation();
+
   return (
     <>
+      <Seo
+        title={t('seo.homeTitle')}
+        description={t('seo.homeDescription')}
+        canonicalPath="/"
+      />
+      <WebsiteStructuredData />
       <HeroSection />
       <CategoriesSection />
       <FeaturedBusinessesSection />

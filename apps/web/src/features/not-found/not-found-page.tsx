@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { Seo } from '@/lib/seo';
 import { FileQuestion } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -8,6 +9,7 @@ export function NotFoundPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
+      <Seo title={t('common.pageNotFound')} noIndex />
       <div className="text-center">
         <FileQuestion className="mx-auto h-16 w-16 text-muted-foreground/50" />
         <h1 className="mt-4 text-4xl font-bold">404</h1>

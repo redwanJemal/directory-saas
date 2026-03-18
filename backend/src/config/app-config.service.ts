@@ -132,6 +132,26 @@ export class AppConfigService {
     return this.configService.get<string>('LOG_LEVEL', 'log');
   }
 
+  get telegram(): {
+    botToken: string;
+    channelId: string;
+    miniAppUrl: string;
+    webhookSecret: string;
+  } {
+    return {
+      botToken: this.configService.get<string>('TELEGRAM_BOT_TOKEN', ''),
+      channelId: this.configService.get<string>('TELEGRAM_CHANNEL_ID', ''),
+      miniAppUrl: this.configService.get<string>(
+        'TELEGRAM_MINI_APP_URL',
+        'https://t.me/habeshahub_bot/app',
+      ),
+      webhookSecret: this.configService.get<string>(
+        'TELEGRAM_WEBHOOK_SECRET',
+        '',
+      ),
+    };
+  }
+
   get ai(): {
     provider: string;
     model: string;

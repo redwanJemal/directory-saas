@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T03:05:00Z",
-  "current_task": null,
+  "last_updated": "2026-03-18T02:02:10.759719+00:00",
+  "current_task": "66-seo-social",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -219,18 +219,18 @@
       },
       "started_at": "2026-03-18T01:50:35Z",
       "completed_at": "2026-03-18T03:05:00Z",
-      "notes": "Backend: TelegramModule with webhook handler, initData HMAC-SHA256 verification, bot commands (/start, /search, /categories, /deals, /near), deep links (business_slug), location messages, channel posting for new verified businesses and deals via event system. Frontend: Telegram Mini App (React + Vite + TanStack Query) with home, search, categories, deals, business profile views; Telegram theme integration (--tg-theme-* vars with OKLch fallbacks); deep link routing via startapp param; Telegram BackButton integration; i18n (English + Amharic); haptic feedback. Fixed location message handling bug (location check before text check). 46 tests across 4 test suites (service, controller, channel service, DTO). Build passes, all tests pass."
+      "notes": "Backend: TelegramModule with webhook handler, initData HMAC-SHA256 verification, bot commands (/start, /search, /categories, /deals, /near), deep links (business_slug), location messages, channel posting for new verified businesses and deals via event system. Frontend: Telegram Mini App (React + Vite + TanStack Query) with home, search, categories, deals, business profile views; Telegram theme integration (--tg-theme-* vars with OKLch fallbacks); deep link routing via startapp param; Telegram BackButton integration; i18n (English + Amharic); haptic feedback. Fixed location message handling bug (location check before text check). 46 tests across 4 test suites (service, controller, channel service, DTO). Build passes, all tests pass. | Standards validation warnings"
     },
     "66-seo-social": {
       "title": "SEO & Social Sharing",
-      "status": "pending",
+      "status": "in_progress",
       "subtasks": {
         "meta-tags": "pending",
         "structured-data": "pending",
         "sitemap": "pending",
         "social-cards": "pending"
       },
-      "started_at": null,
+      "started_at": "2026-03-18T02:02:10Z",
       "completed_at": null,
       "notes": ""
     },

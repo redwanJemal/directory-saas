@@ -1,27 +1,34 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Building2,
   ShieldCheck,
   TrendingUp,
+  TrendingDown,
   Star,
   Clock,
   MousePointerClick,
+  Users,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuthStore } from '@/stores/auth-store';
 import {
   useDashboardStatsQuery,
   useBusinessesOverTimeQuery,
   useContactClicksByTypeQuery,
+  usePlatformMetricsQuery,
 } from './hooks/use-dashboard';
+import { cn } from '@/lib/utils';
 
 interface StatCardProps {
   titleKey: string;
   value: string | number;
   icon: React.ComponentType<{ className?: string }>;
+  trend?: number;
 }
 
-function StatCard({ titleKey, value, icon: Icon }: StatCardProps) {
+function StatCard({ titleKey, value, icon: Icon, trend }: StatCardProps) {
   const { t } = useTranslation();
   return (
     <Card>
@@ -31,6 +38,21 @@ function StatCard({ titleKey, value, icon: Icon }: StatCardProps) {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
+        {trend !== undefined && trend !== 0 && (
+          <span
+            className={cn(
+              'flex items-center text-xs font-medium mt-1',
+              trend >= 0 ? 'text-primary' : 'text-destructive',
+            )}
+          >
+            {trend >= 0 ? (
+              <TrendingUp className="h-3 w-3 mr-0.5" />
+            ) : (
+              <TrendingDown className="h-3 w-3 mr-0.5" />
+            )}
+            {Math.abs(trend)}%
+          </span>
+        )}
       </CardContent>
     </Card>
   );
@@ -39,7 +61,7 @@ function StatCard({ titleKey, value, icon: Icon }: StatCardProps) {
 function SimpleBarChart({
   data,
 }: {
-  data: { label: string; value: number; color?: string }[];
+  data: { label: string; value: number }[];
 }) {
   const maxValue = Math.max(...data.map((d) => d.value), 1);
 
@@ -47,7 +69,7 @@ function SimpleBarChart({
     <div className="space-y-2">
       {data.map((item) => (
         <div key={item.label} className="flex items-center gap-3">
-          <span className="w-20 text-sm text-muted-foreground truncate">
+          <span className="w-24 text-sm text-muted-foreground truncate">
             {item.label}
           </span>
           <div className="flex-1 h-6 bg-muted rounded-md overflow-hidden">
@@ -79,7 +101,6 @@ function BusinessesOverTimeChart() {
     );
   }
 
-  // Aggregate by country across all days
   const countryTotals: Record<string, number> = {};
   for (const day of data.daily) {
     for (const [country, count] of Object.entries(day.byCountry)) {
@@ -114,10 +135,18 @@ function ContactClicksChart() {
   return <SimpleBarChart data={chartData} />;
 }
 
+const PERIOD_OPTIONS = [
+  { value: '7', labelKey: 'dashboard.period7d' },
+  { value: '30', labelKey: 'dashboard.period30d' },
+  { value: '90', labelKey: 'dashboard.period90d' },
+] as const;
+
 export function DashboardPage() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const { data: stats } = useDashboardStatsQuery();
+  const [metricsDays, setMetricsDays] = useState('30');
+  const { data: metrics } = usePlatformMetricsQuery(parseInt(metricsDays, 10));
 
   const statCards: StatCardProps[] = [
     {
@@ -134,6 +163,7 @@ export function DashboardPage() {
       titleKey: 'dashboard.newThisWeek',
       value: stats?.newThisWeek ?? '—',
       icon: TrendingUp,
+      trend: metrics?.stats.newBusinessesTrend,
     },
     {
       titleKey: 'dashboard.totalReviews',
@@ -154,13 +184,24 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          {t('dashboard.title')}
-        </h1>
-        <p className="text-muted-foreground">
-          {t('dashboard.welcome', { name: user?.name || 'Admin' })}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t('dashboard.title')}
+          </h1>
+          <p className="text-muted-foreground">
+            {t('dashboard.welcome', { name: user?.name || 'Admin' })}
+          </p>
+        </div>
+        <Tabs value={metricsDays} onValueChange={setMetricsDays}>
+          <TabsList>
+            {PERIOD_OPTIONS.map((p) => (
+              <TabsTrigger key={p.value} value={p.value}>
+                {t(p.labelKey)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -168,6 +209,76 @@ export function DashboardPage() {
           <StatCard key={stat.titleKey} {...stat} />
         ))}
       </div>
+
+      {/* Platform Metrics */}
+      {metrics && (
+        <>
+          {/* User Growth & Verification */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              titleKey="dashboard.totalClients"
+              value={metrics.stats.totalClients}
+              icon={Users}
+            />
+            <StatCard
+              titleKey="dashboard.newClients"
+              value={metrics.stats.newClients}
+              icon={Users}
+              trend={metrics.stats.newClientsTrend}
+            />
+            <StatCard
+              titleKey="dashboard.verificationRate"
+              value={`${metrics.stats.verificationRate}%`}
+              icon={ShieldCheck}
+            />
+            <StatCard
+              titleKey="dashboard.newBusinesses"
+              value={metrics.stats.newBusinesses}
+              icon={Building2}
+              trend={metrics.stats.newBusinessesTrend}
+            />
+          </div>
+
+          {/* Charts Row */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('dashboard.topCategories')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {metrics.topCategories.length > 0 ? (
+                  <SimpleBarChart
+                    data={metrics.topCategories.map((c) => ({
+                      label: c.name,
+                      value: c.count,
+                    }))}
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground">{t('dashboard.noData')}</p>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('dashboard.topBusinessesByClicks')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {metrics.topBusinessesByClicks.length > 0 ? (
+                  <SimpleBarChart
+                    data={metrics.topBusinessesByClicks.map((b) => ({
+                      label: b.name,
+                      value: b.clicks,
+                    }))}
+                  />
+                ) : (
+                  <p className="text-sm text-muted-foreground">{t('dashboard.noData')}</p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>

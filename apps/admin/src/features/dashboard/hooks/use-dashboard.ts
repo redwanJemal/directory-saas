@@ -58,3 +58,38 @@ export function useContactClicksByTypeQuery(days = 30) {
     },
   });
 }
+
+export interface PlatformMetrics {
+  period: string;
+  stats: {
+    totalBusinesses: number;
+    newBusinesses: number;
+    newBusinessesTrend: number;
+    totalClients: number;
+    newClients: number;
+    newClientsTrend: number;
+    totalReviews: number;
+    verifiedBusinesses: number;
+    pendingVerifications: number;
+    contactClicks: number;
+    verificationRate: number;
+  };
+  userGrowthChart: { date: string; value: number }[];
+  businessGrowthChart: { date: string; value: number }[];
+  businessesByCountry: Record<string, number>;
+  topCategories: { name: string; count: number }[];
+  topBusinessesByClicks: { name: string; clicks: number }[];
+}
+
+export function usePlatformMetricsQuery(days = 30) {
+  return useQuery({
+    queryKey: ['platform-metrics', days],
+    queryFn: async () => {
+      const response = await api.get<{ data: PlatformMetrics }>(
+        `/admin/analytics/platform?days=${days}`,
+      );
+      return response.data.data;
+    },
+    refetchInterval: 60000,
+  });
+}

@@ -8,6 +8,7 @@
     "roles": "ሚናዎች እና ፈቃዶች",
     "subscriptions": "ምዝገባዎች",
     "auditLogs": "የኦዲት ምዝግብ",
+    "analytics": "ትንተና",
     "jobs": "ስራዎች",
     "settings": "ቅንብሮች",
     "collapse": "አሳንስ"
@@ -73,7 +74,16 @@
     "contactClicks": "የእውቂያ ጠቅታዎች (7ቀ)",
     "businessesByCountry": "አዲስ ንግዶች በሀገር (30ቀ)",
     "contactClicksByType": "የእውቂያ ጠቅታዎች በዓይነት (30ቀ)",
-    "noData": "ገና ምንም ውሂብ የለም"
+    "noData": "ገና ምንም ውሂብ የለም",
+    "totalClients": "ጠቅላላ ደንበኞች",
+    "newClients": "አዲስ ደንበኞች",
+    "newBusinesses": "አዲስ ንግዶች",
+    "verificationRate": "የማረጋገጫ ፍጥነት",
+    "topCategories": "በጣም ንቁ ምድቦች",
+    "topBusinessesByClicks": "በጠቅታ ከፍተኛ ንግዶች",
+    "period7d": "7ቀ",
+    "period30d": "30ቀ",
+    "period90d": "90ቀ"
   },
   "tenants": {
     "title": "ንግዶች",
@@ -264,6 +274,29 @@
     "healthy": "ጤናማ",
     "unhealthy": "ጤናማ ያልሆነ",
     "unknown": "ያልታወቀ"
+  },
+  "analytics": {
+    "title": "የመድረክ ትንተና",
+    "totalBusinesses": "ጠቅላላ ንግዶች",
+    "newBusinesses": "አዲስ ንግዶች",
+    "totalUsers": "ጠቅላላ ተጠቃሚዎች",
+    "newUsers": "አዲስ ተጠቃሚዎች",
+    "totalReviews": "ጠቅላላ ግምገማዎች",
+    "verifiedBusinesses": "የተረጋገጡ ንግዶች",
+    "pendingVerifications": "በመጠባበቅ ላይ ያሉ ማረጋገጫዎች",
+    "contactClicks": "የእውቂያ ጠቅታዎች",
+    "businessGrowth": "የንግድ እድገት",
+    "userGrowth": "የተጠቃሚ ምዝገባዎች",
+    "businessesByCountry": "ንግዶች በሀገር",
+    "topCategories": "ንቁ ምድቦች",
+    "topBusinessesByClicks": "ከፍተኛ ንግዶች በጠቅታ",
+    "verificationConversion": "የማረጋገጫ ልወጣ",
+    "totalRequests": "ጠቅላላ ጥያቄዎች",
+    "approved": "የጸደቁ",
+    "conversionRate": "የልወጣ ፍጥነት",
+    "period_7d": "7 ቀናት",
+    "period_30d": "30 ቀናት",
+    "period_90d": "90 ቀናት"
   },
   "errors": {
     "required": "ይህ መስክ ያስፈልጋል",

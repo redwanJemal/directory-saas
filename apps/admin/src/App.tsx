@@ -11,6 +11,7 @@ import { RolesPage } from '@/features/roles/roles-page';
 import { SubscriptionsPage } from '@/features/subscriptions/subscriptions-page';
 import { AuditLogsPage } from '@/features/audit-logs/audit-logs-page';
 import { JobsPage } from '@/features/jobs/jobs-page';
+import { AnalyticsPage } from '@/features/analytics/analytics-page';
 import { SettingsPage } from '@/features/settings/settings-page';
 import { NotFoundPage } from '@/features/not-found/not-found-page';
 import { ErrorBoundary } from '@/components/error-boundary';
@@ -29,6 +30,7 @@ export default function App() {
             <Route path="/users" element={<UsersPage />} />
             <Route path="/roles" element={<RolesPage />} />
             <Route path="/subscriptions" element={<SubscriptionsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/audit-logs" element={<AuditLogsPage />} />
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/settings" element={<SettingsPage />} />

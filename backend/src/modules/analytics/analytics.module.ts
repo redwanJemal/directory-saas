@@ -1,9 +1,19 @@
 import { Module } from '@nestjs/common';
+import { PrismaModule } from '../../prisma/prisma.module';
 import { AnalyticsService } from './analytics.service';
-import { AnalyticsController } from './analytics.controller';
+import {
+  AnalyticsController,
+  ProfileViewController,
+  AdminAnalyticsController,
+} from './analytics.controller';
 
 @Module({
-  controllers: [AnalyticsController],
+  imports: [PrismaModule],
+  controllers: [
+    AnalyticsController,
+    ProfileViewController,
+    AdminAnalyticsController,
+  ],
   providers: [AnalyticsService],
   exports: [AnalyticsService],
 })

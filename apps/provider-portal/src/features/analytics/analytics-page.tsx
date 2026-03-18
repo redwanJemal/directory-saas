@@ -138,15 +138,15 @@ export function AnalyticsPage() {
                 <YAxis className="text-muted-foreground" tick={{ fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    borderColor: 'hsl(var(--border))',
+                    backgroundColor: 'var(--color-card)',
+                    borderColor: 'var(--color-border)',
                     borderRadius: '8px',
                   }}
                 />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="hsl(var(--primary))"
+                  stroke="var(--color-primary)"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -172,12 +172,12 @@ export function AnalyticsPage() {
                 <YAxis className="text-muted-foreground" tick={{ fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    borderColor: 'hsl(var(--border))',
+                    backgroundColor: 'var(--color-card)',
+                    borderColor: 'var(--color-border)',
                     borderRadius: '8px',
                   }}
                 />
-                <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="value" fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -240,16 +240,102 @@ export function AnalyticsPage() {
                 <YAxis className="text-muted-foreground" tick={{ fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    borderColor: 'hsl(var(--border))',
+                    backgroundColor: 'var(--color-card)',
+                    borderColor: 'var(--color-border)',
                     borderRadius: '8px',
                   }}
                 />
-                <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="value" fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
+      </div>
+      {/* Review Stats & Contact Clicks */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {data?.reviewStats && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">{t('analytics.reviewStats')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('analytics.averageRating')}</p>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold">{data.reviewStats.averageRating}</span>
+                    <span className="text-sm text-muted-foreground">/ 5</span>
+                    {data.reviewStats.ratingTrend !== 0 && (
+                      <span
+                        className={cn(
+                          'flex items-center text-xs font-medium',
+                          data.reviewStats.ratingTrend >= 0 ? 'text-primary' : 'text-destructive',
+                        )}
+                      >
+                        {data.reviewStats.ratingTrend >= 0 ? (
+                          <TrendingUp className="h-3 w-3 mr-0.5" />
+                        ) : (
+                          <TrendingDown className="h-3 w-3 mr-0.5" />
+                        )}
+                        {Math.abs(data.reviewStats.ratingTrend)}%
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('analytics.totalReviews')}</p>
+                  <span className="text-2xl font-bold mt-1 block">{data.reviewStats.totalReviews}</span>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-sm text-muted-foreground">{t('analytics.responseRate')}</p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary rounded-full transition-all"
+                        style={{ width: `${data.reviewStats.responseRate}%` }}
+                      />
+                    </div>
+                    <span className="text-sm font-medium">{data.reviewStats.responseRate}%</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {data?.contactClicksByType && Object.keys(data.contactClicksByType).length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">{t('analytics.contactClicks')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {Object.entries(data.contactClicksByType)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([type, count]) => {
+                    const maxCount = Math.max(
+                      ...Object.values(data.contactClicksByType!),
+                    );
+                    const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                    return (
+                      <div key={type} className="space-y-1">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="capitalize">{type}</span>
+                          <span className="font-medium">{count}</span>
+                        </div>
+                        <div className="h-2 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-primary rounded-full transition-all"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

@@ -387,6 +387,7 @@ model ProviderProfile {
   jobPostings           JobPosting[]
   verificationRequests  VerificationRequest[]
   contactClicks         ContactClick[]
+  profileViews          ProfileView[]
 
   @@index([city, country])
   @@index([isVerified, isFeatured])
@@ -771,4 +772,21 @@ model UserSetting {
   @@unique([userId, userType, key])
   @@index([userId, userType])
   @@map("user_settings")
+}
+
+// === PROFILE VIEWS ===
+
+model ProfileView {
+  id                String   @id @default(uuid()) @db.Uuid
+  providerProfileId String   @map("provider_profile_id") @db.Uuid
+  clientUserId      String?  @map("client_user_id") @db.Uuid
+  ipAddress         String?  @map("ip_address")
+  userAgent         String?  @map("user_agent")
+  referrer          String?
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  providerProfile ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([providerProfileId, createdAt])
+  @@map("profile_views")
 }

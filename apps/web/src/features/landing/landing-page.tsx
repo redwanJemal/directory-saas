@@ -4,6 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { Seo } from '@/lib/seo';
 import { WebsiteStructuredData } from '@/lib/structured-data';
 import {
+  ScrollReveal,
+  StaggerGrid,
+  StaggerItem,
+  HoverCard,
+  motion,
+  scaleUp,
+} from '@/lib/motion';
+import {
   Search,
   Star,
   Phone,
@@ -121,19 +129,46 @@ function HeroSection() {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-primary/10 via-background to-primary/5 py-20 md:py-32">
-      <div className="container mx-auto px-4 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+    <section className="relative bg-gradient-to-br from-primary/10 via-background to-primary/5 py-20 md:py-32 overflow-hidden">
+      {/* Decorative animated blobs */}
+      <motion.div
+        className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl"
+        animate={{ scale: [1, 1.2, 1], rotate: [0, 45, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-primary/8 blur-3xl"
+        animate={{ scale: [1.2, 1, 1.2], rotate: [0, -30, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      <div className="container relative mx-auto px-4 text-center">
+        <motion.h1
+          className="text-4xl md:text-6xl font-bold tracking-tight"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           {locationLabel
             ? t('landing.heroTitle', { location: locationLabel })
             : t('landing.heroTitleDefault')}
-        </h1>
-        <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        </motion.h1>
+        <motion.p
+          className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+        >
           {t('landing.heroSubtitle')}
-        </p>
+        </motion.p>
 
-        <div className="mt-8 mx-auto max-w-3xl">
-          <div className="flex flex-col sm:flex-row gap-2 bg-card rounded-xl p-3 shadow-lg border">
+        <motion.div
+          className="mt-8 mx-auto max-w-3xl"
+          initial={{ opacity: 0, y: 20, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
+        >
+          <div className="flex flex-col sm:flex-row gap-2 bg-card rounded-xl p-3 shadow-lg border backdrop-blur-sm">
             <Select value={country} onValueChange={handleCountryChange}>
               <SelectTrigger className="flex-1">
                 <SelectValue placeholder={t('landing.selectCountry')} />
@@ -160,12 +195,12 @@ function HeroSection() {
               </SelectContent>
             </Select>
 
-            <Button size="lg" onClick={handleSearch}>
-              <Search className="mr-2 h-4 w-4" />
+            <Button size="lg" onClick={handleSearch} className="group">
+              <Search className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
               {t('landing.searchButton')}
             </Button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Category quick-links */}
         <CategoryQuickLinks />
@@ -185,20 +220,38 @@ function CategoryQuickLinks() {
   if (topCategories.length === 0) return null;
 
   return (
-    <div className="mt-8 flex flex-wrap justify-center gap-3">
+    <motion.div
+      className="mt-8 flex flex-wrap justify-center gap-3"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.05, delayChildren: 0.5 },
+        },
+      }}
+    >
       {topCategories.map((cat) => (
-        <Link
+        <motion.div
           key={cat.slug}
-          to={`/search?category=${cat.slug}`}
-          className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:border-primary/50 transition-colors"
+          variants={{
+            hidden: { opacity: 0, scale: 0.8, y: 10 },
+            visible: { opacity: 1, scale: 1, y: 0 },
+          }}
         >
-          <span className={CATEGORY_COLORS[cat.slug] ? '' : 'text-primary'}>
-            {CATEGORY_ICONS[cat.slug] ?? <Briefcase className="h-4 w-4" />}
-          </span>
-          {cat.name}
-        </Link>
+          <Link
+            to={`/search?category=${cat.slug}`}
+            className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <span className={CATEGORY_COLORS[cat.slug] ? '' : 'text-primary'}>
+              {CATEGORY_ICONS[cat.slug] ?? <Briefcase className="h-4 w-4" />}
+            </span>
+            {cat.name}
+          </Link>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -214,20 +267,22 @@ function CategoriesSection() {
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold">
-              {t('landing.categoriesTitle')}
-            </h2>
-            <p className="mt-1 text-muted-foreground">{t('categories.subtitle')}</p>
+        <ScrollReveal>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {t('landing.categoriesTitle')}
+              </h2>
+              <p className="mt-1 text-muted-foreground">{t('categories.subtitle')}</p>
+            </div>
+            <Button variant="ghost" asChild className="hidden sm:flex">
+              <Link to="/categories">
+                {t('landing.exploreAll')}
+                <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
-          <Button variant="ghost" asChild className="hidden sm:flex">
-            <Link to="/categories">
-              {t('landing.exploreAll')}
-              <ChevronRight className="ml-1 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
+        </ScrollReveal>
 
         {isLoading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
@@ -242,11 +297,13 @@ function CategoriesSection() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+          <StaggerGrid className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
             {topCategories.map((cat) => (
-              <CategoryCard key={cat.slug} category={cat} />
+              <StaggerItem key={cat.slug}>
+                <CategoryCard category={cat} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGrid>
         )}
 
         <div className="mt-6 text-center sm:hidden">
@@ -268,17 +325,19 @@ function CategoryCard({ category }: { category: Category }) {
 
   return (
     <Link to={`/categories/${category.slug}`}>
-      <Card className="hover:shadow-md transition-shadow hover:border-primary/50 h-full">
-        <CardContent className="flex flex-col items-center gap-3 py-6 text-center">
-          <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${colorClass}`}>
-            {CATEGORY_ICONS[category.slug] ?? <Briefcase className="h-7 w-7" />}
-          </div>
-          <h3 className="font-medium text-sm">{category.name}</h3>
-          <p className="text-xs text-muted-foreground">
-            {t('categories.vendorCount', { count: category.vendorCount })}
-          </p>
-        </CardContent>
-      </Card>
+      <HoverCard>
+        <Card className="hover:shadow-lg transition-all duration-300 hover:border-primary/50 h-full">
+          <CardContent className="flex flex-col items-center gap-3 py-6 text-center">
+            <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${colorClass} transition-transform duration-300 group-hover:scale-110`}>
+              {CATEGORY_ICONS[category.slug] ?? <Briefcase className="h-7 w-7" />}
+            </div>
+            <h3 className="font-medium text-sm">{category.name}</h3>
+            <p className="text-xs text-muted-foreground">
+              {t('categories.vendorCount', { count: category.vendorCount })}
+            </p>
+          </CardContent>
+        </Card>
+      </HoverCard>
     </Link>
   );
 }
@@ -296,18 +355,20 @@ function FeaturedBusinessesSection() {
   return (
     <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">
-            {t('landing.featuredVendors')}
-          </h2>
-          <Button variant="ghost" asChild>
-            <Link to="/search">
-              {t('common.viewAll')}
-              <ChevronRight className="ml-1 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <ScrollReveal>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              {t('landing.featuredVendors')}
+            </h2>
+            <Button variant="ghost" asChild>
+              <Link to="/search">
+                {t('common.viewAll')}
+                <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </ScrollReveal>
+        <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {isLoading
             ? Array.from({ length: 4 }).map((_, i) => (
                 <Card key={i} className="overflow-hidden">
@@ -320,8 +381,10 @@ function FeaturedBusinessesSection() {
                 </Card>
               ))
             : featured.map((vendor) => (
-                <Link key={vendor.id} to={`/vendors/${vendor.id}`}>
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow group">
+                <StaggerItem key={vendor.id}>
+                <HoverCard>
+                <Link to={`/vendors/${vendor.id}`}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
                     <div className="aspect-[4/3] relative overflow-hidden bg-muted">
                       {vendor.coverPhoto ? (
                         <img
@@ -378,13 +441,15 @@ function FeaturedBusinessesSection() {
                     </CardContent>
                   </Card>
                 </Link>
+                </HoverCard>
+                </StaggerItem>
               ))}
           {!isLoading && featured.length === 0 && (
             <p className="col-span-full text-center text-muted-foreground py-8">
               {t('common.noResults')}
             </p>
           )}
-        </div>
+        </StaggerGrid>
       </div>
     </section>
   );
@@ -515,25 +580,33 @@ function HowItWorksSection() {
   return (
     <section id="how-it-works" className="py-16 bg-muted/50">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold mb-12">
-          {t('landing.howItWorksTitle')}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <ScrollReveal>
+          <h2 className="text-2xl md:text-3xl font-bold mb-12">
+            {t('landing.howItWorksTitle')}
+          </h2>
+        </ScrollReveal>
+        <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
-            <Card key={index} className="border-0 shadow-none bg-transparent">
-              <CardContent className="flex flex-col items-center gap-4 pt-6">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  {step.icon}
-                </div>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm">
-                  {index + 1}
-                </div>
-                <h3 className="text-lg font-semibold">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
-              </CardContent>
-            </Card>
+            <StaggerItem key={index}>
+              <Card className="border-0 shadow-none bg-transparent">
+                <CardContent className="flex flex-col items-center gap-4 pt-6">
+                  <motion.div
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary"
+                    whileHover={{ scale: 1.15, rotate: 5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    {step.icon}
+                  </motion.div>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm">
+                    {index + 1}
+                  </div>
+                  <h3 className="text-lg font-semibold">{step.title}</h3>
+                  <p className="text-muted-foreground">{step.description}</p>
+                </CardContent>
+              </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGrid>
       </div>
     </section>
   );
@@ -563,27 +636,33 @@ function TestimonialsSection() {
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold mb-12">
-          {t('landing.testimonialsTitle')}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <ScrollReveal>
+          <h2 className="text-2xl md:text-3xl font-bold mb-12">
+            {t('landing.testimonialsTitle')}
+          </h2>
+        </ScrollReveal>
+        <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((item, index) => (
-            <Card key={index}>
-              <CardContent className="pt-6">
-                <div className="text-4xl text-primary/30 mb-4">&ldquo;</div>
-                <p className="text-muted-foreground italic mb-6">{item.text}</p>
-                <div className="flex items-center justify-center gap-3">
-                  <Avatar>
-                    <AvatarFallback className="bg-primary/10 text-primary">
-                      {item.initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="font-medium text-sm">{item.name}</span>
-                </div>
-              </CardContent>
-            </Card>
+            <StaggerItem key={index}>
+              <HoverCard>
+                <Card className="h-full transition-all duration-300 hover:shadow-lg hover:border-primary/30">
+                  <CardContent className="pt-6">
+                    <div className="text-4xl text-primary/30 mb-4">&ldquo;</div>
+                    <p className="text-muted-foreground italic mb-6">{item.text}</p>
+                    <div className="flex items-center justify-center gap-3">
+                      <Avatar>
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                          {item.initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium text-sm">{item.name}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </HoverCard>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGrid>
       </div>
     </section>
   );
@@ -593,27 +672,41 @@ function CtaSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="py-20 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10">
-      <div className="container mx-auto px-4 text-center">
-        <ShieldCheck className="h-12 w-12 mx-auto text-primary mb-4" />
-        <h2 className="text-2xl md:text-4xl font-bold">{t('landing.ctaTitle')}</h2>
-        <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
-          {t('landing.ctaSubtitle')}
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <Button size="lg" asChild>
-            <Link to="/search">
-              <Search className="mr-2 h-4 w-4" />
-              {t('landing.searchButton')}
-            </Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <Link to="/register">
-              {t('landing.ctaButton')}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
+    <section className="py-20 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 overflow-hidden relative">
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"
+        animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+        style={{ backgroundSize: '200% 100%' }}
+      />
+      <div className="container relative mx-auto px-4 text-center">
+        <ScrollReveal variants={scaleUp}>
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="inline-block"
+          >
+            <ShieldCheck className="h-12 w-12 mx-auto text-primary mb-4" />
+          </motion.div>
+          <h2 className="text-2xl md:text-4xl font-bold">{t('landing.ctaTitle')}</h2>
+          <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
+            {t('landing.ctaSubtitle')}
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <Button size="lg" asChild className="group">
+              <Link to="/search">
+                <Search className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                {t('landing.searchButton')}
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild className="group">
+              <Link to="/register">
+                {t('landing.ctaButton')}
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

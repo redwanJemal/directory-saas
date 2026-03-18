@@ -11,7 +11,9 @@
     "vendors": "ንግዶቼ",
     "messages": "መልዕክቶች",
     "settings": "ቅንብሮች",
-    "collapse": "አሳንስ"
+    "collapse": "አሳንስ",
+    "cities": "ከተማዎች",
+    "new": "አዲስ"
   },
   "common": {
     "appName": "ሃበሻ ሁብ",
@@ -318,6 +320,21 @@
     "expires": "ያበቃል {{date}}",
     "expired": "አብቅቷል",
     "viewBusiness": "ንግዱን ተመልከት",
-    "allDeals": "ሁሉም ቅናሾች"
+    "allDeals": "ሁሉም ቅናሾች",
+    "endingSoon": "በቅርቡ ያበቃል",
+    "highestDiscount": "ከፍተኛ ቅናሽ"
+  },
+  "browse": {
+    "cities": "ከተማዎች",
+    "citiesTitle": "በከተማ ያስሱ",
+    "citiesSubtitle": "በመካከለኛው ምስራቅ ከተማዎች ኢትዮጵያዊ ንግዶችን ያግኙ",
+    "cityTitle": "በ{{city}} ኢትዮጵያዊ ንግዶች",
+    "citySubtitle": "በ{{city}}፣ {{country}} ውስጥ ታማኝ ኢትዮጵያዊ ንግዶችን ያግኙ",
+    "totalBusinesses": "ጠቅላላ ንግዶች",
+    "totalReviews": "ጠቅላላ ግምገማዎች",
+    "newThisMonth": "በዚህ ወር አዲስ",
+    "recentlyAdded": "በቅርቡ የተጨመሩ",
+    "recentlyAddedSubtitle": "ባለፉት 30 ቀናት ውስጥ የተጨመሩ አዲስ ንግዶች",
+    "subcategoryCount": "{{count}} ንዑስ ምድቦች"
   }
 }

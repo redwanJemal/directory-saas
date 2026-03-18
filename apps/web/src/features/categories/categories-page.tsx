@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,11 +10,14 @@ import {
   ShoppingBag,
   Users,
   ChevronRight,
+  Home,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { useCategories } from '@/features/search/hooks/use-search';
+import { Badge } from '@/components/ui/badge';
+import { useCategories, useSearchQuery } from '@/features/search/hooks/use-search';
+import { VendorCard } from '@/features/search/components/vendor-card';
 import type { Category } from '@/features/search/types';
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -26,8 +30,17 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   community: <Users className="h-8 w-8" />,
 };
 
+const CATEGORY_ICON_SM: Record<string, React.ReactNode> = {
+  'food-drink': <UtensilsCrossed className="h-5 w-5" />,
+  'beauty-grooming': <Scissors className="h-5 w-5" />,
+  services: <Briefcase className="h-5 w-5" />,
+  automotive: <Car className="h-5 w-5" />,
+  'health-wellness': <Heart className="h-5 w-5" />,
+  shopping: <ShoppingBag className="h-5 w-5" />,
+  community: <Users className="h-5 w-5" />,
+};
+
 export function CategoriesPage() {
-  const { t } = useTranslation();
   const { slug } = useParams<{ slug?: string }>();
   const { data: apiCategories, isLoading } = useCategories();
 
@@ -38,10 +51,23 @@ export function CategoriesPage() {
     }
   }
 
-  const categories = apiCategories ?? [];
+  return <CategoriesIndex categories={apiCategories ?? []} isLoading={isLoading} />;
+}
+
+function CategoriesIndex({ categories, isLoading }: { categories: Category[]; isLoading: boolean }) {
+  const { t } = useTranslation();
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
+        <Link to="/" className="hover:text-foreground transition-colors">
+          <Home className="h-4 w-4" />
+        </Link>
+        <ChevronRight className="h-3 w-3" />
+        <span className="text-foreground font-medium">{t('nav.categories')}</span>
+      </nav>
+
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-bold">
           {t('landing.categoriesTitle')}
@@ -83,7 +109,7 @@ export function CategoriesPage() {
                   )}
                   {cat.children && cat.children.length > 0 && (
                     <div className="flex items-center text-xs text-primary font-medium">
-                      {cat.children.length} {t('categories.subtitle').split(' ')[0]}
+                      {t('browse.subcategoryCount', { count: cat.children.length })}
                       <ChevronRight className="h-3 w-3 ml-1" />
                     </div>
                   )}
@@ -100,19 +126,47 @@ export function CategoriesPage() {
 function CategoryDetailView({ category }: { category: Category }) {
   const { t } = useTranslation();
   const subcategories = category.children ?? [];
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+
+  const searchCategory = activeSubcategory ?? category.slug;
+
+  const { data: searchData, isLoading: searchLoading } = useSearchQuery({
+    category: searchCategory,
+    page,
+    pageSize: 12,
+    sort: '-rating',
+  });
+
+  const vendors = searchData?.data ?? [];
+  const pagination = searchData?.pagination ?? null;
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <Link to="/categories" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">
-          {t('landing.categoriesTitle')}
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
+        <Link to="/" className="hover:text-foreground transition-colors">
+          <Home className="h-4 w-4" />
         </Link>
-        <ChevronRight className="h-3 w-3 inline mx-1 text-muted-foreground" />
-        <span className="text-sm">{category.name}</span>
-      </div>
+        <ChevronRight className="h-3 w-3" />
+        <Link to="/categories" className="hover:text-foreground transition-colors">
+          {t('nav.categories')}
+        </Link>
+        <ChevronRight className="h-3 w-3" />
+        <span className="text-foreground font-medium">{category.name}</span>
+        {activeSubcategory && (
+          <>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-foreground font-medium">
+              {subcategories.find((s) => s.slug === activeSubcategory)?.name}
+            </span>
+          </>
+        )}
+      </nav>
 
+      {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
           {CATEGORY_ICONS[category.slug] ?? <Briefcase className="h-8 w-8" />}
         </div>
         <div>
@@ -126,32 +180,103 @@ function CategoryDetailView({ category }: { category: Category }) {
         </div>
       </div>
 
-      {/* Subcategories */}
+      {/* Subcategory chips */}
       {subcategories.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+        <div className="flex flex-wrap gap-2 mb-8">
+          <Badge
+            variant={activeSubcategory === null ? 'default' : 'outline'}
+            className="cursor-pointer text-sm px-4 py-1.5"
+            onClick={() => { setActiveSubcategory(null); setPage(1); }}
+          >
+            {t('common.all')}
+          </Badge>
           {subcategories.map((sub) => (
-            <Link key={sub.slug} to={`/search?category=${sub.slug}`}>
-              <Card className="hover:shadow-md transition-shadow hover:border-primary/50 h-full">
-                <CardContent className="py-4 text-center">
-                  <h3 className="font-medium text-sm">{sub.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {t('categories.vendorCount', { count: sub.vendorCount })}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
+            <Badge
+              key={sub.slug}
+              variant={activeSubcategory === sub.slug ? 'default' : 'outline'}
+              className="cursor-pointer text-sm px-4 py-1.5"
+              onClick={() => { setActiveSubcategory(sub.slug); setPage(1); }}
+            >
+              {sub.name}
+              <span className="ml-1 opacity-70">({sub.vendorCount})</span>
+            </Badge>
           ))}
         </div>
       )}
 
-      {/* View all businesses in this category */}
-      <div className="text-center">
-        <Button asChild>
-          <Link to={`/search?category=${category.slug}`}>
-            {t('search.title')} - {category.name}
-          </Link>
-        </Button>
-      </div>
+      {/* Business grid */}
+      {searchLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Card key={i} className="overflow-hidden">
+              <Skeleton className="aspect-[4/3]" />
+              <CardContent className="p-4 space-y-2">
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-4 w-1/3" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : vendors.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mx-auto mb-4">
+            {CATEGORY_ICON_SM[category.slug] ?? <Briefcase className="h-5 w-5" />}
+          </div>
+          <p className="text-muted-foreground">{t('search.noResults')}</p>
+          <Button variant="outline" className="mt-4" asChild>
+            <Link to="/search">{t('search.title')}</Link>
+          </Button>
+        </div>
+      ) : (
+        <>
+          <p className="text-sm text-muted-foreground mb-4">
+            {t('search.results', { count: pagination?.totalCount ?? vendors.length })}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {vendors.map((vendor) => (
+              <VendorCard key={vendor.id} vendor={vendor} />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {pagination && pagination.totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-8">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={pagination.page <= 1}
+                onClick={() => setPage(pagination.page - 1)}
+              >
+                {t('common.back')}
+              </Button>
+              {Array.from({ length: Math.min(pagination.totalPages, 5) }, (_, i) => {
+                const startPage = Math.max(1, Math.min(pagination.page - 2, pagination.totalPages - 4));
+                const p = startPage + i;
+                if (p > pagination.totalPages) return null;
+                return (
+                  <Button
+                    key={p}
+                    variant={p === pagination.page ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setPage(p)}
+                  >
+                    {p}
+                  </Button>
+                );
+              })}
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={pagination.page >= pagination.totalPages}
+                onClick={() => setPage(pagination.page + 1)}
+              >
+                {t('common.next')}
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

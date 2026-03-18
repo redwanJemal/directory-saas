@@ -27,6 +27,8 @@ export function PublicHeader() {
     { label: t('nav.search'), href: '/search' },
     { label: t('nav.categories'), href: '/categories' },
     { label: t('nav.deals'), href: '/deals' },
+    { label: t('nav.cities'), href: '/cities' },
+    { label: t('browse.recentlyAdded'), href: '/new' },
   ];
 
   return (

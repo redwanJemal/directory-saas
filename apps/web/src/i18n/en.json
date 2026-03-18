@@ -11,7 +11,9 @@
     "vendors": "My Businesses",
     "messages": "Messages",
     "settings": "Settings",
-    "collapse": "Collapse"
+    "collapse": "Collapse",
+    "cities": "Cities",
+    "new": "New"
   },
   "common": {
     "appName": "Habesha Hub",
@@ -318,6 +320,21 @@
     "expires": "Expires {{date}}",
     "expired": "Expired",
     "viewBusiness": "View Business",
-    "allDeals": "All Deals"
+    "allDeals": "All Deals",
+    "endingSoon": "Ending Soon",
+    "highestDiscount": "Highest Discount"
+  },
+  "browse": {
+    "cities": "Cities",
+    "citiesTitle": "Browse by City",
+    "citiesSubtitle": "Find Ethiopian businesses in cities across the Middle East",
+    "cityTitle": "Ethiopian Businesses in {{city}}",
+    "citySubtitle": "Discover trusted Ethiopian-owned businesses in {{city}}, {{country}}",
+    "totalBusinesses": "Total Businesses",
+    "totalReviews": "Total Reviews",
+    "newThisMonth": "New This Month",
+    "recentlyAdded": "Recently Added",
+    "recentlyAddedSubtitle": "New businesses added in the last 30 days",
+    "subcategoryCount": "{{count}} subcategories"
   }
 }

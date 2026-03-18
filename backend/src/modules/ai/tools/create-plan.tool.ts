@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const createPlanParametersSchema = z.object({
-  eventType: z.string().describe('Type of event (e.g. wedding, corporate, birthday)'),
+  eventType: z.string().describe('Type of event (e.g. corporate, birthday, conference)'),
   date: z.string().optional().describe('Event date in YYYY-MM-DD format'),
   guestCount: z.number().describe('Expected number of guests'),
   totalBudget: z.number().describe('Total event budget in local currency'),

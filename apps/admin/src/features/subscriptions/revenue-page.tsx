@@ -132,9 +132,9 @@ export function RevenuePage() {
                 {stats.recentPayments.map((payment) => (
                   <TableRow key={payment.id}>
                     <TableCell className="font-medium">
-                      {payment.tenant.name}
+                      {payment.tenant?.name}
                     </TableCell>
-                    <TableCell>{payment.plan.displayName}</TableCell>
+                    <TableCell>{payment.plan?.displayName}</TableCell>
                     <TableCell>
                       ${payment.amount.toFixed(2)} {payment.currency}
                     </TableCell>

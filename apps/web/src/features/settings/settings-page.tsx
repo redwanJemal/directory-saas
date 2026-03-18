@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccountSettings } from './components/account-settings';
 import { NotificationSettings } from './components/notification-settings';
-import { WeddingWebsiteSettings } from './components/wedding-website-settings';
 
 export function SettingsPage() {
   const { t } = useTranslation();
@@ -21,9 +20,6 @@ export function SettingsPage() {
           <TabsTrigger value="notifications">
             {t('settings.notifications')}
           </TabsTrigger>
-          <TabsTrigger value="website">
-            {t('settings.weddingWebsite')}
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="account" className="mt-6">
@@ -32,10 +28,6 @@ export function SettingsPage() {
 
         <TabsContent value="notifications" className="mt-6">
           <NotificationSettings />
-        </TabsContent>
-
-        <TabsContent value="website" className="mt-6">
-          <WeddingWebsiteSettings />
         </TabsContent>
       </Tabs>
     </div>

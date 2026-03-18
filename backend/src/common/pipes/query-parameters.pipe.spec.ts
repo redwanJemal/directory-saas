@@ -221,13 +221,13 @@ describe('QueryParametersPipe', () => {
 
   describe('search', () => {
     it('should parse search parameter', () => {
-      const result = pipe.transform({ search: 'wedding photographer' });
-      expect(result.search).toBe('wedding photographer');
+      const result = pipe.transform({ search: 'event photographer' });
+      expect(result.search).toBe('event photographer');
     });
 
     it('should trim search whitespace', () => {
-      const result = pipe.transform({ search: '  wedding  ' });
-      expect(result.search).toBe('wedding');
+      const result = pipe.transform({ search: '  photography  ' });
+      expect(result.search).toBe('photography');
     });
 
     it('should return undefined when no search', () => {
@@ -266,7 +266,7 @@ describe('QueryParametersPipe', () => {
           category: 'photography,catering',
           rating: { gte: '4.0' },
         },
-        search: 'wedding photographer',
+        search: 'event photographer',
         sort: '-rating,name',
         page: '2',
         pageSize: '25',
@@ -274,7 +274,7 @@ describe('QueryParametersPipe', () => {
       });
 
       expect(result.filters).toHaveLength(3);
-      expect(result.search).toBe('wedding photographer');
+      expect(result.search).toBe('event photographer');
       expect(result.sort).toEqual([
         { field: 'rating', direction: 'desc' },
         { field: 'name', direction: 'asc' },

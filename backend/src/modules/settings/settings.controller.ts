@@ -60,29 +60,4 @@ export class SettingsController {
     return result.data;
   }
 
-  @Get('wedding-website')
-  async getWeddingWebsite(@CurrentUser() user: JwtPayload) {
-    const result = await this.settingsService.getSetting(
-      user.sub,
-      user.userType,
-      'wedding-website',
-    );
-    if (!result.success) throw result.toHttpException();
-    return result.data;
-  }
-
-  @Patch('wedding-website')
-  async updateWeddingWebsite(
-    @CurrentUser() user: JwtPayload,
-    @Body() body: Record<string, unknown>,
-  ) {
-    const result = await this.settingsService.updateSetting(
-      user.sub,
-      user.userType,
-      'wedding-website',
-      body,
-    );
-    if (!result.success) throw result.toHttpException();
-    return result.data;
-  }
 }

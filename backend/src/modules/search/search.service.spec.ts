@@ -33,7 +33,7 @@ describe('SearchFacadeService', () => {
   describe('search — fulltext mode', () => {
     it('should return fulltext results with tenant isolation', async () => {
       const result = await service.search('tenant-1', {
-        q: 'wedding photographer',
+        q: 'event photographer',
         mode: 'fulltext',
         page: 1,
         pageSize: 20,
@@ -46,7 +46,7 @@ describe('SearchFacadeService', () => {
       expect(mockSearchService.search).toHaveBeenCalledWith(
         'default',
         'tenant-1',
-        'wedding photographer',
+        'event photographer',
         {
           filters: undefined,
           sort: undefined,
@@ -96,7 +96,7 @@ describe('SearchFacadeService', () => {
   describe('search — semantic mode', () => {
     it('should return empty results in semantic mode (no embedding provider)', async () => {
       const result = await service.search('tenant-1', {
-        q: 'wedding',
+        q: 'photography',
         mode: 'semantic',
         page: 1,
         pageSize: 20,
@@ -111,7 +111,7 @@ describe('SearchFacadeService', () => {
   describe('search — hybrid mode', () => {
     it('should return hybrid results', async () => {
       const result = await service.search('tenant-1', {
-        q: 'wedding',
+        q: 'photography',
         mode: 'hybrid',
         page: 1,
         pageSize: 20,

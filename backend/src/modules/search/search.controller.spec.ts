@@ -26,7 +26,7 @@ describe('SearchController', () => {
     it('should return search results on success', async () => {
       const searchResult = {
         hits: [{ id: 'hit-1', entity: 'providers' }],
-        query: 'wedding',
+        query: 'photography',
         totalHits: 1,
         page: 1,
         pageSize: 20,
@@ -39,7 +39,7 @@ describe('SearchController', () => {
       );
 
       const result = await controller.search('tenant-1', {
-        q: 'wedding',
+        q: 'photography',
         mode: 'fulltext',
         page: 1,
         pageSize: 20,
@@ -47,7 +47,7 @@ describe('SearchController', () => {
 
       expect(result).toEqual(searchResult);
       expect(mockFacadeService.search).toHaveBeenCalledWith('tenant-1', {
-        q: 'wedding',
+        q: 'photography',
         mode: 'fulltext',
         page: 1,
         pageSize: 20,

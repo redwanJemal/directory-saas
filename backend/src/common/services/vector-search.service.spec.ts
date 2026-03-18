@@ -20,7 +20,7 @@ describe('VectorSearchService', () => {
         'tenant-1',
         'provider',
         'entity-1',
-        'A wedding photographer',
+        'A event photographer',
         [0.1, 0.2, 0.3],
       );
 
@@ -55,7 +55,7 @@ describe('VectorSearchService', () => {
   describe('similaritySearch', () => {
     it('should return ranked similarity results', async () => {
       const mockResults = [
-        { entityId: 'e1', content: 'Wedding photographer', similarity: 0.95 },
+        { entityId: 'e1', content: 'Event photographer', similarity: 0.95 },
         { entityId: 'e2', content: 'Event photographer', similarity: 0.85 },
       ];
       mockPrisma.$queryRaw.mockResolvedValue(mockResults);

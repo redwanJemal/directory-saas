@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 import { format } from 'date-fns';
 import {
-  CreditCard,
   Crown,
   CheckCircle2,
   AlertCircle,

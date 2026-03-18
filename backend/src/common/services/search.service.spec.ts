@@ -100,16 +100,16 @@ describe('SearchService', () => {
 
   describe('search', () => {
     it('should search with tenant isolation filter', async () => {
-      const result = await service.search('providers', 'tenant-1', 'wedding');
+      const result = await service.search('providers', 'tenant-1', 'photography');
 
-      expect(mockIndex.search).toHaveBeenCalledWith('wedding', {
+      expect(mockIndex.search).toHaveBeenCalledWith('photography', {
         filter: 'tenantId = "tenant-1"',
         offset: 0,
         limit: 20,
       });
       expect(result.hits).toHaveLength(1);
       expect(result.totalHits).toBe(1);
-      expect(result.query).toBe('wedding');
+      expect(result.query).toBe('photography');
     });
 
     it('should apply additional filters', async () => {

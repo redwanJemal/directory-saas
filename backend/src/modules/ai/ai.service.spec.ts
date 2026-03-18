@@ -81,7 +81,7 @@ describe('AiService', () => {
 
       const chunks: unknown[] = [];
       const stream = service.chat('tenant-1', 'user-1', {
-        messages: [{ role: 'user', content: 'Plan my wedding' }],
+        messages: [{ role: 'user', content: 'Plan my event' }],
       });
 
       for await (const chunk of stream) {
@@ -226,7 +226,7 @@ describe('AiService', () => {
         'tenant-1',
         'user-1',
         'tenant',
-        'My Wedding Plan',
+        'My Event Plan',
       );
 
       expect(result.success).toBe(true);
@@ -237,7 +237,7 @@ describe('AiService', () => {
           tenantId: 'tenant-1',
           userId: 'user-1',
           userType: 'tenant',
-          title: 'My Wedding Plan',
+          title: 'My Event Plan',
           messages: [],
         },
       });

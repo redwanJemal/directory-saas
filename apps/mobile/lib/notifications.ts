@@ -49,13 +49,24 @@ export async function registerForPushNotifications(): Promise<string | null> {
     console.error('Failed to register push token:', error);
   }
 
-  // Android notification channel
+  // Android notification channels
   if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'Default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-    });
+    await Promise.all([
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'Default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+      }),
+      Notifications.setNotificationChannelAsync('deals', {
+        name: 'Deals & Promotions',
+        importance: Notifications.AndroidImportance.HIGH,
+        vibrationPattern: [0, 250, 250, 250],
+      }),
+      Notifications.setNotificationChannelAsync('new_businesses', {
+        name: 'New Businesses',
+        importance: Notifications.AndroidImportance.DEFAULT,
+      }),
+    ]);
   }
 
   return tokenData.data;
@@ -74,11 +85,22 @@ export function setupNotificationListeners() {
         case 'booking_update':
           router.push(`/booking/${data.bookingId}` as any);
           break;
-        case 'rsvp_update':
-          router.push('/(main)/planner' as any);
+        case 'new_deal':
+          if (data.providerId) {
+            router.push(`/vendor/${data.providerId}` as any);
+          } else {
+            router.push('/(main)/search' as any);
+          }
           break;
-        case 'task_reminder':
-          router.push('/(main)/planner' as any);
+        case 'new_business':
+          if (data.providerId) {
+            router.push(`/vendor/${data.providerId}` as any);
+          } else {
+            router.push('/(main)/search' as any);
+          }
+          break;
+        case 'deal_expiring':
+          router.push(`/vendor/${data.providerId}` as any);
           break;
         default:
           router.push('/(main)' as any);

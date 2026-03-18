@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
-  scheme: 'directory-saas',
+  scheme: 'habeshahub',
   userInterfaceStyle: 'automatic',
   newArchEnabled: false,
   splash: {
@@ -19,6 +19,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     bundleIdentifier:
       process.env.EXPO_PUBLIC_IOS_BUNDLE_ID || 'com.directory.saas',
+    associatedDomains: [
+      `applinks:${process.env.EXPO_PUBLIC_WEB_DOMAIN || 'enathager.com'}`,
+    ],
     infoPlist: {
       NSCameraUsageDescription: 'Camera access is needed to scan QR codes',
       NSLocationWhenInUseUsageDescription:
@@ -37,6 +40,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'VIBRATE',
       'RECEIVE_BOOT_COMPLETED',
       'ACCESS_FINE_LOCATION',
+    ],
+    intentFilters: [
+      {
+        action: 'VIEW',
+        autoVerify: true,
+        data: [
+          {
+            scheme: 'https',
+            host: process.env.EXPO_PUBLIC_WEB_DOMAIN || 'enathager.com',
+            pathPrefix: '/business/',
+          },
+        ],
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
     ],
   },
   web: {

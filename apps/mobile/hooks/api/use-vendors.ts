@@ -45,7 +45,7 @@ export interface Review {
 
 export interface InquiryData {
   vendorId: string;
-  weddingDate?: string;
+  eventDate?: string;
   guestCount?: number;
   message: string;
   budgetRange?: string;
@@ -95,11 +95,16 @@ export function useVendorReviews(vendorId: string) {
   });
 }
 
-export function useFeaturedVendors() {
+export function useFeaturedVendors(country?: string | null, city?: string | null) {
   return useQuery({
-    queryKey: ['vendors', 'featured'],
+    queryKey: ['vendors', 'featured', country, city],
     queryFn: async () => {
-      const response = await api.get('/providers?filter[isFeatured]=true&pageSize=10');
+      const params = new URLSearchParams();
+      params.set('filter[isFeatured]', 'true');
+      params.set('pageSize', '10');
+      if (country) params.set('filter[country]', country);
+      if (city) params.set('filter[city]', city);
+      const response = await api.get(`/providers?${params.toString()}`);
       return response.data;
     },
   });

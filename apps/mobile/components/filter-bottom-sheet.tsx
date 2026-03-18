@@ -4,10 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCategories, type Category } from '@/hooks/api/use-categories';
+import { useCountries, useCities, type Country, type City } from '@/hooks/api/use-locations';
 import { getCategoryIcon } from '@/lib/category-icons';
 
 export interface SearchFilters {
   category?: string;
+  country?: string;
+  city?: string;
   priceMin?: number;
   priceMax?: number;
   ratingMin?: number;
@@ -39,6 +42,8 @@ const SORT_OPTIONS = [
 export function FilterBottomSheet({ visible, onClose, filters, onApply }: FilterBottomSheetProps) {
   const { t } = useTranslation();
   const { data: categories } = useCategories();
+  const { data: countries } = useCountries();
+  const { data: cities } = useCities(filters.country ?? null);
   const [localFilters, setLocalFilters] = useState<SearchFilters>(filters);
 
   useEffect(() => {
@@ -81,6 +86,71 @@ export function FilterBottomSheet({ visible, onClose, filters, onApply }: Filter
           </View>
 
           <ScrollView className="px-4" showsVerticalScrollIndicator={false}>
+            {/* Country */}
+            <Text className="mb-2 text-sm font-semibold text-content">{t('search.country')}</Text>
+            <View className="mb-4 flex-row flex-wrap">
+              {(countries as Country[] | undefined)?.map((c) => {
+                const isSelected = localFilters.country === c.code;
+                return (
+                  <Pressable
+                    key={c.code}
+                    className={`mb-2 mr-2 rounded-full px-3 py-1.5 ${
+                      isSelected ? 'bg-brand-600' : 'bg-surface-secondary'
+                    }`}
+                    onPress={() =>
+                      setLocalFilters((prev) => ({
+                        ...prev,
+                        country: isSelected ? undefined : c.code,
+                        city: isSelected ? undefined : prev.city,
+                      }))
+                    }
+                  >
+                    <Text
+                      className={`text-sm ${
+                        isSelected ? 'font-semibold text-content-inverse' : 'text-content'
+                      }`}
+                    >
+                      {c.name}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            {/* City */}
+            {localFilters.country && (cities as City[] | undefined)?.length ? (
+              <>
+                <Text className="mb-2 text-sm font-semibold text-content">{t('search.city')}</Text>
+                <View className="mb-4 flex-row flex-wrap">
+                  {(cities as City[] | undefined)?.map((c) => {
+                    const isSelected = localFilters.city === c.slug;
+                    return (
+                      <Pressable
+                        key={c.slug}
+                        className={`mb-2 mr-2 rounded-full px-3 py-1.5 ${
+                          isSelected ? 'bg-brand-600' : 'bg-surface-secondary'
+                        }`}
+                        onPress={() =>
+                          setLocalFilters((prev) => ({
+                            ...prev,
+                            city: isSelected ? undefined : c.slug,
+                          }))
+                        }
+                      >
+                        <Text
+                          className={`text-sm ${
+                            isSelected ? 'font-semibold text-content-inverse' : 'text-content'
+                          }`}
+                        >
+                          {c.name}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </>
+            ) : null}
+
             {/* Category */}
             <Text className="mb-2 text-sm font-semibold text-content">{t('search.category')}</Text>
             <View className="mb-4 flex-row flex-wrap">

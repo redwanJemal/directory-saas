@@ -55,27 +55,35 @@
   "tabs": {
     "home": "Home",
     "search": "Search",
+    "saved": "Saved",
     "bookings": "Bookings",
-    "planner": "Planner",
     "profile": "Profile"
   },
   "home": {
     "welcome": "Welcome, {{name}}",
-    "searchPlaceholder": "Search vendors...",
+    "searchPlaceholder": "Search businesses...",
     "categories": "Categories",
-    "featuredVendors": "Featured Vendors",
+    "featuredVendors": "Featured Businesses",
     "recentlyViewed": "Recently Viewed",
-    "daysUntilWedding": "{{count}} days until your wedding",
     "vendorsBooked": "Vendors Booked",
-    "tasksCompleted": "Tasks Done",
-    "guestsConfirmed": "Guests Confirmed"
+    "messages": "Messages",
+    "noFeatured": "No featured businesses yet"
+  },
+  "location": {
+    "selectCountry": "Select Country",
+    "selectCity": "Select City",
+    "allCountries": "All Countries",
+    "allCitiesIn": "All cities in {{country}}",
+    "changeLocation": "Change Location"
   },
   "search": {
-    "title": "Find Vendors",
+    "title": "Find Businesses",
     "placeholder": "Search by name, category...",
     "filters": "Filters",
     "clearFilters": "Clear Filters",
     "category": "Category",
+    "country": "Country",
+    "city": "City",
     "priceRange": "Price Range",
     "rating": "Rating",
     "style": "Style",
@@ -85,7 +93,7 @@
     "priceHighToLow": "Price: High to Low",
     "highestRated": "Highest Rated",
     "results": "{{count}} results",
-    "noVendorsFound": "No vendors found",
+    "noVendorsFound": "No businesses found",
     "tryDifferentFilters": "Try adjusting your filters"
   },
   "vendor": {
@@ -95,25 +103,52 @@
     "reviews": "Reviews",
     "faq": "FAQ",
     "requestQuote": "Request Quote",
+    "whatsapp": "WhatsApp",
     "startingFrom": "Starting from",
     "perEvent": "per event",
     "reviewCount": "{{count}} reviews",
     "saveFavorite": "Save",
     "share": "Share",
     "sendInquiry": "Send Inquiry",
-    "weddingDate": "Wedding Date",
+    "eventDate": "Event Date",
     "guestCount": "Guest Count",
     "message": "Message",
     "budgetRange": "Budget Range",
     "inquirySent": "Inquiry sent successfully!",
     "noReviews": "No reviews yet",
-    "noPackages": "No packages listed"
+    "noPackages": "No packages listed",
+    "hours": "Business Hours"
+  },
+  "saved": {
+    "title": "Saved Businesses",
+    "count": "{{count}} saved",
+    "empty": "No saved businesses",
+    "emptySubtitle": "Bookmark businesses you like to find them easily later",
+    "browse": "Browse Businesses",
+    "noSaved": "No saved businesses",
+    "noSavedSubtitle": "Bookmark businesses you like to find them easily later",
+    "browseBusiness": "Browse Businesses"
+  },
+  "reviews": {
+    "writeReview": "Write a Review",
+    "reviewFor": "Review for {{name}}",
+    "ratingRequired": "Please select a rating",
+    "commentMinLength": "Review must be at least 10 characters",
+    "commentPlaceholder": "Share your experience with this business...",
+    "submit": "Submit Review",
+    "submitSuccess": "Review submitted successfully!",
+    "submitError": "Failed to submit review. Please try again.",
+    "rating1": "Poor",
+    "rating2": "Fair",
+    "rating3": "Good",
+    "rating4": "Very Good",
+    "rating5": "Excellent"
   },
   "bookings": {
     "title": "My Bookings",
     "noBookings": "No bookings yet",
-    "noBookingsSubtitle": "Start by finding vendors and sending inquiries",
-    "findVendors": "Find Vendors",
+    "noBookingsSubtitle": "Start by finding businesses and sending inquiries",
+    "findVendors": "Find Businesses",
     "filterAll": "All",
     "status": {
       "inquiry": "Inquiry",
@@ -132,53 +167,6 @@
     "confirmAcceptMessage": "Are you sure you want to accept this quote? This will confirm your booking.",
     "confirmDeclineTitle": "Decline Quote",
     "confirmDeclineMessage": "Are you sure you want to decline this quote?"
-  },
-  "planner": {
-    "title": "Wedding Planner",
-    "checklist": "Checklist",
-    "guests": "Guests",
-    "budget": "Budget",
-    "messages": "Messages"
-  },
-  "checklist": {
-    "title": "Checklist",
-    "addTask": "Add Task",
-    "all": "All",
-    "overdue": "Overdue",
-    "upcoming": "Upcoming",
-    "completed": "Completed",
-    "taskName": "Task Name",
-    "dueDate": "Due Date",
-    "progress": "{{done}} of {{total}} tasks completed",
-    "noTasks": "No tasks yet"
-  },
-  "guests": {
-    "title": "Guest List",
-    "addGuest": "Add Guest",
-    "totalGuests": "{{count}} guests",
-    "attending": "Attending",
-    "declined": "Declined",
-    "pending": "Pending",
-    "name": "Guest Name",
-    "email": "Email",
-    "phone": "Phone",
-    "side": "Side",
-    "relationship": "Relationship",
-    "mealChoice": "Meal Choice",
-    "rsvpStatus": "RSVP Status",
-    "noGuests": "No guests added yet"
-  },
-  "budget": {
-    "title": "Budget",
-    "totalBudget": "Total Budget",
-    "spent": "Spent",
-    "remaining": "Remaining",
-    "addExpense": "Add Expense",
-    "category": "Category",
-    "amount": "Amount",
-    "description": "Description",
-    "noExpenses": "No expenses recorded",
-    "vendorName": "Vendor Name"
   },
   "messages": {
     "title": "Messages",
@@ -199,55 +187,16 @@
     "version": "Version",
     "logoutConfirm": "Are you sure you want to log out?"
   },
-  "wedding": {
-    "setup": "Set Up Your Wedding",
-    "weddingDate": "Wedding Date",
-    "partnerName": "Partner's Name",
-    "estimatedGuests": "Estimated Guests",
-    "venue": "Venue (optional)",
-    "stylePreferences": "Style Preferences",
-    "createWedding": "Create Wedding",
-    "countdown": "{{days}} days to go!",
-    "budgetSpent": "{{percent}}% of budget spent",
-    "overallProgress": "Overall Progress"
-  },
-  "weddingSetup": {
-    "whenIsWedding": "When is your wedding?",
-    "dateSubtitle": "Pick your wedding date to start the countdown",
-    "notDecided": "Haven't decided yet",
-    "whoMarrying": "Who are you marrying?",
-    "partnerSubtitle": "Enter your partner's name",
-    "howManyGuests": "How many guests?",
-    "guestsSubtitle": "An estimate helps us plan better",
-    "customCount": "Enter custom number",
-    "haveVenue": "Do you have a venue?",
-    "venueSubtitle": "You can always add this later",
-    "whatsYourStyle": "What's your style?",
-    "styleSubtitle": "Select all that apply",
-    "setupSubtitle": "Plan your perfect wedding with our tools",
-    "styles": {
-      "traditional": "Traditional",
-      "modern": "Modern",
-      "rustic": "Rustic",
-      "elegant": "Elegant",
-      "bohemian": "Bohemian",
-      "classic": "Classic",
-      "minimalist": "Minimalist",
-      "romantic": "Romantic"
-    }
-  },
   "dashboard": {
     "quickActions": "Quick Actions",
-    "addGuest": "Add Guest",
-    "checkBudget": "Check Budget",
-    "findVendors": "Find Vendors",
-    "viewChecklist": "View Checklist",
+    "findVendors": "Find Businesses",
+    "viewBookings": "View Bookings",
     "myVendors": "My Vendors",
     "findMore": "Find More"
   },
   "notifications": {
     "permissionTitle": "Enable Notifications",
-    "permissionMessage": "Get updates about messages, bookings, and reminders",
+    "permissionMessage": "Get updates about new deals, businesses, and messages",
     "enable": "Enable",
     "later": "Later"
   },

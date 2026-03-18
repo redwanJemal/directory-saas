@@ -4,6 +4,8 @@ import { api } from '@/lib/api';
 export interface SearchParams {
   query?: string;
   category?: string;
+  country?: string;
+  city?: string;
   priceMin?: number;
   priceMax?: number;
   ratingMin?: number;
@@ -41,6 +43,8 @@ export function useSearchVendors(params: SearchParams) {
       const searchParams = new URLSearchParams();
       if (params.query) searchParams.set('q', params.query);
       if (params.category) searchParams.set('filter[category]', params.category);
+      if (params.country) searchParams.set('filter[country]', params.country);
+      if (params.city) searchParams.set('filter[city]', params.city);
       if (params.priceMin) searchParams.set('filter[startingPrice][gte]', String(params.priceMin));
       if (params.priceMax) searchParams.set('filter[startingPrice][lte]', String(params.priceMax));
       if (params.ratingMin) searchParams.set('filter[rating][gte]', String(params.ratingMin));

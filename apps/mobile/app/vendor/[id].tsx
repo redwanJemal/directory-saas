@@ -8,6 +8,7 @@ import {
   Share,
   Dimensions,
   RefreshControl,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -23,9 +24,12 @@ import {
   type VendorPackage,
   type Review,
 } from '@/hooks/api/use-vendors';
+import { useSavedStore } from '@/store/saved-store';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState } from '@/components/empty-state';
 import { InquiryBottomSheet } from '@/components/inquiry-bottom-sheet';
+import { WriteReviewSheet } from '@/components/write-review-sheet';
+import { haptics } from '@/lib/haptics';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const TAB_KEYS = ['about', 'portfolio', 'packages', 'reviews', 'faq'] as const;
@@ -35,7 +39,9 @@ export default function VendorProfileScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<(typeof TAB_KEYS)[number]>('about');
   const [showInquiry, setShowInquiry] = useState(false);
+  const [showReview, setShowReview] = useState(false);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+  const { isSaved, toggle: toggleSaved } = useSavedStore();
 
   const { data: vendor, isLoading, refetch } = useVendor(id);
   const { data: portfolio } = useVendorPortfolio(id);
@@ -49,11 +55,37 @@ export default function VendorProfileScreen() {
     setRefreshing(false);
   }, [refetch]);
 
+  const saved = vendor ? isSaved(vendor.id) : false;
+
+  const handleToggleSave = () => {
+    if (!vendor) return;
+    haptics.medium();
+    toggleSaved({
+      id: vendor.id,
+      businessName: vendor.businessName,
+      category: vendor.category,
+      location: vendor.location,
+      rating: vendor.rating,
+      reviewCount: vendor.reviewCount,
+      startingPrice: vendor.startingPrice,
+      coverImage: vendor.coverImage,
+      isVerified: vendor.isVerified,
+    });
+  };
+
+  const handleWhatsApp = () => {
+    if (!vendor?.phone) return;
+    const cleaned = vendor.phone.replace(/[^0-9+]/g, '');
+    const url = `https://wa.me/${cleaned.replace('+', '')}`;
+    Linking.openURL(url);
+    haptics.light();
+  };
+
   const handleShare = async () => {
     if (!vendor) return;
     try {
       await Share.share({
-        message: `${vendor.businessName} - ${vendor.category}`,
+        message: `${vendor.businessName} - ${vendor.category}\nhttps://habesha.hub/business/${vendor.slug}`,
       });
     } catch {
       // User cancelled
@@ -172,6 +204,18 @@ export default function VendorProfileScreen() {
 
           {/* Action Buttons */}
           <View className="mt-4 flex-row">
+            {/* WhatsApp Button */}
+            {vendor.phone && (
+              <Pressable
+                className="mr-2 flex-1 flex-row items-center justify-center rounded-button bg-success-600 py-3"
+                onPress={handleWhatsApp}
+              >
+                <Ionicons name="logo-whatsapp" size={18} color="#fff" />
+                <Text className="ml-1.5 font-semibold text-content-inverse">
+                  {t('vendor.whatsapp')}
+                </Text>
+              </Pressable>
+            )}
             <Pressable
               className="mr-2 flex-1 items-center rounded-button bg-brand-600 py-3"
               onPress={() => setShowInquiry(true)}
@@ -180,8 +224,15 @@ export default function VendorProfileScreen() {
                 {t('vendor.requestQuote')}
               </Text>
             </Pressable>
-            <Pressable className="mr-2 items-center justify-center rounded-button border border-border px-4 py-3">
-              <Ionicons name="bookmark-outline" size={20} color="#495057" />
+            <Pressable
+              className="mr-2 items-center justify-center rounded-button border border-border px-4 py-3"
+              onPress={handleToggleSave}
+            >
+              <Ionicons
+                name={saved ? 'bookmark' : 'bookmark-outline'}
+                size={20}
+                color={saved ? '#4c6ef5' : '#495057'}
+              />
             </Pressable>
             <Pressable
               className="items-center justify-center rounded-button border border-border px-4 py-3"
@@ -220,7 +271,7 @@ export default function VendorProfileScreen() {
 
         {/* Tab Content */}
         <View className="px-4 py-4">
-          {activeTab === 'about' && <AboutTab vendor={vendor} />}
+          {activeTab === 'about' && <AboutTab vendor={vendor} onWhatsApp={handleWhatsApp} />}
           {activeTab === 'portfolio' && (
             <PortfolioTab items={portfolioItems} onImagePress={setFullscreenImage} />
           )}
@@ -230,16 +281,25 @@ export default function VendorProfileScreen() {
               items={reviewItems}
               rating={vendor.rating}
               starDistribution={starDistribution}
+              onWriteReview={() => setShowReview(true)}
             />
           )}
           {activeTab === 'faq' && <FaqTab />}
         </View>
       </ScrollView>
 
-      {/* Floating Request Quote Button */}
-      <View className="border-t border-border bg-surface px-4 py-3">
+      {/* Floating WhatsApp + Quote Buttons */}
+      <View className="flex-row border-t border-border bg-surface px-4 py-3">
+        {vendor.phone && (
+          <Pressable
+            className="mr-2 flex-row items-center justify-center rounded-button bg-success-600 px-4 py-3.5"
+            onPress={handleWhatsApp}
+          >
+            <Ionicons name="logo-whatsapp" size={20} color="#fff" />
+          </Pressable>
+        )}
         <Pressable
-          className="items-center rounded-button bg-brand-600 py-3.5"
+          className="flex-1 items-center rounded-button bg-brand-600 py-3.5"
           onPress={() => setShowInquiry(true)}
         >
           <Text className="font-semibold text-content-inverse">{t('vendor.requestQuote')}</Text>
@@ -250,6 +310,14 @@ export default function VendorProfileScreen() {
       <InquiryBottomSheet
         visible={showInquiry}
         onClose={() => setShowInquiry(false)}
+        vendorId={id}
+        vendorName={vendor.businessName}
+      />
+
+      {/* Write Review Sheet */}
+      <WriteReviewSheet
+        visible={showReview}
+        onClose={() => setShowReview(false)}
         vendorId={id}
         vendorName={vendor.businessName}
       />
@@ -278,6 +346,7 @@ export default function VendorProfileScreen() {
 
 function AboutTab({
   vendor,
+  onWhatsApp,
 }: {
   vendor: {
     description: string;
@@ -286,6 +355,7 @@ function AboutTab({
     website?: string;
     operatingHours?: Record<string, string>;
   };
+  onWhatsApp: () => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -294,28 +364,46 @@ function AboutTab({
       {(vendor.phone || vendor.email || vendor.website) && (
         <View className="mt-4 rounded-card border border-border p-3">
           {vendor.phone && (
-            <View className="mb-2 flex-row items-center">
+            <Pressable
+              className="mb-2 flex-row items-center"
+              onPress={onWhatsApp}
+            >
+              <Ionicons name="logo-whatsapp" size={16} color="#25D366" />
+              <Text className="ml-2 text-sm font-medium text-success-700">{vendor.phone}</Text>
+            </Pressable>
+          )}
+          {vendor.phone && (
+            <Pressable
+              className="mb-2 flex-row items-center"
+              onPress={() => Linking.openURL(`tel:${vendor.phone}`)}
+            >
               <Ionicons name="call-outline" size={16} color="#868e96" />
               <Text className="ml-2 text-sm text-content">{vendor.phone}</Text>
-            </View>
+            </Pressable>
           )}
           {vendor.email && (
-            <View className="mb-2 flex-row items-center">
+            <Pressable
+              className="mb-2 flex-row items-center"
+              onPress={() => Linking.openURL(`mailto:${vendor.email}`)}
+            >
               <Ionicons name="mail-outline" size={16} color="#868e96" />
               <Text className="ml-2 text-sm text-content">{vendor.email}</Text>
-            </View>
+            </Pressable>
           )}
           {vendor.website && (
-            <View className="flex-row items-center">
+            <Pressable
+              className="flex-row items-center"
+              onPress={() => Linking.openURL(vendor.website!)}
+            >
               <Ionicons name="globe-outline" size={16} color="#868e96" />
               <Text className="ml-2 text-sm text-brand-600">{vendor.website}</Text>
-            </View>
+            </Pressable>
           )}
         </View>
       )}
       {vendor.operatingHours && Object.keys(vendor.operatingHours).length > 0 && (
         <View className="mt-4">
-          <Text className="mb-2 text-sm font-semibold text-content">{t('vendor.about')}</Text>
+          <Text className="mb-2 text-sm font-semibold text-content">{t('vendor.hours')}</Text>
           {Object.entries(vendor.operatingHours).map(([day, hours]) => (
             <View key={day} className="flex-row justify-between py-1">
               <Text className="text-sm text-content-secondary">{day}</Text>
@@ -393,84 +481,97 @@ function ReviewsTab({
   items,
   rating,
   starDistribution,
+  onWriteReview,
 }: {
   items: Review[];
   rating: number;
   starDistribution: { star: number; count: number }[];
+  onWriteReview: () => void;
 }) {
   const { t } = useTranslation();
   const maxCount = Math.max(...starDistribution.map((s) => s.count), 1);
 
-  if (items.length === 0) {
-    return <EmptyState icon="chatbubble-outline" title={t('vendor.noReviews')} />;
-  }
-
   return (
     <View>
-      <View className="mb-4 flex-row items-center rounded-card bg-surface-secondary p-4">
-        <View className="mr-4 items-center">
-          <Text className="text-3xl font-bold text-content">{rating.toFixed(1)}</Text>
-          <View className="mt-1 flex-row">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Ionicons
-                key={s}
-                name={s <= Math.round(rating) ? 'star' : 'star-outline'}
-                size={14}
-                color="#fab005"
-              />
-            ))}
-          </View>
-          <Text className="mt-1 text-xs text-content-tertiary">
-            {t('vendor.reviewCount', { count: items.length })}
-          </Text>
-        </View>
-        <View className="flex-1">
-          {starDistribution.map(({ star, count }) => (
-            <View key={star} className="mb-1 flex-row items-center">
-              <Text className="w-4 text-xs text-content-tertiary">{star}</Text>
-              <View className="ml-1 mr-2 h-2 flex-1 overflow-hidden rounded-full bg-border">
-                <View
-                  className="h-full rounded-full bg-warning-500"
-                  style={{ width: `${(count / maxCount) * 100}%` }}
-                />
-              </View>
-              <Text className="w-6 text-xs text-content-tertiary">{count}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-      {items.map((review) => (
-        <View key={review.id} className="mb-3 border-b border-border pb-3">
-          <View className="flex-row items-center">
-            <View className="h-8 w-8 items-center justify-center rounded-full bg-brand-100">
-              {review.userAvatar ? (
-                <Image source={{ uri: review.userAvatar }} className="h-8 w-8 rounded-full" />
-              ) : (
-                <Text className="text-sm font-semibold text-brand-600">
-                  {review.userName.charAt(0).toUpperCase()}
-                </Text>
-              )}
-            </View>
-            <View className="ml-2 flex-1">
-              <Text className="text-sm font-medium text-content">{review.userName}</Text>
-              <View className="flex-row items-center">
+      {/* Write Review Button */}
+      <Pressable
+        className="mb-4 flex-row items-center justify-center rounded-button border border-brand-600 py-3"
+        onPress={onWriteReview}
+      >
+        <Ionicons name="create-outline" size={18} color="#4c6ef5" />
+        <Text className="ml-2 font-medium text-brand-600">{t('reviews.writeReview')}</Text>
+      </Pressable>
+
+      {items.length === 0 ? (
+        <EmptyState icon="chatbubble-outline" title={t('vendor.noReviews')} />
+      ) : (
+        <>
+          <View className="mb-4 flex-row items-center rounded-card bg-surface-secondary p-4">
+            <View className="mr-4 items-center">
+              <Text className="text-3xl font-bold text-content">{rating.toFixed(1)}</Text>
+              <View className="mt-1 flex-row">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <Ionicons
                     key={s}
-                    name={s <= review.rating ? 'star' : 'star-outline'}
-                    size={10}
+                    name={s <= Math.round(rating) ? 'star' : 'star-outline'}
+                    size={14}
                     color="#fab005"
                   />
                 ))}
-                <Text className="ml-2 text-xs text-content-tertiary">
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </Text>
               </View>
+              <Text className="mt-1 text-xs text-content-tertiary">
+                {t('vendor.reviewCount', { count: items.length })}
+              </Text>
+            </View>
+            <View className="flex-1">
+              {starDistribution.map(({ star, count }) => (
+                <View key={star} className="mb-1 flex-row items-center">
+                  <Text className="w-4 text-xs text-content-tertiary">{star}</Text>
+                  <View className="ml-1 mr-2 h-2 flex-1 overflow-hidden rounded-full bg-border">
+                    <View
+                      className="h-full rounded-full bg-warning-500"
+                      style={{ width: `${(count / maxCount) * 100}%` }}
+                    />
+                  </View>
+                  <Text className="w-6 text-xs text-content-tertiary">{count}</Text>
+                </View>
+              ))}
             </View>
           </View>
-          <Text className="mt-2 text-sm text-content">{review.comment}</Text>
-        </View>
-      ))}
+          {items.map((review) => (
+            <View key={review.id} className="mb-3 border-b border-border pb-3">
+              <View className="flex-row items-center">
+                <View className="h-8 w-8 items-center justify-center rounded-full bg-brand-100">
+                  {review.userAvatar ? (
+                    <Image source={{ uri: review.userAvatar }} className="h-8 w-8 rounded-full" />
+                  ) : (
+                    <Text className="text-sm font-semibold text-brand-600">
+                      {review.userName.charAt(0).toUpperCase()}
+                    </Text>
+                  )}
+                </View>
+                <View className="ml-2 flex-1">
+                  <Text className="text-sm font-medium text-content">{review.userName}</Text>
+                  <View className="flex-row items-center">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Ionicons
+                        key={s}
+                        name={s <= review.rating ? 'star' : 'star-outline'}
+                        size={10}
+                        color="#fab005"
+                      />
+                    ))}
+                    <Text className="ml-2 text-xs text-content-tertiary">
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <Text className="mt-2 text-sm text-content">{review.comment}</Text>
+            </View>
+          ))}
+        </>
+      )}
     </View>
   );
 }

@@ -8,6 +8,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { useAuthStore } from '@/store/auth-store';
+import { useSavedStore } from '@/store/saved-store';
 import { springConfig } from '@/lib/animations';
 import { haptics } from '@/lib/haptics';
 
@@ -48,6 +49,11 @@ function AnimatedTabIcon({
 export default function MainLayout() {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuthStore();
+  const initSaved = useSavedStore((s) => s.initialize);
+
+  useEffect(() => {
+    initSaved();
+  }, []);
 
   if (!isAuthenticated) {
     return <Redirect href="/(auth)/login" />;
@@ -101,13 +107,13 @@ export default function MainLayout() {
         }}
       />
       <Tabs.Screen
-        name="bookings"
+        name="saved"
         options={{
-          title: t('tabs.bookings'),
+          title: t('tabs.saved'),
           tabBarIcon: ({ color, size, focused }) => (
             <AnimatedTabIcon
               focused={focused}
-              name="calendar-outline"
+              name="bookmark-outline"
               color={color}
               size={size}
             />
@@ -115,13 +121,13 @@ export default function MainLayout() {
         }}
       />
       <Tabs.Screen
-        name="planner"
+        name="bookings"
         options={{
-          title: t('tabs.planner'),
+          title: t('tabs.bookings'),
           tabBarIcon: ({ color, size, focused }) => (
             <AnimatedTabIcon
               focused={focused}
-              name="clipboard-outline"
+              name="calendar-outline"
               color={color}
               size={size}
             />
@@ -140,6 +146,13 @@ export default function MainLayout() {
               size={size}
             />
           ),
+        }}
+      />
+      {/* Hide planner redirect from tabs */}
+      <Tabs.Screen
+        name="planner"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

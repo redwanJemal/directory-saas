@@ -51,6 +51,8 @@ export default function SearchScreen() {
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (filters.category) count++;
+    if (filters.country) count++;
+    if (filters.city) count++;
     if (filters.priceMin != null || filters.priceMax != null) count++;
     if (filters.ratingMin) count++;
     if (filters.sort) count++;
@@ -74,6 +76,26 @@ export default function SearchScreen() {
       {/* Active filter chips */}
       {activeFilterCount > 0 && (
         <View className="flex-row flex-wrap px-4 pb-2">
+          {filters.country && (
+            <Pressable
+              className="mb-1 mr-2 flex-row items-center rounded-full bg-brand-50 px-3 py-1"
+              onPress={() => removeFilter('country')}
+            >
+              <Ionicons name="globe-outline" size={12} color="#4263eb" />
+              <Text className="ml-0.5 text-xs font-medium text-brand-700">{filters.country}</Text>
+              <Ionicons name="close-circle" size={14} color="#4263eb" className="ml-1" />
+            </Pressable>
+          )}
+          {filters.city && (
+            <Pressable
+              className="mb-1 mr-2 flex-row items-center rounded-full bg-brand-50 px-3 py-1"
+              onPress={() => removeFilter('city')}
+            >
+              <Ionicons name="location-outline" size={12} color="#4263eb" />
+              <Text className="ml-0.5 text-xs font-medium text-brand-700">{filters.city}</Text>
+              <Ionicons name="close-circle" size={14} color="#4263eb" className="ml-1" />
+            </Pressable>
+          )}
           {filters.category && (
             <Pressable
               className="mb-1 mr-2 flex-row items-center rounded-full bg-brand-50 px-3 py-1"

@@ -11,6 +11,7 @@ import {
 const languages = [
   { code: 'en', name: 'English', nativeName: 'English' },
   { code: 'am', name: 'Amharic', nativeName: 'አማርኛ' },
+  { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
 ];
 
 export function LanguageSwitcher() {
@@ -32,8 +33,8 @@ export function LanguageSwitcher() {
             className={i18n.language === lang.code ? 'bg-accent' : ''}
           >
             <span>{lang.nativeName}</span>
-            {lang.code !== lang.nativeName && (
-              <span className="ml-2 text-xs text-muted-foreground">({lang.name})</span>
+            {lang.nativeName !== lang.name && (
+              <span className="ms-2 text-xs text-muted-foreground">({lang.name})</span>
             )}
           </DropdownMenuItem>
         ))}

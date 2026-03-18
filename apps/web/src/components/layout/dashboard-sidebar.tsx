@@ -3,10 +3,6 @@ import { Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard,
-  Heart,
-  Users,
-  DollarSign,
-  CheckSquare,
   Store,
   MessageSquare,
   Settings,
@@ -33,10 +29,6 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { labelKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { labelKey: 'nav.myWedding', href: '/dashboard/wedding', icon: Heart },
-  { labelKey: 'nav.guestList', href: '/dashboard/guests', icon: Users },
-  { labelKey: 'nav.budget', href: '/dashboard/budget', icon: DollarSign },
-  { labelKey: 'nav.checklist', href: '/dashboard/checklist', icon: CheckSquare },
   { labelKey: 'nav.vendors', href: '/dashboard/vendors', icon: Store },
   { labelKey: 'nav.messages', href: '/dashboard/messages', icon: MessageSquare },
   { labelKey: 'nav.settings', href: '/dashboard/settings', icon: Settings },
@@ -136,7 +128,7 @@ export function DashboardSidebar() {
               <ChevronLeft className="h-4 w-4" />
             )}
             {!collapsed && (
-              <span className="ml-2 text-sm">{t('nav.collapse')}</span>
+              <span className="ms-2 text-sm">{t('nav.collapse')}</span>
             )}
           </Button>
         </div>

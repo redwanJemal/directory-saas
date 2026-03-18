@@ -142,7 +142,7 @@ export function Header() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout} className="text-destructive">
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="me-2 h-4 w-4" />
               <span>{t('auth.logout')}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

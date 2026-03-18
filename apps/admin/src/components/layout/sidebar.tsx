@@ -138,7 +138,7 @@ export function Sidebar() {
               <ChevronLeft className="h-4 w-4" />
             )}
             {!collapsed && (
-              <span className="ml-2 text-sm">{t('nav.collapse')}</span>
+              <span className="ms-2 text-sm">{t('nav.collapse')}</span>
             )}
           </Button>
         </div>

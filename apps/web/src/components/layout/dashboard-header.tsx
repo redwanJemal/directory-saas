@@ -5,10 +5,6 @@ import {
   LogOut,
   ArrowLeft,
   LayoutDashboard,
-  Heart,
-  Users,
-  DollarSign,
-  CheckSquare,
   Store,
   MessageSquare,
   Settings,
@@ -38,10 +34,6 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { labelKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { labelKey: 'nav.myWedding', href: '/dashboard/wedding', icon: Heart },
-  { labelKey: 'nav.guestList', href: '/dashboard/guests', icon: Users },
-  { labelKey: 'nav.budget', href: '/dashboard/budget', icon: DollarSign },
-  { labelKey: 'nav.checklist', href: '/dashboard/checklist', icon: CheckSquare },
   { labelKey: 'nav.vendors', href: '/dashboard/vendors', icon: Store },
   { labelKey: 'nav.messages', href: '/dashboard/messages', icon: MessageSquare },
   { labelKey: 'nav.settings', href: '/dashboard/settings', icon: Settings },
@@ -112,7 +104,7 @@ export function DashboardHeader() {
       {/* Back to search */}
       <Button variant="ghost" size="sm" asChild className="hidden md:flex">
         <Link to="/">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="me-2 h-4 w-4" />
           {t('nav.search')}
         </Link>
       </Button>
@@ -147,7 +139,7 @@ export function DashboardHeader() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout} className="text-destructive">
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="me-2 h-4 w-4" />
               <span>{t('auth.logout')}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

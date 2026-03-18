@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Star } from 'lucide-react';
+import { Star, BadgeCheck, Percent } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/format';
@@ -13,15 +13,19 @@ interface VendorCardProps {
 export function VendorCard({ vendor }: VendorCardProps) {
   const { t } = useTranslation();
 
+  const primaryCategory = vendor.categories?.find((c) => c.isPrimary)?.name
+    ?? vendor.categories?.[0]?.name
+    ?? vendor.category;
+
   return (
     <Link to={`/vendors/${vendor.id}`}>
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow group h-full">
         <div className="aspect-[4/3] relative overflow-hidden bg-muted">
           {vendor.coverPhoto ? (
             <img
               src={vendor.coverPhoto}
               alt={vendor.name}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -30,16 +34,23 @@ export function VendorCard({ vendor }: VendorCardProps) {
               </span>
             </div>
           )}
-          {vendor.featured && (
-            <Badge className="absolute top-2 left-2">
-              {t('search.featured')}
+          {vendor.verified && (
+            <Badge variant="secondary" className="absolute top-2 left-2 gap-1">
+              <BadgeCheck className="h-3 w-3" />
+              {t('common.verified')}
+            </Badge>
+          )}
+          {vendor.activeDeals > 0 && (
+            <Badge className="absolute top-2 right-2 gap-1 bg-destructive text-destructive-foreground">
+              <Percent className="h-3 w-3" />
+              {vendor.activeDeals}
             </Badge>
           )}
         </div>
         <CardContent className="p-4">
           <h3 className="font-semibold truncate">{vendor.name}</h3>
-          <p className="text-sm text-muted-foreground">
-            {vendor.category} · {vendor.location}
+          <p className="text-sm text-muted-foreground mt-1">
+            {primaryCategory} · {vendor.city}, {t(`countries.${vendor.country}`, { defaultValue: vendor.country })}
           </p>
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-1">
@@ -51,11 +62,13 @@ export function VendorCard({ vendor }: VendorCardProps) {
                 ({vendor.reviewCount})
               </span>
             </div>
-            <span className="text-sm font-medium">
-              {t('search.startingFrom', {
-                price: formatCurrency(vendor.startingPrice),
-              })}
-            </span>
+            {vendor.startingPrice > 0 && (
+              <span className="text-sm font-medium">
+                {t('search.startingFrom', {
+                  price: formatCurrency(vendor.startingPrice),
+                })}
+              </span>
+            )}
           </div>
         </CardContent>
       </Card>

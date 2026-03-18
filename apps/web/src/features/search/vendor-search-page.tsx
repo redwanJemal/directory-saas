@@ -10,7 +10,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { SearchBar } from './components/search-bar';
 import { FilterSidebar } from './components/filter-sidebar';
 import { SearchResults } from './components/search-results';
 import { useSearchQuery } from './hooks/use-search';
@@ -25,12 +24,14 @@ export function VendorSearchPage() {
     () => ({
       query: urlParams.get('q') ?? undefined,
       category: urlParams.get('category') ?? undefined,
+      country: urlParams.get('country') ?? undefined,
+      city: urlParams.get('city') ?? undefined,
       location: urlParams.get('location') ?? undefined,
       minBudget: urlParams.get('minBudget') ? Number(urlParams.get('minBudget')) : undefined,
       maxBudget: urlParams.get('maxBudget') ? Number(urlParams.get('maxBudget')) : undefined,
       minRating: urlParams.get('minRating') ? Number(urlParams.get('minRating')) : undefined,
-      styles: urlParams.get('styles')?.split(',').filter(Boolean) ?? undefined,
-      languages: urlParams.get('languages')?.split(',').filter(Boolean) ?? undefined,
+      verified: urlParams.get('verified') === 'true' ? true : undefined,
+      hasDeals: urlParams.get('hasDeals') === 'true' ? true : undefined,
       sort: urlParams.get('sort') ?? 'recommended',
       page: urlParams.get('page') ? Number(urlParams.get('page')) : 1,
       pageSize: 12,
@@ -45,10 +46,12 @@ export function VendorSearchPage() {
       setUrlParams((prev) => {
         const next = new URLSearchParams(prev);
         Object.entries(updates).forEach(([key, value]) => {
-          if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
+          if (value === undefined || value === '' || value === false || (Array.isArray(value) && value.length === 0)) {
             next.delete(key);
           } else if (Array.isArray(value)) {
             next.set(key, value.join(','));
+          } else if (typeof value === 'boolean') {
+            next.set(key, 'true');
           } else {
             next.set(key, String(value));
           }
@@ -67,24 +70,9 @@ export function VendorSearchPage() {
     setUrlParams({});
   }, [setUrlParams]);
 
-  const handleSearch = useCallback(
-    ({ category, location }: { category: string; location: string }) => {
-      updateParams({ category: category || undefined, location: location || undefined });
-    },
-    [updateParams],
-  );
-
   return (
     <div className="container mx-auto px-4 py-6">
-      {/* Search bar */}
-      <div className="mb-6">
-        <SearchBar
-          defaultCategory={params.category ?? ''}
-          defaultLocation={params.location ?? ''}
-          compact
-          onSearch={handleSearch}
-        />
-      </div>
+      <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('search.title')}</h1>
 
       <div className="flex gap-6">
         {/* Desktop filter sidebar */}

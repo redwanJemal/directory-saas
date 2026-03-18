@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
+import { Search } from 'lucide-react';
 import { VendorCard } from './vendor-card';
 import type { VendorSearchResult } from '../types';
 import type { PaginationMeta } from '@/lib/types';
@@ -54,7 +55,7 @@ export function SearchResults({
           <Skeleton className="h-5 w-24" />
           <Skeleton className="h-9 w-40" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <Card key={i} className="overflow-hidden">
               <Skeleton className="aspect-[4/3]" />
@@ -76,7 +77,7 @@ export function SearchResults({
   if (vendors.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="text-6xl mb-4 opacity-20">🔍</div>
+        <Search className="h-16 w-16 text-muted-foreground/20 mb-4" />
         <h3 className="text-lg font-semibold mb-2">{t('search.noResults')}</h3>
         <Button variant="outline" onClick={onClearFilters}>
           {t('search.clearFilters')}
@@ -99,6 +100,8 @@ export function SearchResults({
           <SelectContent>
             <SelectItem value="recommended">{t('search.recommended')}</SelectItem>
             <SelectItem value="-rating">{t('search.ratingHighLow')}</SelectItem>
+            <SelectItem value="-createdAt">{t('search.newest')}</SelectItem>
+            <SelectItem value="name">{t('search.nameAZ')}</SelectItem>
             <SelectItem value="price">{t('search.priceLowHigh')}</SelectItem>
             <SelectItem value="-price">{t('search.priceHighLow')}</SelectItem>
             <SelectItem value="-reviewCount">{t('search.mostReviewed')}</SelectItem>
@@ -107,7 +110,7 @@ export function SearchResults({
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {vendors.map((vendor) => (
           <VendorCard key={vendor.id} vendor={vendor} />
         ))}
@@ -124,9 +127,24 @@ export function SearchResults({
           >
             {t('common.back')}
           </Button>
-          <span className="text-sm text-muted-foreground">
-            {pagination.page} / {pagination.totalPages}
-          </span>
+          {Array.from({ length: Math.min(pagination.totalPages, 5) }, (_, i) => {
+            const startPage = Math.max(
+              1,
+              Math.min(pagination.page - 2, pagination.totalPages - 4),
+            );
+            const page = startPage + i;
+            if (page > pagination.totalPages) return null;
+            return (
+              <Button
+                key={page}
+                variant={page === pagination.page ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => onPageChange(page)}
+              >
+                {page}
+              </Button>
+            );
+          })}
           <Button
             variant="outline"
             size="sm"

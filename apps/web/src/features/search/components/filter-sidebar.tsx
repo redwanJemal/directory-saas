@@ -10,8 +10,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useCategories } from '../hooks/use-search';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+import { useCategories, useCountries, useCities } from '../hooks/use-search';
 import type { SearchParams } from '../types';
 
 interface FilterSidebarProps {
@@ -20,12 +21,11 @@ interface FilterSidebarProps {
   onClear: () => void;
 }
 
-const STYLES = ['elegant', 'modern', 'rustic', 'bohemian', 'classic', 'minimalist'];
-const LANGUAGES = ['english', 'amharic', 'oromo', 'tigrinya', 'somali'];
-
 export function FilterSidebar({ params, onChange, onClear }: FilterSidebarProps) {
   const { t } = useTranslation();
   const { data: categories } = useCategories();
+  const { data: countries } = useCountries();
+  const { data: cities } = useCities(params.country);
 
   return (
     <div className="space-y-6">
@@ -40,53 +40,77 @@ export function FilterSidebar({ params, onChange, onClear }: FilterSidebarProps)
       <div className="space-y-2">
         <Label>{t('search.category')}</Label>
         <Select
-          value={params.category ?? ''}
-          onValueChange={(value) => onChange({ category: value || undefined })}
+          value={params.category ?? '__all__'}
+          onValueChange={(value) => onChange({ category: value === '__all__' ? undefined : value })}
         >
           <SelectTrigger>
-            <SelectValue placeholder={t('search.category')} />
+            <SelectValue placeholder={t('search.allCategories')} />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="__all__">{t('search.allCategories')}</SelectItem>
             {categories?.map((cat) => (
               <SelectItem key={cat.slug} value={cat.slug}>
                 {cat.name}
+                {cat.vendorCount > 0 && (
+                  <span className="ml-1 text-muted-foreground">({cat.vendorCount})</span>
+                )}
               </SelectItem>
-            )) ?? (
-              <>
-                <SelectItem value="photography">{t('categories.photography')}</SelectItem>
-                <SelectItem value="catering">{t('categories.catering')}</SelectItem>
-                <SelectItem value="venue">{t('categories.venue')}</SelectItem>
-                <SelectItem value="decoration">{t('categories.decoration')}</SelectItem>
-                <SelectItem value="music">{t('categories.music')}</SelectItem>
-                <SelectItem value="planning">{t('categories.planning')}</SelectItem>
-              </>
-            )}
+            ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Budget Range */}
+      <Separator />
+
+      {/* Country */}
       <div className="space-y-2">
-        <Label>{t('search.budget')}</Label>
-        <div className="flex gap-2">
-          <Input
-            type="number"
-            placeholder={t('search.minPrice')}
-            value={params.minBudget ?? ''}
-            onChange={(e) =>
-              onChange({ minBudget: e.target.value ? Number(e.target.value) : undefined })
-            }
-          />
-          <Input
-            type="number"
-            placeholder={t('search.maxPrice')}
-            value={params.maxBudget ?? ''}
-            onChange={(e) =>
-              onChange({ maxBudget: e.target.value ? Number(e.target.value) : undefined })
-            }
-          />
-        </div>
+        <Label>{t('search.country')}</Label>
+        <Select
+          value={params.country ?? '__all__'}
+          onValueChange={(value) =>
+            onChange({
+              country: value === '__all__' ? undefined : value,
+              city: undefined,
+            })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={t('search.allCountries')} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__all__">{t('search.allCountries')}</SelectItem>
+            {countries?.map((c) => (
+              <SelectItem key={c.code} value={c.code}>
+                {c.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
+
+      {/* City */}
+      <div className="space-y-2">
+        <Label>{t('search.city')}</Label>
+        <Select
+          value={params.city ?? '__all__'}
+          onValueChange={(value) => onChange({ city: value === '__all__' ? undefined : value })}
+          disabled={!params.country}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={t('search.allCities')} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__all__">{t('search.allCities')}</SelectItem>
+            {cities?.map((c) => (
+              <SelectItem key={c.name} value={c.name}>
+                {c.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <Separator />
 
       {/* Rating */}
       <div className="space-y-2">
@@ -111,55 +135,50 @@ export function FilterSidebar({ params, onChange, onClear }: FilterSidebarProps)
         </RadioGroup>
       </div>
 
-      {/* Styles */}
-      <div className="space-y-2">
-        <Label>{t('search.style')}</Label>
-        <div className="space-y-2">
-          {STYLES.map((style) => (
-            <div key={style} className="flex items-center space-x-2">
-              <Checkbox
-                id={`style-${style}`}
-                checked={params.styles?.includes(style) ?? false}
-                onCheckedChange={(checked) => {
-                  const current = params.styles ?? [];
-                  onChange({
-                    styles: checked
-                      ? [...current, style]
-                      : current.filter((s) => s !== style),
-                  });
-                }}
-              />
-              <Label htmlFor={`style-${style}`} className="font-normal capitalize">
-                {t(`styles.${style}`)}
-              </Label>
-            </div>
-          ))}
-        </div>
+      <Separator />
+
+      {/* Verified Only */}
+      <div className="flex items-center justify-between">
+        <Label htmlFor="verified-toggle">{t('search.verifiedOnly')}</Label>
+        <Switch
+          id="verified-toggle"
+          checked={params.verified ?? false}
+          onCheckedChange={(checked) => onChange({ verified: checked || undefined })}
+        />
       </div>
 
-      {/* Languages */}
+      {/* Has Deals */}
+      <div className="flex items-center justify-between">
+        <Label htmlFor="deals-toggle">{t('search.hasDeals')}</Label>
+        <Switch
+          id="deals-toggle"
+          checked={params.hasDeals ?? false}
+          onCheckedChange={(checked) => onChange({ hasDeals: checked || undefined })}
+        />
+      </div>
+
+      <Separator />
+
+      {/* Budget Range */}
       <div className="space-y-2">
-        <Label>{t('search.languages')}</Label>
-        <div className="space-y-2">
-          {LANGUAGES.map((lang) => (
-            <div key={lang} className="flex items-center space-x-2">
-              <Checkbox
-                id={`lang-${lang}`}
-                checked={params.languages?.includes(lang) ?? false}
-                onCheckedChange={(checked) => {
-                  const current = params.languages ?? [];
-                  onChange({
-                    languages: checked
-                      ? [...current, lang]
-                      : current.filter((l) => l !== lang),
-                  });
-                }}
-              />
-              <Label htmlFor={`lang-${lang}`} className="font-normal capitalize">
-                {t(`languages.${lang}`)}
-              </Label>
-            </div>
-          ))}
+        <Label>{t('search.budget')}</Label>
+        <div className="flex gap-2">
+          <Input
+            type="number"
+            placeholder={t('search.minPrice')}
+            value={params.minBudget ?? ''}
+            onChange={(e) =>
+              onChange({ minBudget: e.target.value ? Number(e.target.value) : undefined })
+            }
+          />
+          <Input
+            type="number"
+            placeholder={t('search.maxPrice')}
+            value={params.maxBudget ?? ''}
+            onChange={(e) =>
+              onChange({ maxBudget: e.target.value ? Number(e.target.value) : undefined })
+            }
+          />
         </div>
       </div>
     </div>

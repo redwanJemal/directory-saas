@@ -3,6 +3,7 @@
     "home": "Home",
     "search": "Search",
     "categories": "Categories",
+    "deals": "Deals",
     "howItWorks": "How It Works",
     "login": "Login",
     "signUp": "Sign Up",
@@ -42,7 +43,9 @@
     "theme": "Theme",
     "light": "Light",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "verified": "Verified",
+    "all": "All"
   },
   "auth": {
     "login": "Sign In",
@@ -64,44 +67,61 @@
     "registering": "Creating account..."
   },
   "landing": {
-    "heroTitle": "Find Ethiopian Businesses Near You",
+    "heroTitle": "Find Ethiopian Businesses in {{location}}",
+    "heroTitleDefault": "Find Ethiopian Businesses Near You",
     "heroSubtitle": "Discover trusted Ethiopian-owned businesses across the Middle East",
-    "searchPlaceholder": "What are you looking for?",
+    "searchPlaceholder": "Search businesses, categories...",
     "searchCategory": "Category",
     "searchLocation": "Location",
     "searchDate": "Date",
     "searchButton": "Search",
+    "selectCountry": "Select Country",
+    "selectCity": "Select City",
     "featuredVendors": "Featured Businesses",
+    "popularIn": "Popular in {{city}}",
     "howItWorksTitle": "How It Works",
     "step1Title": "Search",
     "step1Description": "Browse businesses by category, location, and budget",
     "step2Title": "Compare",
     "step2Description": "View portfolios, read reviews, and compare packages",
-    "step3Title": "Book",
-    "step3Description": "Send inquiries and connect with your favorite businesses",
+    "step3Title": "Connect",
+    "step3Description": "Contact businesses directly via WhatsApp, phone, or inquiry",
     "categoriesTitle": "Browse by Category",
     "testimonialsTitle": "What Our Clients Say",
     "ctaTitle": "Ready to Get Started?",
     "ctaSubtitle": "Join thousands of happy customers who found their perfect Ethiopian businesses",
-    "ctaButton": "Get Started Free"
+    "ctaButton": "Get Started Free",
+    "todaysDeals": "Today's Deals",
+    "dealsSubtitle": "Special offers from Ethiopian businesses near you",
+    "off": "{{percent}}% OFF",
+    "expires": "Expires {{date}}",
+    "viewDeal": "View Deal",
+    "viewAllDeals": "View All Deals",
+    "exploreAll": "Explore All Categories"
   },
   "search": {
     "title": "Find Businesses",
     "filters": "Filters",
     "category": "Category",
+    "country": "Country",
+    "city": "City",
     "budget": "Budget Range",
     "rating": "Minimum Rating",
     "style": "Style",
     "languages": "Languages",
     "distance": "Distance",
+    "verifiedOnly": "Verified Only",
+    "hasDeals": "Has Deals",
     "sortBy": "Sort by",
     "recommended": "Recommended",
     "ratingHighLow": "Rating: High to Low",
     "priceLowHigh": "Price: Low to High",
     "priceHighLow": "Price: High to Low",
     "mostReviewed": "Most Reviewed",
+    "newest": "Newest",
+    "nameAZ": "Name (A-Z)",
     "results": "{{count}} results",
-    "noResults": "No businesses found matching your criteria",
+    "noResults": "No businesses found. Try adjusting your filters.",
     "clearFilters": "Clear Filters",
     "startingFrom": "From {{price}}",
     "viewProfile": "View Profile",
@@ -110,7 +130,11 @@
     "featured": "Featured",
     "anyRating": "Any",
     "minPrice": "Min",
-    "maxPrice": "Max"
+    "maxPrice": "Max",
+    "allCategories": "All Categories",
+    "allCountries": "All Countries",
+    "allCities": "All Cities",
+    "searchBusinesses": "Search businesses..."
   },
   "vendor": {
     "about": "About",
@@ -135,6 +159,13 @@
     "findMore": "Find More Businesses"
   },
   "categories": {
+    "foodDrink": "Food & Drink",
+    "beautyGrooming": "Beauty & Grooming",
+    "services": "Services",
+    "automotive": "Automotive",
+    "healthWellness": "Health & Wellness",
+    "shopping": "Shopping",
+    "community": "Community",
     "photography": "Photography",
     "catering": "Catering",
     "venue": "Venue",
@@ -144,7 +175,14 @@
     "florist": "Florist",
     "transport": "Transport",
     "vendorCount": "{{count}} businesses",
-    "subtitle": "Find the right professionals for every aspect of your event",
+    "subtitle": "Find the right professionals for every aspect of your needs",
+    "foodDrinkDesc": "Restaurants, catering, home cooking, groceries, and bakeries",
+    "beautyGroomingDesc": "Salons, barbers, braiding, henna, makeup, and cosmetics",
+    "servicesDesc": "PRO services, translation, money transfer, travel, and legal",
+    "automotiveDesc": "Mechanics, car wash, and driving schools",
+    "healthWellnessDesc": "Traditional medicine, massage, spa, and clinics",
+    "shoppingDesc": "Clothing, electronics, furniture, and general trading",
+    "communityDesc": "Churches, mosques, community centers, tutoring, and events",
     "photographyDesc": "Professional photographers to capture your special moments",
     "cateringDesc": "Delicious food and beverage services for your event",
     "venueDesc": "Beautiful locations for your events and celebrations",
@@ -153,6 +191,14 @@
     "planningDesc": "Expert coordination for a stress-free event",
     "floristDesc": "Beautiful floral arrangements and bouquets",
     "transportDesc": "Luxury vehicles and transportation services"
+  },
+  "countries": {
+    "AE": "UAE",
+    "SA": "Saudi Arabia",
+    "KW": "Kuwait",
+    "QA": "Qatar",
+    "BH": "Bahrain",
+    "OM": "Oman"
   },
   "styles": {
     "elegant": "Elegant",
@@ -170,11 +216,11 @@
     "somali": "Somali"
   },
   "testimonials": {
-    "quote1": "We found an amazing photographer through this platform. The whole experience was seamless from search to booking!",
+    "quote1": "We found an amazing Ethiopian restaurant through Habesha Hub. The food was authentic and the service was excellent!",
     "name1": "Sarah A.",
-    "quote2": "The vendor comparison feature saved us so much time. We could easily see packages side by side and make the best choice.",
+    "quote2": "As an Ethiopian in Dubai, this platform helps me find trusted businesses from my community. Highly recommended!",
     "name2": "Michael K.",
-    "quote3": "Every vendor we booked through here was professional and talented. Highly recommended!",
+    "quote3": "Every business we found through here was professional and reliable. It's like having a community guide!",
     "name3": "Helen T."
   },
   "footer": {
@@ -229,5 +275,15 @@
     "serverError": "Server error. Please try again later.",
     "unauthorized": "You are not authorized to perform this action",
     "notFound": "The requested resource was not found"
+  },
+  "deals": {
+    "title": "Deals & Promotions",
+    "subtitle": "Special offers from Ethiopian businesses",
+    "noDeals": "No active deals right now. Check back soon!",
+    "off": "{{percent}}% OFF",
+    "expires": "Expires {{date}}",
+    "expired": "Expired",
+    "viewBusiness": "View Business",
+    "allDeals": "All Deals"
   }
 }

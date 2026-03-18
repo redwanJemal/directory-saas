@@ -13,7 +13,8 @@
     "settings": "Settings",
     "collapse": "Collapse",
     "cities": "Cities",
-    "new": "New"
+    "new": "New",
+    "events": "Events"
   },
   "common": {
     "appName": "Habesha Hub",
@@ -336,5 +337,24 @@
     "recentlyAdded": "Recently Added",
     "recentlyAddedSubtitle": "New businesses added in the last 30 days",
     "subcategoryCount": "{{count}} subcategories"
+  },
+  "events": {
+    "pageTitle": "Community Events",
+    "pageSubtitle": "Discover events from Ethiopian businesses and community organizations",
+    "noEvents": "No upcoming events right now. Check back soon!",
+    "allTypes": "All Types",
+    "type_business": "Business",
+    "type_community": "Community",
+    "rsvpCount": "{{count}} attending",
+    "upcoming": "Upcoming Events",
+    "upcomingSubtitle": "Don't miss these upcoming community events",
+    "viewAllEvents": "View All Events",
+    "rsvp": "RSVP",
+    "going": "Going",
+    "interested": "Interested",
+    "notGoing": "Not Going",
+    "rsvpSuccess": "RSVP updated!",
+    "loginToRsvp": "Login to RSVP",
+    "eventFull": "Event Full"
   }
 }

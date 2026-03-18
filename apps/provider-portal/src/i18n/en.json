@@ -11,7 +11,8 @@
     "team": "Team",
     "analytics": "Analytics",
     "settings": "Settings",
-    "collapse": "Collapse"
+    "collapse": "Collapse",
+    "events": "Events"
   },
   "common": {
     "appName": "Habesha Hub Business",
@@ -358,5 +359,28 @@
     "serverError": "Server error. Please try again later.",
     "unauthorized": "You are not authorized to perform this action",
     "notFound": "The requested resource was not found"
+  },
+  "events": {
+    "title": "Events",
+    "createEvent": "Create Event",
+    "editEvent": "Edit Event",
+    "eventTitle": "Title",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "locationPlaceholder": "Event venue or address",
+    "maxAttendees": "Max Attendees",
+    "eventType": "Event Type",
+    "type_business": "Business",
+    "type_community": "Community",
+    "image": "Image",
+    "past": "Past",
+    "rsvpCount": "{{count}} RSVPs",
+    "empty": "No events yet. Create your first event to engage with the community.",
+    "eventCreated": "Event created successfully",
+    "eventUpdated": "Event updated successfully",
+    "eventDeleted": "Event deleted successfully",
+    "deleteEventTitle": "Delete Event",
+    "deleteEventConfirm": "Are you sure you want to delete this event? This action cannot be undone."
   }
 }

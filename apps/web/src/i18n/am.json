@@ -13,7 +13,8 @@
     "settings": "ቅንብሮች",
     "collapse": "አሳንስ",
     "cities": "ከተማዎች",
-    "new": "አዲስ"
+    "new": "አዲስ",
+    "events": "ዝግጅቶች"
   },
   "common": {
     "appName": "ሃበሻ ሁብ",
@@ -336,5 +337,24 @@
     "recentlyAdded": "በቅርቡ የተጨመሩ",
     "recentlyAddedSubtitle": "ባለፉት 30 ቀናት ውስጥ የተጨመሩ አዲስ ንግዶች",
     "subcategoryCount": "{{count}} ንዑስ ምድቦች"
+  },
+  "events": {
+    "pageTitle": "የማህበረሰብ ዝግጅቶች",
+    "pageSubtitle": "ከኢትዮጵያዊ ንግዶች እና ማህበረሰብ ድርጅቶች ዝግጅቶችን ያግኙ",
+    "noEvents": "አሁን ምንም ቀጣይ ዝግጅቶች የሉም። በቅርብ ይመልከቱ!",
+    "allTypes": "ሁሉም ዓይነቶች",
+    "type_business": "ንግድ",
+    "type_community": "ማህበረሰብ",
+    "rsvpCount": "{{count}} ተሳታፊዎች",
+    "upcoming": "ቀጣይ ዝግጅቶች",
+    "upcomingSubtitle": "እነዚህን ቀጣይ ዝግጅቶች አያምልጥዎት",
+    "viewAllEvents": "ሁሉንም ዝግጅቶች ይመልከቱ",
+    "rsvp": "ምዝገባ",
+    "going": "እሄዳለሁ",
+    "interested": "ፍላጎት አለኝ",
+    "notGoing": "አልሄድም",
+    "rsvpSuccess": "ምዝገባ ተሳክቷል!",
+    "loginToRsvp": "ለመመዝገብ ይግቡ",
+    "eventFull": "ዝግጅቱ ሞልቷል"
   }
 }

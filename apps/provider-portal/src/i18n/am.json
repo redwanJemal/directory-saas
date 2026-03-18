@@ -11,7 +11,8 @@
     "team": "ቡድን",
     "analytics": "ትንተና",
     "settings": "ቅንብሮች",
-    "collapse": "አሳንስ"
+    "collapse": "አሳንስ",
+    "events": "ዝግጅቶች"
   },
   "common": {
     "appName": "ሃበሻ ሁብ ንግድ",
@@ -358,5 +359,28 @@
     "serverError": "የሰርቨር ስህተት። እባክዎ ቆየት ብለው ይሞክሩ።",
     "unauthorized": "ይህን ድርጊት ለማከናወን ፈቃድ የለዎትም",
     "notFound": "የተጠየቀው ሀብት አልተገኘም"
+  },
+  "events": {
+    "title": "ዝግጅቶች",
+    "createEvent": "ዝግጅት ፍጠር",
+    "editEvent": "ዝግጅት አስተካክል",
+    "eventTitle": "ርዕስ",
+    "date": "ቀን",
+    "time": "ሰዓት",
+    "location": "ቦታ",
+    "locationPlaceholder": "የዝግጅት ቦታ ወይም አድራሻ",
+    "maxAttendees": "ከፍተኛ ተሳታፊዎች",
+    "eventType": "የዝግጅት ዓይነት",
+    "type_business": "ንግድ",
+    "type_community": "ማህበረሰብ",
+    "image": "ምስል",
+    "past": "ያለፈ",
+    "rsvpCount": "{{count}} ምዝገባዎች",
+    "empty": "ገና ምንም ዝግጅቶች የሉም። ከማህበረሰቡ ጋር ለመገናኘት የመጀመሪያ ዝግጅትዎን ይፍጠሩ።",
+    "eventCreated": "ዝግጅት በተሳካ ሁኔታ ተፈጥሯል",
+    "eventUpdated": "ዝግጅት በተሳካ ሁኔታ ተሻሽሏል",
+    "eventDeleted": "ዝግጅት በተሳካ ሁኔታ ተሰርዟል",
+    "deleteEventTitle": "ዝግጅት ሰርዝ",
+    "deleteEventConfirm": "ይህን ዝግጅት ለመሰረዝ እርግጠኛ ነዎት? ይህ ድርጊት ሊቀለበስ አይችልም።"
   }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T01:10:20.562838+00:00",
-  "current_task": "62-i18n-amharic-arabic",
+  "last_updated": "2026-03-18T01:18:47.965326+00:00",
+  "current_task": "63-community-events",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -189,14 +189,14 @@
     },
     "63-community-events": {
       "title": "Community Events Module",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "backend": "pending",
-        "frontend": "pending"
+        "backend": "completed",
+        "frontend": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T01:18:47Z",
+      "completed_at": "2026-03-18T02:45:00Z",
+      "notes": "Created CommunityEvent and EventRsvp Prisma models with indexes. Backend CommunityEventsModule with full CRUD for providers (GET/POST/PATCH/DELETE /providers/me/events), public endpoints (GET /community-events with country/city/category/eventType filters, GET /community-events/upcoming, GET /community-events/:id, GET /community-events/provider/:id), and RSVP system (POST/GET/DELETE /community-events/:id/rsvp). Provider portal events page with create/edit/delete dialogs, event cards with RSVP counts and status badges. Web app events page with filters (country/city/category/type), event cards with date/time/location/attendance. Events nav added to both provider sidebar and web public header. i18n translations in en.json and am.json for both apps. 35 unit tests covering all service methods and DTO validation. Build passes, 912 tests pass."
     },
     "64-job-board": {
       "title": "Job Board Module",

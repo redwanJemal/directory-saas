@@ -12,6 +12,7 @@ import { MessagesPage } from '@/features/messages/messages-page';
 import { TeamPage } from '@/features/team/team-page';
 import { AnalyticsPage } from '@/features/analytics/analytics-page';
 import { DealsPage } from '@/features/deals/deals-page';
+import { EventsPage } from '@/features/events/events-page';
 import { SettingsPage } from '@/features/settings/settings-page';
 import { NotFoundPage } from '@/features/not-found/not-found-page';
 import { ErrorBoundary } from '@/components/error-boundary';
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/deals" element={<DealsPage />} />
+            <Route path="/events" element={<EventsPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>

@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Tags,
+  CalendarDays,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -40,6 +41,7 @@ const navItems: NavItem[] = [
   { labelKey: 'nav.portfolio', href: '/portfolio', icon: Image },
   { labelKey: 'nav.bookings', href: '/bookings', icon: CalendarCheck },
   { labelKey: 'nav.deals', href: '/deals', icon: Tags },
+  { labelKey: 'nav.events', href: '/events', icon: CalendarDays },
   { labelKey: 'nav.reviews', href: '/reviews', icon: Star },
   { labelKey: 'nav.calendar', href: '/calendar', icon: Calendar },
   { labelKey: 'nav.messages', href: '/messages', icon: MessageSquare },

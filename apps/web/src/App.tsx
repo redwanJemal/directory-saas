@@ -5,6 +5,7 @@ import { LoginPage } from '@/features/auth/login-page';
 import { RegisterPage } from '@/features/auth/register-page';
 import { ProtectedRoute } from '@/components/layout/protected-route';
 import { LandingPage } from '@/features/landing/landing-page';
+import { CountryLandingPage } from '@/features/landing/country-landing-page';
 import { VendorSearchPage } from '@/features/search/vendor-search-page';
 import { VendorProfilePage } from '@/features/search/vendor-profile-page';
 import { CategoriesPage } from '@/features/categories/categories-page';
@@ -20,14 +21,17 @@ import { MessagesPage } from '@/features/messages/messages-page';
 import { SettingsPage } from '@/features/settings/settings-page';
 import { NotFoundPage } from '@/features/not-found/not-found-page';
 import { ErrorBoundary } from '@/components/error-boundary';
+import { CountryDetectionProvider } from '@/components/country-detection-provider';
 
 export default function App() {
   return (
     <ErrorBoundary>
+      <CountryDetectionProvider />
       <Routes>
         {/* Public routes with PublicLayout */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/country/:countryCode" element={<CountryLandingPage />} />
           <Route path="/search" element={<VendorSearchPage />} />
           <Route path="/vendors/:vendorId" element={<VendorProfilePage />} />
           <Route path="/business/:vendorId" element={<VendorProfilePage />} />

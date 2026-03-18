@@ -337,6 +337,23 @@
     "recentlyAddedSubtitle": "أعمال جديدة أُضيفت في آخر 30 يوماً",
     "subcategoryCount": "{{count}} فئة فرعية"
   },
+  "countryLanding": {
+    "seoTitle": "الأعمال الإثيوبية في {{country}}",
+    "seoDescription": "ابحث عن أعمال إثيوبية موثوقة في {{country}}. مطاعم، تجميل، خدمات والمزيد.",
+    "heroTitle": "الأعمال الإثيوبية في {{country}}",
+    "heroSubtitle": "اكتشف أعمالاً وخدمات إثيوبية موثوقة في {{country}}",
+    "businesses": "الأعمال",
+    "cities": "المدن",
+    "newThisMonth": "جديد هذا الشهر",
+    "exploreCities": "استكشف المدن في {{country}}",
+    "browseCategories": "تصفح الفئات",
+    "topBusinesses": "أفضل الأعمال في {{country}}",
+    "noBusinessesYet": "لا توجد أعمال مسجلة في {{country}} حتى الآن. كن الأول!",
+    "dealsIn": "العروض في {{country}}",
+    "ctaTitle": "ابحث عن أعمال إثيوبية في {{country}}",
+    "ctaSubtitle": "تواصل مع أعمال وخدمات إثيوبية موثوقة في {{country}}",
+    "searchIn": "ابحث في {{country}}"
+  },
   "seo": {
     "homeTitle": "ابحث عن الأعمال الإثيوبية بالقرب منك",
     "homeDescription": "اكتشف الأعمال الإثيوبية الموثوقة في الشرق الأوسط. مطاعم وجمال وخدمات والمزيد في الإمارات والسعودية والكويت وقطر والبحرين وعمان.",

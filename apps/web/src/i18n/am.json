@@ -381,6 +381,23 @@
     "latestJobsSubtitle": "ከኢትዮጵያዊ ንግዶች አዲስ የስራ ዕድሎች",
     "viewAllJobs": "ሁሉንም ስራዎች ይመልከቱ"
   },
+  "countryLanding": {
+    "seoTitle": "በ{{country}} ውስጥ ኢትዮጵያዊ ንግዶች",
+    "seoDescription": "በ{{country}} ውስጥ ታማኝ ኢትዮጵያዊ ንግዶችን ያግኙ። ምግብ ቤቶች፣ ውበት፣ አገልግሎቶች እና ሌሎችም።",
+    "heroTitle": "በ{{country}} ውስጥ ኢትዮጵያዊ ንግዶች",
+    "heroSubtitle": "በ{{country}} ውስጥ ታማኝ ኢትዮጵያዊ ንግዶችን እና አገልግሎቶችን ያግኙ",
+    "businesses": "ንግዶች",
+    "cities": "ከተማዎች",
+    "newThisMonth": "በዚህ ወር አዲስ",
+    "exploreCities": "በ{{country}} ውስጥ ከተማዎችን ያስሱ",
+    "browseCategories": "ምድቦችን ያስሱ",
+    "topBusinesses": "በ{{country}} ውስጥ ምርጥ ንግዶች",
+    "noBusinessesYet": "እስካሁን በ{{country}} ውስጥ የተመዘገበ ንግድ የለም። የመጀመሪያ ይሁኑ!",
+    "dealsIn": "በ{{country}} ውስጥ ቅናሾች",
+    "ctaTitle": "በ{{country}} ውስጥ ኢትዮጵያዊ ንግዶችን ያግኙ",
+    "ctaSubtitle": "በ{{country}} ውስጥ ከታማኝ ኢትዮጵያዊ ንግዶች እና አገልግሎቶች ጋር ይገናኙ",
+    "searchIn": "በ{{country}} ውስጥ ፈልግ"
+  },
   "seo": {
     "homeTitle": "በአቅራቢያዎ ኢትዮጵያዊ ንግዶችን ያግኙ",
     "homeDescription": "በመካከለኛው ምስራቅ ታማኝ የኢትዮጵያ ንግዶችን ያግኙ። ምግብ ቤቶች፣ ውበት፣ አገልግሎቶች እና ሌሎችም በዩኤኢ፣ ሳዑዲ አረቢያ፣ ኩዌት፣ ቃታር፣ ባህሬን እና ኦማን።",

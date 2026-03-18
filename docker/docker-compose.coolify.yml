@@ -62,7 +62,7 @@ services:
       - "traefik.http.routers.api.middlewares=api-cors@docker"
       # CORS middleware
       - "traefik.http.middlewares.api-cors.headers.accesscontrolallowmethods=GET,POST,PUT,PATCH,DELETE,OPTIONS"
-      - "traefik.http.middlewares.api-cors.headers.accesscontrolallowheaders=Content-Type,Authorization,X-Tenant-ID,X-Tenant-Slug"
+      - "traefik.http.middlewares.api-cors.headers.accesscontrolallowheaders=Content-Type,Authorization,X-Tenant-ID,X-Tenant-Slug,X-Country"
       - "traefik.http.middlewares.api-cors.headers.accesscontrolalloworiginlist=https://app.${DOMAIN},https://admin.${DOMAIN},https://*.${DOMAIN}"
       - "traefik.http.middlewares.api-cors.headers.accesscontrolmaxage=86400"
 
@@ -88,11 +88,19 @@ services:
       retries: 3
     labels:
       - "traefik.enable=true"
+      # Main web app route
       - "traefik.http.routers.web.rule=Host(`app.${DOMAIN}`)"
       - "traefik.http.routers.web.entrypoints=http,https"
       - "traefik.http.routers.web.tls=true"
       - "traefik.http.routers.web.tls.certresolver=letsencrypt"
       - "traefik.http.services.web.loadbalancer.server.port=80"
+      # Per-country subdomain routes (ae.domain, sa.domain, etc.)
+      - "traefik.http.routers.web-country.rule=Host(`ae.${DOMAIN}`) || Host(`sa.${DOMAIN}`) || Host(`kw.${DOMAIN}`) || Host(`qa.${DOMAIN}`) || Host(`bh.${DOMAIN}`) || Host(`om.${DOMAIN}`)"
+      - "traefik.http.routers.web-country.entrypoints=http,https"
+      - "traefik.http.routers.web-country.tls=true"
+      - "traefik.http.routers.web-country.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.web-country.service=web"
+      - "traefik.http.routers.web-country.priority=10"
 
   admin:
     build:
@@ -144,7 +152,7 @@ services:
       retries: 3
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.provider.rule=HostRegexp(`^[a-z0-9-]+\\.${DOMAIN}$$`) && !Host(`api.${DOMAIN}`) && !Host(`app.${DOMAIN}`) && !Host(`admin.${DOMAIN}`) && !Host(`s3.${DOMAIN}`)"
+      - "traefik.http.routers.provider.rule=HostRegexp(`^[a-z0-9-]+\\.${DOMAIN}$$`) && !Host(`api.${DOMAIN}`) && !Host(`app.${DOMAIN}`) && !Host(`admin.${DOMAIN}`) && !Host(`s3.${DOMAIN}`) && !Host(`ae.${DOMAIN}`) && !Host(`sa.${DOMAIN}`) && !Host(`kw.${DOMAIN}`) && !Host(`qa.${DOMAIN}`) && !Host(`bh.${DOMAIN}`) && !Host(`om.${DOMAIN}`)"
       - "traefik.http.routers.provider.entrypoints=http,https"
       - "traefik.http.routers.provider.tls=true"
       - "traefik.http.routers.provider.tls.certresolver=letsencrypt"

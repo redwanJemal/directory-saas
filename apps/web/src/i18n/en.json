@@ -381,6 +381,23 @@
     "latestJobsSubtitle": "New job opportunities from Ethiopian businesses",
     "viewAllJobs": "View All Jobs"
   },
+  "countryLanding": {
+    "seoTitle": "Ethiopian Businesses in {{country}}",
+    "seoDescription": "Find trusted Ethiopian-owned businesses in {{country}}. Browse restaurants, beauty, services, and more.",
+    "heroTitle": "Ethiopian Businesses in {{country}}",
+    "heroSubtitle": "Discover trusted Ethiopian-owned businesses and services in {{country}}",
+    "businesses": "Businesses",
+    "cities": "Cities",
+    "newThisMonth": "New This Month",
+    "exploreCities": "Explore Cities in {{country}}",
+    "browseCategories": "Browse Categories",
+    "topBusinesses": "Top Businesses in {{country}}",
+    "noBusinessesYet": "No businesses listed in {{country}} yet. Be the first!",
+    "dealsIn": "Deals in {{country}}",
+    "ctaTitle": "Find Ethiopian Businesses in {{country}}",
+    "ctaSubtitle": "Connect with trusted Ethiopian-owned businesses and services in {{country}}",
+    "searchIn": "Search in {{country}}"
+  },
   "seo": {
     "homeTitle": "Find Ethiopian Businesses Near You",
     "homeDescription": "Discover trusted Ethiopian-owned businesses across the Middle East. Restaurants, beauty, services, and more in UAE, Saudi Arabia, Kuwait, Qatar, Bahrain, and Oman.",

@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T02:59:52.098018+00:00",
-  "current_task": "69-multi-country-deployment",
+  "last_updated": "2026-03-18T04:20:00.000000+00:00",
+  "current_task": null,
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -260,15 +260,15 @@
     },
     "69-multi-country-deployment": {
       "title": "Multi-Country Deployment",
-      "status": "in_progress",
+      "status": "completed",
       "subtasks": {
-        "country-routing": "pending",
-        "country-landing-pages": "pending",
-        "deployment": "pending"
+        "country-routing": "completed",
+        "country-landing-pages": "completed",
+        "deployment": "completed"
       },
-      "started_at": "2026-03-18T02:59:52Z",
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T03:01:04Z",
+      "completed_at": "2026-03-18T04:20:00Z",
+      "notes": "Country detection via CF-IPCountry/X-Country headers and subdomain (ae/sa/kw/qa/bh/om). Country stats endpoint at GET /locations/countries/:code/stats. Country landing pages at /country/:code with featured businesses, city grid, category links. Zustand country store with localStorage persistence and auto-detection hook. Traefik routing for country subdomains (ae.domain.com, sa.domain.com, etc). Provider router excludes country subdomains. CORS updated with X-Country header. i18n keys added for EN/AM/AR. 1006 tests pass, build succeeds."
     },
     "70-mobile-app": {
       "title": "Mobile App \u2014 Expo",

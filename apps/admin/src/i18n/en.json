@@ -11,7 +11,7 @@
     "collapse": "Collapse"
   },
   "common": {
-    "appName": "Directory Admin",
+    "appName": "Habesha Hub Admin",
     "search": "Search...",
     "save": "Save",
     "cancel": "Cancel",
@@ -54,8 +54,8 @@
     "email": "Email",
     "password": "Password",
     "forgotPassword": "Forgot password?",
-    "loginTitle": "Admin Login",
-    "loginSubtitle": "Sign in to the admin dashboard",
+    "loginTitle": "Habesha Hub Admin",
+    "loginSubtitle": "Sign in to the administration dashboard",
     "invalidCredentials": "Invalid email or password",
     "sessionExpired": "Your session has expired. Please sign in again.",
     "loggingIn": "Signing in..."

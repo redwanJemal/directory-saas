@@ -13,7 +13,7 @@
     "collapse": "Collapse"
   },
   "common": {
-    "appName": "Provider Portal",
+    "appName": "Habesha Hub Business",
     "search": "Search...",
     "save": "Save",
     "cancel": "Cancel",
@@ -51,8 +51,8 @@
     "email": "Email",
     "password": "Password",
     "tenantSlug": "Business ID",
-    "loginTitle": "Provider Login",
-    "loginSubtitle": "Sign in to manage your business",
+    "loginTitle": "Business Dashboard",
+    "loginSubtitle": "Sign in to manage your Habesha Hub listing",
     "invalidCredentials": "Invalid email or password",
     "sessionExpired": "Your session has expired. Please sign in again.",
     "loggingIn": "Signing in..."

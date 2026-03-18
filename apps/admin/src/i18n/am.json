@@ -11,7 +11,7 @@
     "collapse": "አሳንስ"
   },
   "common": {
-    "appName": "ዳይሬክቶሪ አስተዳዳሪ",
+    "appName": "ሃበሻ ሁብ አስተዳዳሪ",
     "search": "ፈልግ...",
     "save": "አስቀምጥ",
     "cancel": "ሰርዝ",
@@ -54,8 +54,8 @@
     "email": "ኢሜል",
     "password": "የይለፍ ቃል",
     "forgotPassword": "የይለፍ ቃል ረሱ?",
-    "loginTitle": "የአስተዳዳሪ መግቢያ",
-    "loginSubtitle": "ወደ አስተዳዳሪ ዳሽቦርድ ይግቡ",
+    "loginTitle": "ሃበሻ ሁብ አስተዳዳሪ",
+    "loginSubtitle": "ወደ አስተዳደር ዳሽቦርድ ይግቡ",
     "invalidCredentials": "ልክ ያልሆነ ኢሜል ወይም የይለፍ ቃል",
     "sessionExpired": "ክፍለ ጊዜዎ አልቋል። እባክዎ እንደገና ይግቡ።",
     "loggingIn": "በመግባት ላይ..."

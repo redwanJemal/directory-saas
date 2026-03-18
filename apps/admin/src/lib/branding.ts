@@ -7,10 +7,10 @@ export interface BrandConfig {
 
 // Default brand — override per deployment via environment variables
 export const brand: BrandConfig = {
-  name: import.meta.env.VITE_BRAND_NAME || 'Directory Admin',
-  shortName: import.meta.env.VITE_BRAND_SHORT_NAME || 'DA',
-  hue: Number(import.meta.env.VITE_BRAND_HUE) || 230,
-  description: import.meta.env.VITE_BRAND_DESCRIPTION || 'Directory & Marketplace Platform',
+  name: import.meta.env.VITE_BRAND_NAME || 'Habesha Hub Admin',
+  shortName: import.meta.env.VITE_BRAND_SHORT_NAME || 'HH',
+  hue: Number(import.meta.env.VITE_BRAND_HUE) || 145,
+  description: import.meta.env.VITE_BRAND_DESCRIPTION || 'Habesha Hub Administration',
 };
 
 /**

@@ -7,7 +7,7 @@
  */
 
 :root {
-  --brand-hue: 230;
+  --brand-hue: 145;
 
   /* Light mode colors using oklch */
   --background: oklch(0.99 0.005 var(--brand-hue));

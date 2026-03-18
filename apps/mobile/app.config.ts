@@ -2,8 +2,8 @@ import { type ExpoConfig, type ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: process.env.EXPO_PUBLIC_APP_NAME || 'Directory SaaS',
-  slug: 'directory-saas',
+  name: process.env.EXPO_PUBLIC_APP_NAME || 'Habesha Hub',
+  slug: 'habesha-hub',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -13,7 +13,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   splash: {
     image: './assets/splash-icon.png',
     resizeMode: 'contain',
-    backgroundColor: '#4c6ef5',
+    backgroundColor: '#166534',
   },
   ios: {
     supportsTablet: true,
@@ -28,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#4c6ef5',
+      backgroundColor: '#166534',
     },
     package:
       process.env.EXPO_PUBLIC_ANDROID_PACKAGE || 'com.directory.saas',
@@ -52,7 +52,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'expo-notifications',
       {
         icon: './assets/notification-icon.png',
-        color: '#4c6ef5',
+        color: '#166534',
       },
     ],
   ],

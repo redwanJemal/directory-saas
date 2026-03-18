@@ -13,7 +13,7 @@
     "collapse": "አሳንስ"
   },
   "common": {
-    "appName": "የአገልግሎት ሰጪ ፖርታል",
+    "appName": "ሃበሻ ሁብ ንግድ",
     "search": "ፈልግ...",
     "save": "አስቀምጥ",
     "cancel": "ሰርዝ",
@@ -51,8 +51,8 @@
     "email": "ኢሜል",
     "password": "የይለፍ ቃል",
     "tenantSlug": "የንግድ መታወቂያ",
-    "loginTitle": "የአገልግሎት ሰጪ መግቢያ",
-    "loginSubtitle": "ንግድዎን ለማስተዳደር ይግቡ",
+    "loginTitle": "የንግድ ዳሽቦርድ",
+    "loginSubtitle": "የሃበሻ ሁብ ዝርዝርዎን ለማስተዳደር ይግቡ",
     "invalidCredentials": "ልክ ያልሆነ ኢሜል ወይም የይለፍ ቃል",
     "sessionExpired": "ክፍለ ጊዜዎ አልቋል። እባክዎ እንደገና ይግቡ።",
     "loggingIn": "በመግባት ላይ..."

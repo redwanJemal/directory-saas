@@ -72,8 +72,8 @@ services:
       dockerfile: docker/Dockerfile.web
       args:
         VITE_API_URL: https://api.${DOMAIN}
-        VITE_BRAND_NAME: ${BRAND_NAME:-Directory SaaS}
-        VITE_BRAND_HUE: ${BRAND_HUE:-230}
+        VITE_BRAND_NAME: ${BRAND_NAME:-Habesha Hub}
+        VITE_BRAND_HUE: ${BRAND_HUE:-145}
     container_name: directory-saas-web
     restart: unless-stopped
     networks:
@@ -100,8 +100,8 @@ services:
       dockerfile: docker/Dockerfile.admin
       args:
         VITE_API_URL: https://api.${DOMAIN}
-        VITE_BRAND_NAME: ${BRAND_NAME:-Directory SaaS}
-        VITE_BRAND_HUE: ${BRAND_HUE:-230}
+        VITE_BRAND_NAME: ${BRAND_NAME:-Habesha Hub}
+        VITE_BRAND_HUE: ${BRAND_HUE:-145}
     container_name: directory-saas-admin
     restart: unless-stopped
     networks:
@@ -128,8 +128,8 @@ services:
       dockerfile: docker/Dockerfile.provider
       args:
         VITE_API_URL: https://api.${DOMAIN}
-        VITE_BRAND_NAME: ${BRAND_NAME:-Directory SaaS}
-        VITE_BRAND_HUE: ${BRAND_HUE:-230}
+        VITE_BRAND_NAME: ${BRAND_NAME:-Habesha Hub}
+        VITE_BRAND_HUE: ${BRAND_HUE:-145}
     container_name: directory-saas-provider
     restart: unless-stopped
     networks:

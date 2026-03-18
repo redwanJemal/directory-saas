@@ -283,6 +283,65 @@
       "started_at": "2026-03-18T03:18:23Z",
       "completed_at": "2026-03-18T05:35:00Z",
       "notes": "Home screen: country/city selector modal with flag emojis, 4-column category grid, location-filtered featured businesses. Search: added country/city filter chips and filter sections in bottom sheet, search params forwarded to API. Business profile: WhatsApp one-tap button (green CTA), bookmark/save toggle with Zustand+AsyncStorage, share with deep link URL, write review bottom sheet with star rating. Saved businesses: dedicated tab with bookmark management. Push notifications: Android channels for deals/new_businesses, deep link handlers for new_deal/new_business/deal_expiring. Deep linking: habeshahub:// scheme, iOS associated domains, Android intent filters for /business/ paths. i18n: all new keys in en.json + am.json (location, saved, reviews sections). Backend build passes, tests pass."
+    },
+    "71-blog-module": {
+      "title": "Blog Module — Backend",
+      "status": "pending",
+      "subtasks": {
+        "schema": "pending",
+        "admin-api": "pending",
+        "public-api": "pending",
+        "seed-data": "pending",
+        "tests": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "72-blog-admin-ui": {
+      "title": "Blog — Admin UI",
+      "status": "pending",
+      "subtasks": {
+        "sidebar": "pending",
+        "list-page": "pending",
+        "editor-page": "pending",
+        "preview": "pending",
+        "i18n": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "73-blog-public-ui": {
+      "title": "Blog — Public Web UI",
+      "status": "pending",
+      "subtasks": {
+        "listing-page": "pending",
+        "post-page": "pending",
+        "homepage-integration": "pending",
+        "seo": "pending",
+        "navigation": "pending",
+        "i18n": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
+    },
+    "74-ui-polish": {
+      "title": "UI Polish & Animation Enhancements",
+      "status": "pending",
+      "subtasks": {
+        "search-animations": "pending",
+        "profile-animations": "pending",
+        "category-city-animations": "pending",
+        "deals-events-jobs": "pending",
+        "auth-pages": "pending",
+        "global-improvements": "pending",
+        "mobile-polish": "pending"
+      },
+      "started_at": null,
+      "completed_at": null,
+      "notes": ""
     }
   }
 }

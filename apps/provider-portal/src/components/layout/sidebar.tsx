@@ -17,6 +17,7 @@ import {
   Tags,
   CalendarDays,
   Briefcase,
+  CreditCard,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -49,6 +50,7 @@ const navItems: NavItem[] = [
   { labelKey: 'nav.messages', href: '/messages', icon: MessageSquare },
   { labelKey: 'nav.team', href: '/team', icon: Users },
   { labelKey: 'nav.analytics', href: '/analytics', icon: BarChart3 },
+  { labelKey: 'nav.subscription', href: '/subscription', icon: CreditCard },
   { labelKey: 'nav.settings', href: '/settings', icon: Settings },
 ];
 

@@ -10,6 +10,7 @@
     "messages": "መልዕክቶች",
     "team": "ቡድን",
     "analytics": "ትንተና",
+    "subscription": "ምዝገባ",
     "settings": "ቅንብሮች",
     "collapse": "አሳንስ",
     "events": "ዝግጅቶች",
@@ -415,5 +416,39 @@
     "jobDeleted": "ስራ በተሳካ ሁኔታ ተሰርዟል",
     "deleteJobTitle": "የስራ ማስታወቂያ ሰርዝ",
     "deleteJobConfirm": "ይህን የስራ ማስታወቂያ ለመሰረዝ እርግጠኛ ነዎት? ይህ ድርጊት ሊቀለበስ አይችልም።"
+  },
+  "subscription": {
+    "title": "ምዝገባ እና ክፍያ",
+    "subtitle": "የምዝገባ ዕቅድዎን እና የክፍያ ዝርዝሮችን ያስተዳድሩ",
+    "currentPlan": "የአሁኑ ዕቅድ",
+    "availablePlans": "ያሉ ዕቅዶች",
+    "monthly": "ወርሃዊ",
+    "yearly": "ዓመታዊ",
+    "month": "ወር",
+    "year": "ዓመት",
+    "current": "አሁን ያለ",
+    "upgrade": "አሻሽል",
+    "getStarted": "ጀምር",
+    "manageBilling": "ክፍያ አስተዳድር",
+    "paymentHistory": "የክፍያ ታሪክ",
+    "paymentSuccess": "ክፍያ ተሳካ! ምዝገባዎ ተነቃቅሏል።",
+    "paymentCancelled": "ክፍያ ተሰርዟል። ዝግጁ ሲሆኑ እንደገና ሞከር ይችላሉ።",
+    "renewsAt": "{{date}} ላይ ይታደሳል",
+    "date": "ቀን",
+    "description": "ገለጻ",
+    "amount": "መጠን",
+    "unlimitedUsers": "ያልተገደበ የቡድን አባላት",
+    "maxUsers_one": "{{count}} የቡድን አባል",
+    "maxUsers_other": "{{count}} የቡድን አባላት",
+    "status": {
+      "active": "ንቁ",
+      "past_due": "ያለፈ ክፍያ",
+      "cancelled": "ተሰርዟል",
+      "trial": "ሙከራ"
+    },
+    "interval": {
+      "monthly": "ወርሃዊ ክፍያ",
+      "yearly": "ዓመታዊ ክፍያ"
+    }
   }
 }

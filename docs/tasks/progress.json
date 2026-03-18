@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T03:45:00.000000+00:00",
-  "current_task": null,
+  "last_updated": "2026-03-18T02:35:15.216216+00:00",
+  "current_task": "68-payment-integration",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -247,16 +247,16 @@
     },
     "68-payment-integration": {
       "title": "Payment Integration",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "stripe-integration": "pending",
-        "checkout-flow": "pending",
-        "webhook-handler": "pending",
-        "subscription-management": "pending"
+        "stripe-integration": "completed",
+        "checkout-flow": "completed",
+        "webhook-handler": "completed",
+        "subscription-management": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T02:35:15Z",
+      "completed_at": "2026-03-18T03:55:00Z",
+      "notes": "Stripe integration with checkout sessions, billing portal, webhook handler for subscription lifecycle events (created/updated/deleted, invoice paid/failed). Payment model in Prisma for transaction history. Provider portal subscription page with plan selection, billing interval toggle, payment history. Admin revenue dashboard with stats and recent payments. 11 unit tests passing."
     },
     "69-multi-country-deployment": {
       "title": "Multi-Country Deployment",

@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Star,
   BarChart3,
+  DollarSign,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -42,6 +43,7 @@ const navItems: NavItem[] = [
   { labelKey: 'nav.users', href: '/users', icon: Users },
   { labelKey: 'nav.roles', href: '/roles', icon: Shield },
   { labelKey: 'nav.subscriptions', href: '/subscriptions', icon: CreditCard },
+  { labelKey: 'nav.revenue', href: '/revenue', icon: DollarSign },
   { labelKey: 'nav.analytics', href: '/analytics', icon: BarChart3 },
   { labelKey: 'nav.auditLogs', href: '/audit-logs', icon: FileText },
   { labelKey: 'nav.jobs', href: '/jobs', icon: Layers },

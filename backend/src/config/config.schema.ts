@@ -54,6 +54,11 @@ export const configSchema = z.object({
   LOG_LEVEL: z
     .enum(['error', 'warn', 'log', 'debug', 'verbose'])
     .default('log'),
+
+  // Stripe
+  STRIPE_SECRET_KEY: z.string().default(''),
+  STRIPE_PUBLISHABLE_KEY: z.string().default(''),
+  STRIPE_WEBHOOK_SECRET: z.string().default(''),
 });
 
 export type AppConfig = z.infer<typeof configSchema>;

@@ -9,6 +9,7 @@ import { ReviewsPage } from '@/features/reviews/reviews-page';
 import { UsersPage } from '@/features/users/users-page';
 import { RolesPage } from '@/features/roles/roles-page';
 import { SubscriptionsPage } from '@/features/subscriptions/subscriptions-page';
+import { RevenuePage } from '@/features/subscriptions/revenue-page';
 import { AuditLogsPage } from '@/features/audit-logs/audit-logs-page';
 import { JobsPage } from '@/features/jobs/jobs-page';
 import { AnalyticsPage } from '@/features/analytics/analytics-page';
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/users" element={<UsersPage />} />
             <Route path="/roles" element={<RolesPage />} />
             <Route path="/subscriptions" element={<SubscriptionsPage />} />
+            <Route path="/revenue" element={<RevenuePage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/audit-logs" element={<AuditLogsPage />} />
             <Route path="/jobs" element={<JobsPage />} />

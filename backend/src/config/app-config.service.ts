@@ -152,6 +152,24 @@ export class AppConfigService {
     };
   }
 
+  get stripe(): {
+    secretKey: string;
+    publishableKey: string;
+    webhookSecret: string;
+  } {
+    return {
+      secretKey: this.configService.get<string>('STRIPE_SECRET_KEY', ''),
+      publishableKey: this.configService.get<string>(
+        'STRIPE_PUBLISHABLE_KEY',
+        '',
+      ),
+      webhookSecret: this.configService.get<string>(
+        'STRIPE_WEBHOOK_SECRET',
+        '',
+      ),
+    };
+  }
+
   get ai(): {
     provider: string;
     model: string;

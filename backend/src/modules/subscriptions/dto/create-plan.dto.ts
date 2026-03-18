@@ -14,6 +14,9 @@ export const CreatePlanSchema = z.object({
   maxStorage: z.number().int().min(-1),
   features: z.array(z.string()).default([]),
   sortOrder: z.number().int().min(0).default(0),
+  stripePriceIdMonthly: z.string().optional(),
+  stripePriceIdYearly: z.string().optional(),
+  stripeProductId: z.string().optional(),
 });
 
 export type CreatePlanDto = z.infer<typeof CreatePlanSchema>;

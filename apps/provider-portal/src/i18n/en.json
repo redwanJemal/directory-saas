@@ -10,6 +10,7 @@
     "messages": "Messages",
     "team": "Team",
     "analytics": "Analytics",
+    "subscription": "Subscription",
     "settings": "Settings",
     "collapse": "Collapse",
     "events": "Events",
@@ -415,5 +416,39 @@
     "jobDeleted": "Job deleted successfully",
     "deleteJobTitle": "Delete Job Posting",
     "deleteJobConfirm": "Are you sure you want to delete this job posting? This action cannot be undone."
+  },
+  "subscription": {
+    "title": "Subscription & Billing",
+    "subtitle": "Manage your subscription plan and billing details",
+    "currentPlan": "Current Plan",
+    "availablePlans": "Available Plans",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "month": "month",
+    "year": "year",
+    "current": "Current",
+    "upgrade": "Upgrade",
+    "getStarted": "Get Started",
+    "manageBilling": "Manage Billing",
+    "paymentHistory": "Payment History",
+    "paymentSuccess": "Payment successful! Your subscription has been activated.",
+    "paymentCancelled": "Payment was cancelled. You can try again when you are ready.",
+    "renewsAt": "Renews on {{date}}",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "unlimitedUsers": "Unlimited team members",
+    "maxUsers_one": "{{count}} team member",
+    "maxUsers_other": "{{count}} team members",
+    "status": {
+      "active": "Active",
+      "past_due": "Past Due",
+      "cancelled": "Cancelled",
+      "trial": "Trial"
+    },
+    "interval": {
+      "monthly": "Billed monthly",
+      "yearly": "Billed yearly"
+    }
   }
 }

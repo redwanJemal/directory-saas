@@ -32,6 +32,7 @@ import { CommunityEventsModule } from './modules/community-events/community-even
 import { JobBoardModule } from './modules/job-board/job-board.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import { SitemapModule } from './modules/sitemap/sitemap.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 import { ThrottlerModule } from './common/modules/throttler.module';
 
 @Module({
@@ -66,6 +67,7 @@ import { ThrottlerModule } from './common/modules/throttler.module';
     JobBoardModule,
     TelegramModule,
     SitemapModule,
+    PaymentsModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -7,6 +7,7 @@
     "users": "ተጠቃሚዎች",
     "roles": "ሚናዎች እና ፈቃዶች",
     "subscriptions": "ምዝገባዎች",
+    "revenue": "ገቢ",
     "auditLogs": "የኦዲት ምዝግብ",
     "analytics": "ትንተና",
     "jobs": "ስራዎች",
@@ -225,7 +226,16 @@
     "expired": "ያለፈበት",
     "sectionGeneral": "አጠቃላይ መረጃ",
     "sectionDates": "ቀናት",
-    "createdAt": "የተፈጠረ"
+    "createdAt": "የተፈጠረ",
+    "subscriptionsList": "ምዝገባዎች",
+    "revenue": "ገቢ",
+    "totalRevenue": "ጠቅላላ ገቢ",
+    "monthlyRevenue": "የዚህ ወር",
+    "activeSubscriptions": "ንቁ ምዝገባዎች",
+    "planDistribution": "በዕቅድ",
+    "recentPayments": "የቅርብ ጊዜ ክፍያዎች",
+    "paymentAmount": "መጠን",
+    "paymentDate": "ቀን"
   },
   "audit": {
     "title": "የኦዲት ምዝግብ",
@@ -298,6 +308,21 @@
     "period_30d": "30 ቀናት",
     "period_90d": "90 ቀናት"
   },
+  "revenue": {
+    "title": "ገቢ",
+    "subtitle": "የምዝገባ ገቢ እና የክፍያ ማጠቃለያ",
+    "totalRevenue": "ጠቅላላ ገቢ",
+    "monthlyRevenue": "የዚህ ወር",
+    "activeSubscriptions": "ንቁ ምዝገባዎች",
+    "byPlan": "በዕቅድ ምዝገባዎች",
+    "subscribers": "ተመዝጋቢዎች",
+    "recentPayments": "የቅርብ ክፍያዎች",
+    "noPayments": "ገና ክፍያዎች አልተመዘገቡም",
+    "business": "ንግድ",
+    "plan": "ዕቅድ",
+    "amount": "መጠን",
+    "date": "ቀን"
+  },
   "errors": {
     "required": "ይህ መስክ ያስፈልጋል",
     "invalidEmail": "ልክ ያልሆነ ኢሜል አድራሻ",
@@ -306,6 +331,6 @@
     "networkError": "የኔትወርክ ስህተት። እባክዎ ግንኙነትዎን ያረጋግጡ።",
     "serverError": "የሰርቨር ስህተት። እባክዎ ቆየት ብለው ይሞክሩ።",
     "unauthorized": "ይህን ድርጊት ለማከናወን ፈቃድ የለዎትም",
-    "notFound": "የተጠየቀው ሀብት አልተገኘም"
+    "notFound": "የተጠየቁ ሀብት አልተገኘም"
   }
 }

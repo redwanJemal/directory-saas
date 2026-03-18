@@ -29,7 +29,7 @@ export function InquiryBottomSheet({
 }: InquiryBottomSheetProps) {
   const { t } = useTranslation();
   const sendInquiry = useSendInquiry();
-  const [weddingDate, setWeddingDate] = useState('');
+  const [eventDate, setEventDate] = useState('');
   const [guestCount, setGuestCount] = useState('');
   const [message, setMessage] = useState('');
   const [budgetRange, setBudgetRange] = useState('');
@@ -40,7 +40,7 @@ export function InquiryBottomSheet({
     try {
       await sendInquiry.mutateAsync({
         vendorId,
-        weddingDate: weddingDate || undefined,
+        eventDate: eventDate || undefined,
         guestCount: guestCount ? parseInt(guestCount, 10) : undefined,
         message: message.trim(),
         budgetRange: budgetRange || undefined,
@@ -56,7 +56,7 @@ export function InquiryBottomSheet({
   };
 
   const resetForm = () => {
-    setWeddingDate('');
+    setEventDate('');
     setGuestCount('');
     setMessage('');
     setBudgetRange('');
@@ -83,16 +83,16 @@ export function InquiryBottomSheet({
           </View>
 
           <ScrollView className="px-4" showsVerticalScrollIndicator={false}>
-            {/* Wedding Date */}
+            {/* Event Date */}
             <Text className="mb-1 text-sm font-medium text-content">
-              {t('vendor.weddingDate')}
+              {t('vendor.eventDate')}
             </Text>
             <TextInput
               className="mb-3 rounded-input border border-border bg-surface px-4 py-3 text-content"
               placeholder="YYYY-MM-DD"
               placeholderTextColor="#868e96"
-              value={weddingDate}
-              onChangeText={setWeddingDate}
+              value={eventDate}
+              onChangeText={setEventDate}
             />
 
             {/* Guest Count */}

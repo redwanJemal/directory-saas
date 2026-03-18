@@ -114,8 +114,8 @@ export default function BookingDetailScreen() {
     );
   }
 
-  const formattedDate = booking.weddingDate
-    ? new Date(booking.weddingDate).toLocaleDateString(undefined, {
+  const formattedDate = booking.eventDate
+    ? new Date(booking.eventDate).toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',

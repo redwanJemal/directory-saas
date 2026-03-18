@@ -15,7 +15,7 @@ export interface Booking {
   status: BookingStatus;
   message: string;
   quotedPrice: number | null;
-  weddingDate: string | null;
+  eventDate: string | null;
   guestCount: number | null;
   createdAt: string;
   updatedAt: string;

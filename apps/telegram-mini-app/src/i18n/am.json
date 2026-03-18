@@ -1,0 +1,50 @@
+{
+  "app": {
+    "title": "ሃበሻ ሀብ",
+    "subtitle": "በአቅራቢያዎ ያሉ የኢትዮጵያ ንግዶችን ያግኙ"
+  },
+  "nav": {
+    "home": "መነሻ",
+    "search": "ፈልግ",
+    "categories": "ምድቦች",
+    "deals": "ቅናሾች"
+  },
+  "common": {
+    "loading": "በመጫን ላይ...",
+    "noResults": "ምንም ውጤት አልተገኘም",
+    "error": "የሆነ ችግር ተፈጥሯል",
+    "retry": "ደግመህ ሞክር",
+    "viewAll": "ሁሉንም ይመልከቱ",
+    "share": "አጋራ",
+    "call": "ደውል",
+    "whatsapp": "ዋትስአፕ",
+    "verified": "የተረጋገጠ",
+    "back": "ተመለስ"
+  },
+  "search": {
+    "placeholder": "ንግዶችን ይፈልጉ...",
+    "results": "\"{{query}}\" ለሚለው ውጤቶች",
+    "noResults": "ከፍለጋዎ ጋር የሚዛመድ ንግድ አልተገኘም"
+  },
+  "categories": {
+    "title": "ምድቦች",
+    "businesses": "{{count}} ንግዶች"
+  },
+  "deals": {
+    "title": "ቅናሾች እና ቅናሽ",
+    "off": "{{percent}}% ቅናሽ",
+    "noDeals": "አሁን ንቁ ቅናሾች የሉም",
+    "expires": "ያበቃል {{date}}"
+  },
+  "business": {
+    "about": "ስለ",
+    "packages": "ፓኬጆች",
+    "reviews": "ግምገማዎች",
+    "gallery": "ጋለሪ",
+    "hours": "የንግድ ሰዓቶች",
+    "openNow": "አሁን ክፍት",
+    "closed": "ዝግ",
+    "shareProfile": "ይህን ንግድ ያጋሩ",
+    "viewProfile": "ገጽን ይመልከቱ"
+  }
+}

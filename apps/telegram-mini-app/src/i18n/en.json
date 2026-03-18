@@ -1,0 +1,50 @@
+{
+  "app": {
+    "title": "Habesha Hub",
+    "subtitle": "Find Ethiopian Businesses Near You"
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "categories": "Categories",
+    "deals": "Deals"
+  },
+  "common": {
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "viewAll": "View All",
+    "share": "Share",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "verified": "Verified",
+    "back": "Back"
+  },
+  "search": {
+    "placeholder": "Search businesses...",
+    "results": "Results for \"{{query}}\"",
+    "noResults": "No businesses found matching your search"
+  },
+  "categories": {
+    "title": "Categories",
+    "businesses": "{{count}} businesses"
+  },
+  "deals": {
+    "title": "Deals & Offers",
+    "off": "{{percent}}% off",
+    "noDeals": "No active deals right now",
+    "expires": "Expires {{date}}"
+  },
+  "business": {
+    "about": "About",
+    "packages": "Packages",
+    "reviews": "Reviews",
+    "gallery": "Gallery",
+    "hours": "Business Hours",
+    "openNow": "Open Now",
+    "closed": "Closed",
+    "shareProfile": "Share this business",
+    "viewProfile": "View Profile"
+  }
+}

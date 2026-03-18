@@ -40,6 +40,7 @@ import {
   useCities,
   useFeaturedDeals,
 } from '@/features/search/hooks/use-search';
+import { useCountryStore } from '@/stores/country-store';
 import { formatCurrency } from '@/lib/format';
 import type { Category } from '@/features/search/types';
 
@@ -88,7 +89,8 @@ export function LandingPage() {
 function HeroSection() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [country, setCountry] = useState('');
+  const { countryCode: detectedCountry } = useCountryStore();
+  const [country, setCountry] = useState(detectedCountry ?? '');
   const [city, setCity] = useState('');
 
   const { data: countries } = useCountries();

@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T04:20:00.000000+00:00",
-  "current_task": null,
+  "last_updated": "2026-03-18T03:16:42.935382+00:00",
+  "current_task": "70-mobile-app",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -272,7 +272,7 @@
     },
     "70-mobile-app": {
       "title": "Mobile App \u2014 Expo",
-      "status": "pending",
+      "status": "in_progress",
       "subtasks": {
         "home-screen": "pending",
         "search": "pending",
@@ -280,7 +280,7 @@
         "saved-businesses": "pending",
         "push-notifications": "pending"
       },
-      "started_at": null,
+      "started_at": "2026-03-18T03:16:42Z",
       "completed_at": null,
       "notes": ""
     }

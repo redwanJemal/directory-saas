@@ -155,6 +155,19 @@ describe('TenantResolutionMiddleware', () => {
         expect(prisma.tenant.findUnique).not.toHaveBeenCalled();
       });
     });
+
+    it('should ignore country-code subdomains (ae, sa, kw, qa, bh, om)', async () => {
+      for (const code of ['ae', 'sa', 'kw', 'qa', 'bh', 'om']) {
+        const req = createMockRequest({
+          headers: { host: `${code}.habeshahub.com` } as Record<string, string>,
+        });
+
+        await runInContext(async () => {
+          await middleware.use(req, createMockResponse(), jest.fn());
+          expect(prisma.tenant.findUnique).not.toHaveBeenCalled();
+        });
+      }
+    });
   });
 
   describe('X-Tenant-ID header resolution', () => {

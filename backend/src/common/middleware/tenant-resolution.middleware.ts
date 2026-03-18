@@ -26,6 +26,9 @@ function shouldSkip(path: string): boolean {
   return SKIP_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
+/** Country-code subdomains (ae, sa, kw, qa, bh, om) are not tenant subdomains */
+const COUNTRY_SUBDOMAINS = new Set(['ae', 'sa', 'kw', 'qa', 'bh', 'om']);
+
 function extractSubdomain(host: string | undefined): string | null {
   if (!host) return null;
   // Remove port
@@ -34,8 +37,9 @@ function extractSubdomain(host: string | undefined): string | null {
   // Need at least 3 parts: subdomain.domain.tld
   if (parts.length < 3) return null;
   const subdomain = parts[0];
-  // Ignore common non-tenant subdomains
-  if (['www', 'api', 'admin', 'localhost'].includes(subdomain)) return null;
+  // Ignore common non-tenant subdomains and country subdomains
+  if (['www', 'api', 'admin', 'app', 'localhost'].includes(subdomain)) return null;
+  if (COUNTRY_SUBDOMAINS.has(subdomain.toLowerCase())) return null;
   return subdomain;
 }
 

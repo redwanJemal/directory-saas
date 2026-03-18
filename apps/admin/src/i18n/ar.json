@@ -215,7 +215,16 @@
     "expired": "منتهي الصلاحية",
     "sectionGeneral": "المعلومات العامة",
     "sectionDates": "التواريخ",
-    "createdAt": "تاريخ الإنشاء"
+    "createdAt": "تاريخ الإنشاء",
+    "subscriptionsList": "الاشتراكات",
+    "revenue": "الإيرادات",
+    "totalRevenue": "إجمالي الإيرادات",
+    "monthlyRevenue": "هذا الشهر",
+    "activeSubscriptions": "الاشتراكات النشطة",
+    "planDistribution": "حسب الخطة",
+    "recentPayments": "المدفوعات الأخيرة",
+    "paymentAmount": "المبلغ",
+    "paymentDate": "التاريخ"
   },
   "audit": {
     "title": "سجل المراجعة",

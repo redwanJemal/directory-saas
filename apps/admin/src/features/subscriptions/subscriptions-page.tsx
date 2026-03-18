@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { type ColumnDef, type SortingState } from '@tanstack/react-table';
 import { Eye, ArrowRightLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DataTable } from '@/components/data-table/data-table';
 import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
@@ -14,6 +15,7 @@ import { StatusBadge } from '@/components/status-badge';
 import { useSubscriptionsQuery } from './hooks/use-subscriptions';
 import { ViewSubscriptionSheet } from './components/view-subscription-sheet';
 import { ChangePlanDialog } from './components/change-plan-dialog';
+import { RevenueOverview } from './components/revenue-overview';
 import type { Subscription } from './types';
 
 function sortingToApiSort(sorting: SortingState): string | undefined {
@@ -145,6 +147,22 @@ export function SubscriptionsPage() {
         </h1>
       </div>
 
+      <Tabs defaultValue="subscriptions">
+        <TabsList>
+          <TabsTrigger value="subscriptions">
+            {t('subscriptions.subscriptionsList')}
+          </TabsTrigger>
+          <TabsTrigger value="revenue">
+            {t('subscriptions.revenue')}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="revenue" className="mt-6">
+          <RevenueOverview />
+        </TabsContent>
+
+        <TabsContent value="subscriptions" className="mt-6">
+
       <DataTableToolbar
         searchValue=""
         onSearchChange={() => {}}
@@ -187,6 +205,9 @@ export function SubscriptionsPage() {
         onOpenChange={(open) => !open && setChangePlanSubscription(null)}
         subscription={changePlanSubscription}
       />
+
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

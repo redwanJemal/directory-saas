@@ -10,6 +10,7 @@
     "messages": "الرسائل",
     "team": "الفريق",
     "analytics": "التحليلات",
+    "subscription": "الاشتراك",
     "settings": "الإعدادات",
     "collapse": "طي"
   },
@@ -358,5 +359,39 @@
     "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
     "unauthorized": "غير مصرح لك بتنفيذ هذا الإجراء",
     "notFound": "المورد المطلوب غير موجود"
+  },
+  "subscription": {
+    "title": "الاشتراك والفوترة",
+    "subtitle": "إدارة خطة الاشتراك وتفاصيل الفوترة",
+    "currentPlan": "الخطة الحالية",
+    "availablePlans": "الخطط المتاحة",
+    "monthly": "شهري",
+    "yearly": "سنوي",
+    "month": "شهر",
+    "year": "سنة",
+    "current": "الحالي",
+    "upgrade": "ترقية",
+    "getStarted": "ابدأ",
+    "manageBilling": "إدارة الفوترة",
+    "paymentHistory": "سجل المدفوعات",
+    "paymentSuccess": "تم الدفع بنجاح! تم تفعيل اشتراكك.",
+    "paymentCancelled": "تم إلغاء الدفع. يمكنك المحاولة مرة أخرى عندما تكون جاهزاً.",
+    "renewsAt": "يتجدد في {{date}}",
+    "date": "التاريخ",
+    "description": "الوصف",
+    "amount": "المبلغ",
+    "unlimitedUsers": "أعضاء فريق غير محدودين",
+    "maxUsers_one": "{{count}} عضو فريق",
+    "maxUsers_other": "{{count}} أعضاء فريق",
+    "status": {
+      "active": "نشط",
+      "past_due": "متأخر",
+      "cancelled": "ملغي",
+      "trial": "تجريبي"
+    },
+    "interval": {
+      "monthly": "فوترة شهرية",
+      "yearly": "فوترة سنوية"
+    }
   }
 }

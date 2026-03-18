@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T02:35:15.216216+00:00",
-  "current_task": "68-payment-integration",
+  "last_updated": "2026-03-18T02:59:52.098018+00:00",
+  "current_task": "69-multi-country-deployment",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -260,13 +260,13 @@
     },
     "69-multi-country-deployment": {
       "title": "Multi-Country Deployment",
-      "status": "pending",
+      "status": "in_progress",
       "subtasks": {
         "country-routing": "pending",
         "country-landing-pages": "pending",
         "deployment": "pending"
       },
-      "started_at": null,
+      "started_at": "2026-03-18T02:59:52Z",
       "completed_at": null,
       "notes": ""
     },

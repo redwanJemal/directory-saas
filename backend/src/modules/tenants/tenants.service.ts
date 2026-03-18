@@ -9,6 +9,10 @@ import { CreateTenantDto, UpdateTenantDto } from './dto';
 interface TenantListFilters {
   status?: string;
   search?: string;
+  country?: string;
+  city?: string;
+  category?: string;
+  verified?: boolean;
 }
 
 @Injectable()
@@ -36,6 +40,27 @@ export class TenantsService {
       ];
     }
 
+    // Provider profile filters
+    if (filters?.country || filters?.city || filters?.verified !== undefined || filters?.category) {
+      const profileWhere: Prisma.ProviderProfileWhereInput = {};
+      if (filters?.country) profileWhere.country = filters.country;
+      if (filters?.city) profileWhere.city = filters.city;
+      if (filters?.verified !== undefined) profileWhere.isVerified = filters.verified;
+      if (filters?.category) {
+        profileWhere.categories = {
+          some: {
+            category: {
+              OR: [
+                { slug: filters.category },
+                { id: filters.category },
+              ],
+            },
+          },
+        };
+      }
+      where.providerProfile = profileWhere;
+    }
+
     const skip = (page - 1) * pageSize;
 
     const [items, total] = await Promise.all([
@@ -44,6 +69,22 @@ export class TenantsService {
         include: {
           subscription: {
             include: { plan: true },
+          },
+          providerProfile: {
+            select: {
+              country: true,
+              city: true,
+              isVerified: true,
+              isFeatured: true,
+              categories: {
+                include: {
+                  category: { select: { id: true, name: true, slug: true } },
+                },
+              },
+              _count: {
+                select: { contactClicks: true },
+              },
+            },
           },
           _count: {
             select: { users: true },
@@ -65,6 +106,25 @@ export class TenantsService {
       include: {
         subscription: {
           include: { plan: true },
+        },
+        providerProfile: {
+          select: {
+            country: true,
+            city: true,
+            isVerified: true,
+            isFeatured: true,
+            phone: true,
+            email: true,
+            whatsapp: true,
+            categories: {
+              include: {
+                category: { select: { id: true, name: true, slug: true } },
+              },
+            },
+            _count: {
+              select: { contactClicks: true },
+            },
+          },
         },
         _count: {
           select: { users: true },
@@ -207,6 +267,49 @@ export class TenantsService {
     });
 
     return ServiceResult.ok(updated);
+  }
+
+  async verifyTenant(id: string, verified: boolean): Promise<ServiceResult<unknown>> {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id },
+      include: { providerProfile: true },
+    });
+    if (!tenant || tenant.deletedAt) {
+      return ServiceResult.fail(ErrorCodes.TENANT_NOT_FOUND, 'Tenant not found');
+    }
+    if (!tenant.providerProfile) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Provider profile not found');
+    }
+
+    await this.prisma.providerProfile.update({
+      where: { tenantId: id },
+      data: {
+        isVerified: verified,
+        verifiedAt: verified ? new Date() : null,
+      },
+    });
+
+    return this.getTenantById(id);
+  }
+
+  async featureTenant(id: string, featured: boolean): Promise<ServiceResult<unknown>> {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id },
+      include: { providerProfile: true },
+    });
+    if (!tenant || tenant.deletedAt) {
+      return ServiceResult.fail(ErrorCodes.TENANT_NOT_FOUND, 'Tenant not found');
+    }
+    if (!tenant.providerProfile) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Provider profile not found');
+    }
+
+    await this.prisma.providerProfile.update({
+      where: { tenantId: id },
+      data: { isFeatured: featured },
+    });
+
+    return this.getTenantById(id);
   }
 
   async suspendTenant(id: string, suspend: boolean): Promise<ServiceResult<unknown>> {

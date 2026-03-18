@@ -4,6 +4,8 @@ import { ProtectedRoute } from '@/components/layout/protected-route';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { DashboardPage } from '@/features/dashboard/dashboard-page';
 import { TenantsPage } from '@/features/tenants/tenants-page';
+import { VerificationsPage } from '@/features/verifications/verifications-page';
+import { ReviewsPage } from '@/features/reviews/reviews-page';
 import { UsersPage } from '@/features/users/users-page';
 import { RolesPage } from '@/features/roles/roles-page';
 import { SubscriptionsPage } from '@/features/subscriptions/subscriptions-page';
@@ -22,6 +24,8 @@ export default function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/tenants" element={<TenantsPage />} />
+            <Route path="/verifications" element={<VerificationsPage />} />
+            <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/roles" element={<RolesPage />} />
             <Route path="/subscriptions" element={<SubscriptionsPage />} />

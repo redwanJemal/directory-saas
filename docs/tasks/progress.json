@@ -1,8 +1,8 @@
 {
   "version": 2,
   "project": "Habesha Hub",
-  "last_updated": "2026-03-18T00:29:23.983319+00:00",
-  "current_task": "59-web-browse-discovery",
+  "last_updated": "2026-03-18T00:39:22.359223+00:00",
+  "current_task": "60-admin-moderation",
   "current_subtask": null,
   "tasks": {
     "50-schema-seed-habesha": {
@@ -148,16 +148,16 @@
     },
     "60-admin-moderation": {
       "title": "Admin \u2014 Business Moderation",
-      "status": "pending",
+      "status": "completed",
       "subtasks": {
-        "verification-queue": "pending",
-        "business-management": "pending",
-        "review-moderation": "pending",
-        "dashboard-updates": "pending"
+        "verification-queue": "completed",
+        "business-management": "completed",
+        "review-moderation": "completed",
+        "dashboard-updates": "completed"
       },
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "started_at": "2026-03-18T00:39:22Z",
+      "completed_at": "2026-03-18T01:55:00Z",
+      "notes": "Added verification queue page with approve/reject flow and document viewing. Enhanced business list with country/city/categories/verified columns and filters, plus verify/feature/suspend quick actions. Created review moderation page with hide/restore, rating and visibility filters. Replaced placeholder dashboard with real stats (total businesses, pending verifications, new this week, total reviews, verified, contact clicks) and bar charts (businesses by country, contact clicks by type). Added Verifications and Reviews to admin sidebar. Backend: AdminReviewsController with listAllReviews/moderateReview, AdminDashboardController with stats/businesses-over-time/contact-clicks-by-type, enhanced AdminTenantsController with verify/feature endpoints and country/city/category/verified filters. All i18n keys in en.json and am.json. Build passes, 877 tests pass."
     },
     "61-provider-customization": {
       "title": "Provider Portal \u2014 Habesha Customization",

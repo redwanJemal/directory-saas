@@ -1,14 +1,32 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type ColumnDef, type SortingState } from '@tanstack/react-table';
-import { Eye, Pencil, Ban, Plus } from 'lucide-react';
+import {
+  Eye,
+  Pencil,
+  Ban,
+  Plus,
+  ShieldCheck,
+  ShieldOff,
+  StarIcon,
+  StarOff,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/data-table';
 import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
-import { DataTableRowActions, type RowAction } from '@/components/data-table/data-table-row-actions';
+import {
+  DataTableRowActions,
+  type RowAction,
+} from '@/components/data-table/data-table-row-actions';
 import { StatusBadge } from '@/components/status-badge';
-import { useTenantsQuery } from './hooks/use-tenants';
+import { toast } from 'sonner';
+import {
+  useTenantsQuery,
+  useVerifyTenantMutation,
+  useFeatureTenantMutation,
+} from './hooks/use-tenants';
 import { CreateTenantDialog } from './components/create-tenant-dialog';
 import { EditTenantDialog } from './components/edit-tenant-dialog';
 import { ViewTenantSheet } from './components/view-tenant-sheet';
@@ -30,12 +48,17 @@ export function TenantsPage() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [countryFilter, setCountryFilter] = useState('all');
+  const [verifiedFilter, setVerifiedFilter] = useState('all');
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editTenant, setEditTenant] = useState<Tenant | null>(null);
   const [viewTenant, setViewTenant] = useState<Tenant | null>(null);
   const [suspendTenant, setSuspendTenant] = useState<Tenant | null>(null);
+
+  const verifyMutation = useVerifyTenantMutation();
+  const featureMutation = useFeatureTenantMutation();
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
@@ -44,15 +67,47 @@ export function TenantsPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [debouncedSearch, statusFilter, sorting]);
+  }, [debouncedSearch, statusFilter, countryFilter, verifiedFilter, sorting]);
 
   const { data, isLoading } = useTenantsQuery({
     page,
     pageSize,
     search: debouncedSearch || undefined,
     status: statusFilter,
+    country: countryFilter,
+    verified: verifiedFilter,
     sort: sortingToApiSort(sorting),
   });
+
+  const handleVerify = (tenant: Tenant, verified: boolean) => {
+    verifyMutation.mutate(
+      { id: tenant.id, verified },
+      {
+        onSuccess: () => {
+          toast.success(
+            verified
+              ? t('tenants.verified')
+              : t('tenants.unverified'),
+          );
+        },
+      },
+    );
+  };
+
+  const handleFeature = (tenant: Tenant, featured: boolean) => {
+    featureMutation.mutate(
+      { id: tenant.id, featured },
+      {
+        onSuccess: () => {
+          toast.success(
+            featured
+              ? t('tenants.featured')
+              : t('tenants.unfeatured'),
+          );
+        },
+      },
+    );
+  };
 
   const columns = useMemo<ColumnDef<Tenant, unknown>[]>(
     () => [
@@ -62,15 +117,59 @@ export function TenantsPage() {
           <DataTableColumnHeader column={column} title={t('tenants.name')} />
         ),
         cell: ({ row }) => (
-          <span className="font-medium">{row.getValue('name')}</span>
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{row.getValue('name')}</span>
+            {row.original.providerProfile?.isVerified && (
+              <ShieldCheck className="h-4 w-4 text-primary" />
+            )}
+            {row.original.providerProfile?.isFeatured && (
+              <StarIcon className="h-4 w-4 text-primary fill-primary" />
+            )}
+          </div>
         ),
       },
       {
-        accessorKey: 'slug',
-        header: () => t('tenants.slug'),
+        accessorKey: 'country',
+        header: () => t('tenants.country'),
         cell: ({ row }) => (
-          <span className="text-muted-foreground">{row.getValue('slug')}</span>
+          <span>
+            {row.original.providerProfile?.country ?? '—'}
+          </span>
         ),
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'city',
+        header: () => t('tenants.city'),
+        cell: ({ row }) => (
+          <span>
+            {row.original.providerProfile?.city ?? '—'}
+          </span>
+        ),
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'categories',
+        header: () => t('tenants.categories'),
+        cell: ({ row }) => {
+          const categories =
+            row.original.providerProfile?.categories ?? [];
+          if (categories.length === 0) return <span>—</span>;
+          return (
+            <div className="flex flex-wrap gap-1">
+              {categories.slice(0, 2).map((c) => (
+                <Badge key={c.category.id} variant="secondary" className="text-xs">
+                  {c.category.name}
+                </Badge>
+              ))}
+              {categories.length > 2 && (
+                <Badge variant="outline" className="text-xs">
+                  +{categories.length - 2}
+                </Badge>
+              )}
+            </div>
+          );
+        },
         enableSorting: false,
       },
       {
@@ -80,18 +179,13 @@ export function TenantsPage() {
         enableSorting: false,
       },
       {
-        accessorKey: 'plan',
-        header: () => t('tenants.plan'),
-        cell: ({ row }) => {
-          const plan = row.original.plan;
-          return <span>{plan?.name ?? '—'}</span>;
-        },
-        enableSorting: false,
-      },
-      {
-        accessorKey: 'usersCount',
-        header: () => t('tenants.usersCount'),
-        cell: ({ row }) => <span>{row.original.usersCount ?? 0}</span>,
+        accessorKey: 'contactClicks',
+        header: () => t('tenants.contactClicks'),
+        cell: ({ row }) => (
+          <span>
+            {row.original.providerProfile?._count?.contactClicks ?? 0}
+          </span>
+        ),
         enableSorting: false,
       },
       {
@@ -113,6 +207,9 @@ export function TenantsPage() {
         header: () => t('common.actions'),
         cell: ({ row }) => {
           const tenant = row.original;
+          const isVerified = tenant.providerProfile?.isVerified ?? false;
+          const isFeatured = tenant.providerProfile?.isFeatured ?? false;
+
           const actions: RowAction[] = [
             {
               label: t('common.view'),
@@ -123,6 +220,20 @@ export function TenantsPage() {
               label: t('common.edit'),
               icon: Pencil,
               onClick: () => setEditTenant(tenant),
+            },
+            {
+              label: isVerified
+                ? t('tenants.removeVerification')
+                : t('tenants.verifyBusiness'),
+              icon: isVerified ? ShieldOff : ShieldCheck,
+              onClick: () => handleVerify(tenant, !isVerified),
+            },
+            {
+              label: isFeatured
+                ? t('tenants.unfeatureBusiness')
+                : t('tenants.featureBusiness'),
+              icon: isFeatured ? StarOff : StarIcon,
+              onClick: () => handleFeature(tenant, !isFeatured),
             },
             {
               label: t('tenants.suspendTenant'),
@@ -137,13 +248,27 @@ export function TenantsPage() {
         enableSorting: false,
       },
     ],
-    [t],
+    [t, verifyMutation.isPending, featureMutation.isPending],
   );
 
   const statusFilterOptions = [
     { label: t('common.active'), value: 'active' },
     { label: t('common.suspended'), value: 'suspended' },
     { label: t('tenants.cancelled'), value: 'cancelled' },
+  ];
+
+  const countryOptions = [
+    { label: 'UAE', value: 'AE' },
+    { label: 'Saudi Arabia', value: 'SA' },
+    { label: 'Kuwait', value: 'KW' },
+    { label: 'Qatar', value: 'QA' },
+    { label: 'Bahrain', value: 'BH' },
+    { label: 'Oman', value: 'OM' },
+  ];
+
+  const verifiedOptions = [
+    { label: t('tenants.verifiedLabel'), value: 'true' },
+    { label: t('tenants.unverifiedLabel'), value: 'false' },
   ];
 
   return (
@@ -169,6 +294,20 @@ export function TenantsPage() {
             options: statusFilterOptions,
             value: statusFilter,
             onChange: setStatusFilter,
+          },
+          {
+            key: 'country',
+            label: t('tenants.country'),
+            options: countryOptions,
+            value: countryFilter,
+            onChange: setCountryFilter,
+          },
+          {
+            key: 'verified',
+            label: t('tenants.verifiedLabel'),
+            options: verifiedOptions,
+            value: verifiedFilter,
+            onChange: setVerifiedFilter,
           },
         ]}
       />

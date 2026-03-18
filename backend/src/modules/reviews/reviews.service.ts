@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ServiceResult } from '../../common/types';
 import { PaginatedResult, paginate } from '../../common/dto/pagination.dto';
@@ -166,6 +167,75 @@ export class ReviewsService {
     }
 
     return this.getReviewSummary(profile.tenantId);
+  }
+
+  async listAllReviews(
+    page: number,
+    pageSize: number,
+    filters?: { rating?: number; isPublic?: boolean; search?: string },
+  ): Promise<ServiceResult<PaginatedResult<unknown>>> {
+    const where: Prisma.ReviewWhereInput = {};
+
+    if (filters?.rating) {
+      where.rating = filters.rating;
+    }
+    if (filters?.isPublic !== undefined) {
+      where.isPublic = filters.isPublic;
+    }
+    if (filters?.search) {
+      where.OR = [
+        { comment: { contains: filters.search, mode: 'insensitive' } },
+        { title: { contains: filters.search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [items, totalCount] = await Promise.all([
+      this.prisma.review.findMany({
+        where,
+        include: {
+          client: {
+            select: { id: true, firstName: true, lastName: true },
+          },
+          tenant: {
+            select: { id: true, name: true, slug: true },
+          },
+        },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.review.count({ where }),
+    ]);
+
+    return ServiceResult.ok(paginate(items, totalCount, { page, pageSize }));
+  }
+
+  async moderateReview(
+    reviewId: string,
+    isPublic: boolean,
+  ): Promise<ServiceResult<unknown>> {
+    const review = await this.prisma.review.findUnique({
+      where: { id: reviewId },
+    });
+
+    if (!review) {
+      return ServiceResult.fail(ErrorCodes.NOT_FOUND, 'Review not found');
+    }
+
+    const updated = await this.prisma.review.update({
+      where: { id: reviewId },
+      data: { isPublic },
+      include: {
+        client: {
+          select: { id: true, firstName: true, lastName: true },
+        },
+        tenant: {
+          select: { id: true, name: true, slug: true },
+        },
+      },
+    });
+
+    return ServiceResult.ok(updated);
   }
 
   async respondToReview(

@@ -12,6 +12,8 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ShieldCheck,
+  Star,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -34,6 +36,8 @@ interface NavItem {
 const navItems: NavItem[] = [
   { labelKey: 'nav.dashboard', href: '/', icon: LayoutDashboard },
   { labelKey: 'nav.tenants', href: '/tenants', icon: Building2 },
+  { labelKey: 'nav.verifications', href: '/verifications', icon: ShieldCheck },
+  { labelKey: 'nav.reviews', href: '/reviews', icon: Star },
   { labelKey: 'nav.users', href: '/users', icon: Users },
   { labelKey: 'nav.roles', href: '/roles', icon: Shield },
   { labelKey: 'nav.subscriptions', href: '/subscriptions', icon: CreditCard },

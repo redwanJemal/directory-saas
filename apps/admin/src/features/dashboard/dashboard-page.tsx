@@ -1,7 +1,19 @@
 import { useTranslation } from 'react-i18next';
-import { Building2, Users, CreditCard, DollarSign } from 'lucide-react';
+import {
+  Building2,
+  ShieldCheck,
+  TrendingUp,
+  Star,
+  Clock,
+  MousePointerClick,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuthStore } from '@/stores/auth-store';
+import {
+  useDashboardStatsQuery,
+  useBusinessesOverTimeQuery,
+  useContactClicksByTypeQuery,
+} from './hooks/use-dashboard';
 
 interface StatCardProps {
   titleKey: string;
@@ -24,19 +36,120 @@ function StatCard({ titleKey, value, icon: Icon }: StatCardProps) {
   );
 }
 
+function SimpleBarChart({
+  data,
+}: {
+  data: { label: string; value: number; color?: string }[];
+}) {
+  const maxValue = Math.max(...data.map((d) => d.value), 1);
+
+  return (
+    <div className="space-y-2">
+      {data.map((item) => (
+        <div key={item.label} className="flex items-center gap-3">
+          <span className="w-20 text-sm text-muted-foreground truncate">
+            {item.label}
+          </span>
+          <div className="flex-1 h-6 bg-muted rounded-md overflow-hidden">
+            <div
+              className="h-full bg-primary rounded-md transition-all"
+              style={{
+                width: `${(item.value / maxValue) * 100}%`,
+              }}
+            />
+          </div>
+          <span className="w-10 text-sm font-medium text-right">
+            {item.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BusinessesOverTimeChart() {
+  const { t } = useTranslation();
+  const { data } = useBusinessesOverTimeQuery(30);
+
+  if (!data?.daily?.length) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        {t('dashboard.noData')}
+      </p>
+    );
+  }
+
+  // Aggregate by country across all days
+  const countryTotals: Record<string, number> = {};
+  for (const day of data.daily) {
+    for (const [country, count] of Object.entries(day.byCountry)) {
+      countryTotals[country] = (countryTotals[country] || 0) + count;
+    }
+  }
+
+  const chartData = Object.entries(countryTotals)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 8)
+    .map(([label, value]) => ({ label, value }));
+
+  return <SimpleBarChart data={chartData} />;
+}
+
+function ContactClicksChart() {
+  const { t } = useTranslation();
+  const { data } = useContactClicksByTypeQuery(30);
+
+  if (!data?.byType || Object.keys(data.byType).length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        {t('dashboard.noData')}
+      </p>
+    );
+  }
+
+  const chartData = Object.entries(data.byType)
+    .sort(([, a], [, b]) => b - a)
+    .map(([label, value]) => ({ label, value }));
+
+  return <SimpleBarChart data={chartData} />;
+}
+
 export function DashboardPage() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const { data: stats } = useDashboardStatsQuery();
 
-  const stats: StatCardProps[] = [
-    { titleKey: 'dashboard.totalTenants', value: '\u2014', icon: Building2 },
-    { titleKey: 'dashboard.activeUsers', value: '\u2014', icon: Users },
+  const statCards: StatCardProps[] = [
     {
-      titleKey: 'dashboard.activeSubscriptions',
-      value: '\u2014',
-      icon: CreditCard,
+      titleKey: 'dashboard.totalBusinesses',
+      value: stats?.totalBusinesses ?? '—',
+      icon: Building2,
     },
-    { titleKey: 'dashboard.revenue', value: '\u2014', icon: DollarSign },
+    {
+      titleKey: 'dashboard.pendingVerifications',
+      value: stats?.pendingVerifications ?? '—',
+      icon: Clock,
+    },
+    {
+      titleKey: 'dashboard.newThisWeek',
+      value: stats?.newThisWeek ?? '—',
+      icon: TrendingUp,
+    },
+    {
+      titleKey: 'dashboard.totalReviews',
+      value: stats?.totalReviews ?? '—',
+      icon: Star,
+    },
+    {
+      titleKey: 'dashboard.verifiedBusinesses',
+      value: stats?.verifiedBusinesses ?? '—',
+      icon: ShieldCheck,
+    },
+    {
+      titleKey: 'dashboard.contactClicks',
+      value: stats?.totalContactClicks ?? '—',
+      icon: MousePointerClick,
+    },
   ];
 
   return (
@@ -50,8 +163,8 @@ export function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {statCards.map((stat) => (
           <StatCard key={stat.titleKey} {...stat} />
         ))}
       </div>
@@ -59,22 +172,18 @@ export function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>{t('dashboard.recentTenants')}</CardTitle>
+            <CardTitle>{t('dashboard.businessesByCountry')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              {t('common.comingSoon')}
-            </p>
+            <BusinessesOverTimeChart />
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>{t('dashboard.systemHealth')}</CardTitle>
+            <CardTitle>{t('dashboard.contactClicksByType')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              {t('common.comingSoon')}
-            </p>
+            <ContactClicksChart />
           </CardContent>
         </Card>
       </div>

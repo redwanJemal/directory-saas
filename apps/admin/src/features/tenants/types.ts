@@ -9,6 +9,22 @@ export interface Tenant {
     name: string;
   };
   usersCount?: number;
+  providerProfile?: {
+    country: string | null;
+    city: string | null;
+    isVerified: boolean;
+    isFeatured: boolean;
+    categories: Array<{
+      category: {
+        id: string;
+        name: string;
+        slug: string;
+      };
+    }>;
+    _count?: {
+      contactClicks: number;
+    };
+  } | null;
   createdAt: string;
   updatedAt: string;
 }

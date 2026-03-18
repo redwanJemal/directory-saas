@@ -13,6 +13,10 @@ interface TenantsQueryParams {
   search?: string;
   status?: string;
   sort?: string;
+  country?: string;
+  city?: string;
+  category?: string;
+  verified?: string;
 }
 
 interface TenantsResponse {
@@ -32,11 +36,18 @@ export function useTenantsQuery(params: TenantsQueryParams = {}) {
       const queryParams = new URLSearchParams();
       if (params.page) queryParams.set('page', String(params.page));
       if (params.pageSize) queryParams.set('pageSize', String(params.pageSize));
-      if (params.search)
-        queryParams.set('filter[name][contains]', params.search);
+      if (params.search) queryParams.set('search', params.search);
       if (params.status && params.status !== 'all')
-        queryParams.set('filter[status]', params.status);
+        queryParams.set('status', params.status);
       if (params.sort) queryParams.set('sort', params.sort);
+      if (params.country && params.country !== 'all')
+        queryParams.set('country', params.country);
+      if (params.city && params.city !== 'all')
+        queryParams.set('city', params.city);
+      if (params.category && params.category !== 'all')
+        queryParams.set('category', params.category);
+      if (params.verified && params.verified !== 'all')
+        queryParams.set('verified', params.verified);
 
       const response = await api.get<TenantsResponse>(
         `/admin/tenants?${queryParams}`,
@@ -99,6 +110,38 @@ export function useSuspendTenantMutation() {
       const response = await api.patch<{ data: Tenant }>(
         `/admin/tenants/${id}/suspend`,
         input,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+    },
+  });
+}
+
+export function useVerifyTenantMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, verified }: { id: string; verified: boolean }) => {
+      const response = await api.patch<{ data: Tenant }>(
+        `/admin/tenants/${id}/verify`,
+        { verified },
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+    },
+  });
+}
+
+export function useFeatureTenantMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, featured }: { id: string; featured: boolean }) => {
+      const response = await api.patch<{ data: Tenant }>(
+        `/admin/tenants/${id}/feature`,
+        { featured },
       );
       return response.data.data;
     },
